@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-    <link href="css/Employee-step3-showcard.css" rel = "stylesheet"/>
+    <link href="css/Employee-step3-showcard.css" rel="stylesheet" />
     <title>Document</title>
 </head>
 
@@ -32,88 +32,32 @@
             </div>
         </div>
         <div class="progress-status"></div>
-        <div class="user-options">
-            <button class="sidebar-toggle-btn">
-                <i class="bx bx-menu"></i>
-            </button>
-            <div class="sidebar">
-                <button class="sidebar-close-btn">
-                    <i class="bx bx-x"></i>
-                </button>
-                <!-- Add your sidebar content here -->
-            </div>
-          
-            <div class="container">
-                <div class="left-column">
-                    <table>   
-                        <tr>
-                            <th><h3 >Thông tin giao hàng</h3></th>
-                        </tr>
-                    </table>
-                
-                  <br>
-                  <br>
-                 
-                  <p><strong>Họ tên:</strong></p>
-                  <br>
-                  <p><strong>Công ty:</strong></p>
-                  <br>
-                  <p><strong>Email:</strong></p>
-                  <br>
-                  <p><strong>Điện thoại:</strong></p>
-                  <br>
-                  <p><strong>Thành phố:</strong></p>
-                  <br>
-                  <p><strong>Quận huyện:</strong></p>
-                  <br>
-                  <p><strong>Địa chỉ giao:</strong></p>
-                  <br>
-                  <p><strong>Thời gian giao:</strong></p>
+        <div class="user-options" >
+            
 
-                  <div class="popup">
-                    <p><strong>Lý do lắp đặt:</strong></p>
-                  </div>
-                  
+            <div class="container">
+                <div class="left-column" style="margin-bottom: 20px;">
+                    <table>
+                        <tr>
+                            <th>Stt</th>
+                            <th>Hình ảnh thiết bị</th>
+                            <th>Tên thiết bị</th>
+                            <th>Số lượng</th>
+                        </tr>
+                        <!-- Add table rows with data here -->
+                    </table>
                 </div>
                 <div class="right-column">
-                  <h3 >Xác nhận</h3>
-                  <button><a href="index.php?role=staff&action=verified">Xác nhận</a></button>
+                    <h3>Xác nhận</h3>
+                    <button><a href="index.php?role=staff&action=verified">Xác nhận</a></button>
                 </div>
-              </div>
-              <div class="bottom-row">
-                <table>
-                  <tr>
-                    <th>Stt</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Hình ảnh sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá (VND)</th>
-                    <th>Tổng (VND)</th>
-                  </tr>
-                  <!-- Add table rows with data here -->
-                </table>
-                
-              </div>
+            </div>
         </div>
 
         <div class="footer">
             <b>Footer</b>
         </div>
     </div>
-    <script>
-        const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
-        const sidebarCloseBtn = document.querySelector('.sidebar-close-btn');
-        const sidebar = document.querySelector('.sidebar');
-
-        sidebarToggleBtn.addEventListener('click', () => {
-            sidebar.classList.add('active');
-        });
-
-        sidebarCloseBtn.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-        });
-
-    </script>
 </body>
 <!-- <style>
     .cookieCrumb {

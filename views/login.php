@@ -23,16 +23,22 @@
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                     <form action="index.php?role=staff&action=loginValidate" method="POST">
                     
-
+                        <?php if(isset($_SESSION['invalid'])){ ?>
+                         <label style="color: red;" class="form-check-label" for="form2Example3">
+                                    tài khoản hoặc mật khẩu sai
+                        </label>       
+                        <?php } ?>
+                        <br>
+                        <br>
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" />
+                            <input name="email" type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" />
                             <label class="form-label" for="form3Example3">Email address</label>
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline mb-3">
-                            <input type="password" id="form3Example4" class="form-control form-control-lg" placeholder="Enter password" />
+                            <input name="password" type="password" id="form3Example4" class="form-control form-control-lg" placeholder="Enter password" />
                             <label class="form-label" for="form3Example4">Password</label>
                         </div>
 

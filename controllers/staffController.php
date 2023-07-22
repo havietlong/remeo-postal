@@ -20,7 +20,7 @@ switch ($action) {
         include_once 'views/login.php';
         break;
     case 'loginValidate':
-        include_once 'model/staffModel.php';
+        include_once 'models/staffModel.php';
         if (isset($_SESSION['test'])) {
             $test = $_SESSION['test'];
             // use the $test variable as needed
@@ -59,10 +59,10 @@ switch ($action) {
         //     include_once 'model/customerModel.php';
         //     include_once 'views/customer/product.php';
         //     break;
-        // case 'insertCart':
-        //     include_once 'model/customerModel.php';
-        //     include_once 'views/customer/product.php';
-        //     break;  
+        case 'insertCart':
+            include_once 'models/staffModel.php';
+            include_once 'views/Employee_step2_detail.php';
+            break;  
         // case 'removeCart':
         //     include_once 'model/customerModel.php';
         //     break;  

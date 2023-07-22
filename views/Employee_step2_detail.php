@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-    <link href="css/E-step2-detail.css" rel = "stylesheet"/>
+    <link href="css/E-step2-detail.css" rel="stylesheet" />
     <title>Document</title>
 </head>
 
@@ -40,7 +40,42 @@
                 <button class="sidebar-close-btn">
                     <i class="bx bx-x"></i>
                 </button>
-                <!-- Add your sidebar content here -->
+                <div class="siderBar_container">
+                    <?php
+                    foreach ($_SESSION['cart'] as $item) {
+                        if (!isset($count_by_id[$item])) {
+                          $count_by_id[$item] = 1;
+                        } else {
+                          $count_by_id[$item]++;
+                        }
+                      }
+                      $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+                      
+                      foreach ($count_by_id as $id => $count) {
+                        $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
+                        $result = mysqli_query($connect, $sql);
+                        $row = mysqli_fetch_assoc($result);
+                        $name_product = $row['name'];
+                    ?>
+                    <div class="sideBarProduct" style="display: flex;align-items: center;">
+                        <div class="siderBar_img">
+                            <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image" style="width: 100px;height: auto;">
+                        </div>
+                        <div class="siderBar_right" style="display: flex;flex-direction: column;">
+                            <div class="sideBar_name">
+                                <?= $name_product ?>
+                            </div>
+                            <div class="sideBar_quantity">
+                                <input type="number" value="<?= $count ?>">
+                            </div>
+
+                        </div>
+                        <div class="sideBar_delete" style="padding-left: 9px;">
+                            <i class='bx bx-trash' style="font-size: 25px;position:relative;top:9px"></i>
+                        </div>
+                    </div>
+                    <?php } ?>
+                </div>
             </div>
             <div class="cookieCrumb">
                 <i class='bx bx-home'></i>
@@ -51,56 +86,59 @@
                 <div class="categoriesTab">
                     <div class="label"><b>DANH MỤC</b></div>
                     <div class="label-content">
-                    <?php foreach ($categories as $category) { ?>
+                        <?php foreach ($categories as $category) { ?>
                             <div class="type-label">
                                 <div class="type" style="padding-left:10px;">
-                                <a style="text-decoration: none; color:black" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
-                                <b><?= $category['name'] ?></b>
-                                </a>
-                            </div>
+                                    <a style="text-decoration: none; color:black" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
+                                        <b><?= $category['name'] ?></b>
+                                    </a>
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
                 </div>
                 <div class="right_section_step3">
-                    <?php foreach($products as $product) { ?>
-                    <div class = "product-title"><?= $product['name']?></div>
-                    
-                    <div class="productsTab">
-                        <div class="product-container">
-                            <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image">
-                            <div>
-                               
-                                <div class="number-selector">
-                                    <div class="soluong">Số lượng: </div>
-                                    <input type="number" min="1" max="5" value="1">
+                    <?php foreach ($products as $product) { ?>
+                        <div class="product-title"><?= $product['name'] ?></div>
+
+                        <div class="productsTab">
+                            <div class="product-container">
+                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image">
+                                <div>
+                                    <form action="index.php?role=staff&action=insertCart&deviceID=<?= $product['equipment_id'] ?>" method="post">
+                                        <div class="number-selector">
+                                            <div class="soluong">Số lượng: </div>
+                                            <input name="equipment_quantity" type="number" min="1" value="1">
+                                        </div>
+                                        <br>
+                                        <div class="green-text">
+                                            <span class="checkmark">&#10004;</span> Hà Nội: 094233244 - 098372131
+                                        </div>
+                                        <div class="green-text">
+                                            <span class="checkmark">&#10004;</span> Đảm bảo hàng mới 100% nguyên đai nguyên kiện
+                                        </div>
+                                        <div class="green-text">
+                                            <span class="checkmark">&#10004;</span> Dịch vụ hỗ trợ 24/7
+                                        </div>
+                                        <div class="green-text">
+                                            <span class="checkmark">&#10004;</span> Giao hàng tận nơi khu vực nội thành Hà Nội
+                                        </div>
+
+                                        <input name="equipment_name" value="<?= $product['name'] ?>" hidden>
+                                        <button type="submit" style="background-color: red;width:150px;height:50px;color:white;font-size: 20px; border-radius: 5px; cursor: pointer;">Thêm</button>
+                                    </form>
                                 </div>
+                            </div>
+                            <div class="info-container">
+                                <div class="spec-title">Thông số kĩ thuật</div>
+                                <div class="red-line"></div>
+                                <div class="product-name">Sản phẩm Ricoh P C200W</div>
                                 <br>
-                                <div class="green-text">
-                                    <span class="checkmark">&#10004;</span> Hà Nội: 094233244 - 098372131
-                                </div>
-                                <div class="green-text">
-                                    <span class="checkmark">&#10004;</span> Đảm bảo hàng mới 100% nguyên đai nguyên kiện
-                                </div>
-                                <div class="green-text">
-                                    <span class="checkmark">&#10004;</span> Dịch vụ hỗ trợ 24/7
-                                </div>
-                                <div class="green-text">
-                                    <span class="checkmark">&#10004;</span> Giao hàng tận nơi khu vực nội thành Hà Nội
-                                </div>
-                                <button style="background-color: red;width:150px;height:50px;color:white;font-size: 20px; border-radius: 5px;">Thêm</button>
+                                <div class="product-info">Chức năng: in</div>
+                                <div class="product-info">Thời gian khởi động: 60.7 s</div>
+                                <div class="product-info">DKM long, vietbiz nó đéo cho copy mệt vãi lồn</div>
                             </div>
                         </div>
-                        <div class="info-container">
-                            <div class="spec-title">Thông số kĩ thuật</div>
-                            <div class="red-line"></div>
-                            <div class="product-name">Sản phẩm Ricoh P C200W</div>
-                            <br>
-                            <div class="product-info">Chức năng: in</div>
-                            <div class="product-info">Thời gian khởi động: 60.7 s</div>
-                            <div class="product-info">DKM long, vietbiz nó đéo cho copy mệt vãi lồn</div>
-                        </div>
-                    </div>
                     <?php } ?>
                 </div>
             </div>
@@ -122,7 +160,6 @@
         sidebarCloseBtn.addEventListener('click', () => {
             sidebar.classList.remove('active');
         });
-
     </script>
 </body>
 <!-- <style>

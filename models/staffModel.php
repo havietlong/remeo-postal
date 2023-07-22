@@ -179,17 +179,18 @@ function insertCart()
     if (empty($_SESSION['cart'])) {
         $_SESSION['cart'] = array();
     }
-    if (isset($_POST['quantityBuy'])) {
-        $quantity_product = $_POST['quantityBuy'];
+    if (isset($_POST['equipment_quantity'])) {
+        $quantity_product = $_POST['equipment_quantity'];
     } else {
         $quantity_product = 1;
     }
+
     // $quantity_product = $_POST['quantityBuy'];
     for ($i = 1; $i <= $quantity_product; $i++) {
-        array_push($_SESSION['cart'], $_GET['id_product']);
+        array_push($_SESSION['cart'], $_GET['deviceID']);
     }
     $_SESSION['msg1'] = "Đã thêm vào giỏ hàng";
-    header("index.php?role=customer&action=productPage&id_product=" . $_GET['id_product'] . "");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
 function removeCart()
@@ -261,12 +262,13 @@ function cancelReceipt()
 
 function validateRole()
 {
+
     $email = $_POST['email'];
     $password = $_POST['password'];
-
-    include_once 'connection/openConnect.php';
+    
+    include_once 'connections/openConnect.php';
     // Check if user is a staff member
-    $sql = "SELECT * FROM postalStaff WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT * FROM postalstaff WHERE email = '$email' AND password = '$password'";
     $staffs = mysqli_query($connect, $sql);
     $staff_rows = mysqli_num_rows($staffs);
 
@@ -373,10 +375,10 @@ switch ($action) {
         // case 'productPage':
         //     $product = productPage();
         //     break;
-        // case 'insertCart':
-        //     insertCart();
-        //     $product = productPage();
-        //     break;
+        case 'insertCart':
+            insertCart();
+            // $product = productPage();
+            break;
         // case 'removeCart':
         //     removeCart();
         //     break;
