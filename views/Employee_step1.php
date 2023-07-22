@@ -42,7 +42,7 @@
         </button>
         <!-- Sidebar content -->
       </div>
-      <a href="index.php?role=staff&action=install&deviceType=computer">
+      <a href="index.php?role=staff&action=install&deviceType=computerParts">
         <button>
           <div class="option-box rectangle">
             <i class="bx bx-laptop"></i>

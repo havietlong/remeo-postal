@@ -51,14 +51,20 @@
                 <div class="categoriesTab">
                     <div class="label"><b>DANH MỤC</b></div>
                     <div class="label-content">
-                        <div class="type-label">
-                            <div class="type"><b>Printer</b></div>
-                        </div>
-                        <div class="brand"><i>HP</i></div>
+                    <?php foreach ($categories as $category) { ?>
+                            <div class="type-label">
+                                <div class="type" style="padding-left:10px;">
+                                <a style="text-decoration: none; color:black" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
+                                <b><?= $category['name'] ?></b>
+                                </a>
+                            </div>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="right_section_step3">
-                    <div class = "product-title">Máy in A4</div>
+                    <?php foreach($products as $product) { ?>
+                    <div class = "product-title"><?= $product['name']?></div>
                     
                     <div class="productsTab">
                         <div class="product-container">
@@ -82,6 +88,7 @@
                                 <div class="green-text">
                                     <span class="checkmark">&#10004;</span> Giao hàng tận nơi khu vực nội thành Hà Nội
                                 </div>
+                                <button style="background-color: red;width:150px;height:50px;color:white;font-size: 20px; border-radius: 5px;">Thêm</button>
                             </div>
                         </div>
                         <div class="info-container">
@@ -94,6 +101,7 @@
                             <div class="product-info">DKM long, vietbiz nó đéo cho copy mệt vãi lồn</div>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>

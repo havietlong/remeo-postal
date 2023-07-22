@@ -1,13 +1,116 @@
 <?php
 
 
-function productPage()
+function fetchProduct()
 {
-    $id_product = $_GET['id_product'];
-    include_once 'connection/openConnect.php';
-    $sql = "SELECT * FROM product WHERE id_product = $id_product";
-    $product = mysqli_query($connect, $sql);
-    return $product;
+    if (isset($_GET['deviceDetail'])) {
+        include 'connections/openConnect.php';
+        $deviceDetail = $_GET['deviceDetail'];
+        $sql = "SELECT e.*, m.name AS manufacturer_name
+        FROM equipment AS e
+        INNER JOIN manufacturer AS m ON e.manufacturer_id = m.manufacturer_id
+        WHERE e.equipment_id IN ($deviceDetail)";
+        $products = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+    } else {
+        $deviceDetail = '';
+    }
+
+    if (isset($_GET['deviceType'])) {
+        $deviceType = $_GET['deviceType'];
+    } else {
+        $deviceType = '';
+    }
+
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+    } else {
+        $category = '';
+    }
+    include 'connections/openConnect.php';
+    if ($deviceType === 'computerParts' && $category == 'Case') {
+        $sql = 
+        $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Keyboard') {
+        $sql = 
+        $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Monitor') {
+        $sql = 
+        $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Mouse') {
+        $sql = 
+        $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts') {
+        $sql = "SELECT * From equipment
+        WHERE equipment_id IN (4,5,6,7)";
+        $products = mysqli_query($connect, $sql);
+    }
+
+    include 'connections/closeConnect.php';
+    return $products;
+}
+
+function fetchCategories()
+{
+    if (isset($_GET['deviceDetail'])) {
+        include 'connections/openConnect.php';
+        $deviceDetail = $_GET['deviceDetail'];
+        $sql = "SELECT e.*, m.name AS manufacturer_name
+        FROM equipment AS e
+        INNER JOIN manufacturer AS m ON e.manufacturer_id = m.manufacturer_id
+        WHERE e.type_id IN ($deviceDetail)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+        include 'connections/closeConnect.php';
+    } else {
+        $deviceDetail = '';
+    }
+
+    if (isset($_GET['deviceType'])) {
+        $deviceType = $_GET['deviceType'];
+    } else {
+        $deviceType = '';
+    }
+
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+    } else {
+        $category = '';
+    }
+
+    include 'connections/openConnect.php';
+    if ($deviceType == 'computerParts' && $category == 'Mouse') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (7)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Keyboard') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (6)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Case') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (5)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Monitor') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (4)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts') {
+
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (4, 5, 6, 7)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    }
+    include 'connections/closeConnect.php';
+    
+}
+
+function fetchBrand(){
+    include "connections/openConnect.php";
+    $sql = "SELECT * FROM manufacturer";
+    $brands = mysqli_query($connect, $sql);
+    include "connections/closeConnect.php";
+    return $brands;
 }
 
 function getProduct()
@@ -106,13 +209,13 @@ function checkOut()
     $quantities = array();
     include_once 'connection/openConnect.php';
     $sql = "SELECT * FROM invoiceuser ORDER BY id_invoiceuser DESC LIMIT 1";
-    $result = mysqli_query($connect,$sql);
+    $result = mysqli_query($connect, $sql);
     $inVoice = mysqli_fetch_assoc($result);
     $id_invoiceUser = $inVoice['id_invoiceUser'];
     // Loop through each item in the cart 
     // var_dump($_SESSION['cart']);  
     // var_dump(end($_SESSION['cart']));
-   // Iterate over the items in the cart and update the $quantities array
+    // Iterate over the items in the cart and update the $quantities array
     foreach ($_SESSION['cart'] as $item_id) {
         // If the item id already exists in the quantities array, increment its value
         if (isset($quantities[$item_id])) {
@@ -130,7 +233,6 @@ function checkOut()
         $sql = "INSERT INTO invoiceitem (quantity_product, id_invoiceUser, id_product) VALUES ($quantity, $id_invoiceUser, $item_id);";
         $result = mysqli_query($connect, $sql);
     }
-    
 }
 
 function createInvoiceUser()
@@ -145,7 +247,7 @@ function cancelReceipt()
 {
     include_once 'connection/openConnect.php';
     $sql = "SELECT * FROM invoiceuser ORDER BY id_invoiceUser DESC LIMIT 1";
-    $result = mysqli_query($connect,$sql);
+    $result = mysqli_query($connect, $sql);
     $invoiceUser = mysqli_fetch_assoc($result);
     $id_invoiceUser = $invoiceUser['id_invoiceUser'];
     include_once 'connection/openConnect.php';
@@ -221,40 +323,41 @@ function viewReceipt()
 
 function billDetail()
 {
-$id_invocieUser = $_GET['id_invoiceUser'];
-include_once 'connection/openConnect.php';
-$sql = "SELECT * FROM invoiceitem WHERE id_invoiceUser = $id_invocieUser";
-$invoiceItems = mysqli_query($connect, $sql);
-$receipt = array();
-
-foreach($invoiceItems as $item){
+    $id_invocieUser = $_GET['id_invoiceUser'];
     include_once 'connection/openConnect.php';
-    $id_product = $item['id_product'];
-    $sql = "SELECT * FROM product WHERE id_product = $id_product";
-    $result = mysqli_query($connect, $sql);
-    $product = mysqli_fetch_assoc($result);
-    $picture_product = $product['picture_product'];
-    $price_product = $product['price_product'];
-    $name_product = $product['name_product'];
+    $sql = "SELECT * FROM invoiceitem WHERE id_invoiceUser = $id_invocieUser";
+    $invoiceItems = mysqli_query($connect, $sql);
+    $receipt = array();
 
-    $receiptItem = array(
-        'id_product' => $item['id_product'],
-        'name' => $name_product,
-        'quantity' => $item['quantity_product'],
-        'price' => $price_product,
-        'picture_product' => $picture_product
-    );
-    
-    array_push($receipt, $receiptItem);
+    foreach ($invoiceItems as $item) {
+        include_once 'connection/openConnect.php';
+        $id_product = $item['id_product'];
+        $sql = "SELECT * FROM product WHERE id_product = $id_product";
+        $result = mysqli_query($connect, $sql);
+        $product = mysqli_fetch_assoc($result);
+        $picture_product = $product['picture_product'];
+        $price_product = $product['price_product'];
+        $name_product = $product['name_product'];
+
+        $receiptItem = array(
+            'id_product' => $item['id_product'],
+            'name' => $name_product,
+            'quantity' => $item['quantity_product'],
+            'price' => $price_product,
+            'picture_product' => $picture_product
+        );
+
+        array_push($receipt, $receiptItem);
+    }
+
+    return $receipt;
 }
 
-return $receipt;
-
-}
 
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
+
 
 //Kiểm tra hành động hiện tại
 switch ($action) {
@@ -262,33 +365,35 @@ switch ($action) {
         $test = validateRole();
         $_SESSION['test'] = $test;
         break;
-    case 'getProduct':
-        $product = getProduct();
+    case 'install':
+        $products = fetchProduct();
+        $categories = fetchCategories();
+        $brands = fetchBrand();
         break;
-    case 'productPage':
-        $product = productPage();
-        break;
-    case 'insertCart':
-        insertCart();
-        $product = productPage();
-        break;
-    case 'removeCart':
-        removeCart();
-        break;
-    case 'checkOut':
-        createInvoiceUser();
-        checkOut();
-        break;
-    case 'search':
-        $array = search();
-        break;
-    case 'viewReceipt':
-        $receipt = viewReceipt();
-        break;
-    case 'cancelReceipt':
-        cancelReceipt();
-        break;
-    case 'billDetail':
-        $receipt = billDetail();
-        break;
+        // case 'productPage':
+        //     $product = productPage();
+        //     break;
+        // case 'insertCart':
+        //     insertCart();
+        //     $product = productPage();
+        //     break;
+        // case 'removeCart':
+        //     removeCart();
+        //     break;
+        // case 'checkOut':
+        //     createInvoiceUser();
+        //     checkOut();
+        //     break;
+        // case 'search':
+        //     $array = search();
+        //     break;
+        // case 'viewReceipt':
+        //     $receipt = viewReceipt();
+        //     break;
+        // case 'cancelReceipt':
+        //     cancelReceipt();
+        //     break;
+        // case 'billDetail':
+        //     $receipt = billDetail();
+        //     break;
 }

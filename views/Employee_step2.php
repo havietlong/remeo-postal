@@ -51,52 +51,43 @@
                 <div class="categoriesTab">
                     <div class="label"><b>DANH MỤC</b></div>
                     <div class="label-content">
-                        <div class="type-label">
-                            <div class="type"><b>Printer</b></div>
-                        </div>
-                        <div class="brand"><i>HP</i></div>
+                        <?php foreach ($categories as $category) { ?>
+                            <div class="type-label">
+                                <div class="type" style="padding-left:10px;padding-top: 5px;">
+                                    <a style="text-decoration: none; color:black;" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
+                                        <b><?= $category['name'] ?></b>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="right_section_step3">
-                    <div class="filterTab"></div>
-
-                    <div class="productsTab">
-                        <div class ="product">
-                        <div class="product-container">
-                            <div class="product-items">
-                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm"
-                                    class="product-image">
-                                <div class="product-name">Máy in màu Laser Ricoh PC 200W</div>
+                    <div class="filterTab">
+                        <labe>Lọc theo hãng</labe>
+                        <div class="brandOptions">
+                        <?php foreach ($brands as $brand) { ?>
+                            <div class="optionContainer">
+                            <input type="checkbox" style="margin-right: 5px;"><?= $brand['name'] ?>
                             </div>
-                        </div>
-                        <div class="product-container">
-                            <div class="product-items">
-                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm"
-                                    class="product-image">
-                                <div class="product-name">Máy in màu Laser Ricoh PC 200W</div>
-                            </div>
-                        </div>
-                        <div class="product-container">
-                            <div class="product-items">
-                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm"
-                                    class="product-image">
-                                <div class="product-name">Máy in màu Laser Ricoh PC 200W</div>
-                            </div>
-                        </div>
-                        <div class="product-container">
-                            <div class="product-items">
-                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm"
-                                    class="product-image">
-                                <div class="product-name">Máy in màu Laser Ricoh PC 200W</div>
-                            </div>
-                        </div>
-                        
+                            <?php } ?>
                         </div>
                     </div>
-
-
+                    <div class="productsTab">
+                        <div class="product">
+                            <?php foreach ($products as $product) { ?>
+                                <a href="index.php?role=staff&action=install&deviceDetail=<?= $product['equipment_id'] ?>">
+                                    <div class="product-container">
+                                        <div class="product-items">
+                                            <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image">
+                                            <div class="product-name"><?= $product['name'] ?></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -117,7 +108,6 @@
         sidebarCloseBtn.addEventListener('click', () => {
             sidebar.classList.remove('active');
         });
-
     </script>
 </body>
 <!-- <style>
