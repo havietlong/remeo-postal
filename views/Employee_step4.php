@@ -46,6 +46,7 @@
     <div class="progress-status"></div>
     <div class="user-options">
       <img src="https://static.vecteezy.com/system/resources/previews/006/657/739/non_2x/payment-receipt-with-coin-cartoon-illustration-flat-isolated-object-free-vector.jpg">
+      <label class="message">Yêu cầu của bạn đã được gửi!</label><span>Bạn có thể quản lý yêu cầu <a href="index.php?role=staff&action=manage_requests" style="color: red;">tại đây</a></span>
     </div>
 
     <div class="footer">
@@ -53,7 +54,29 @@
     </div>
   </div>
 </body>
+</html>
 <style>
+   html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+  }
+  
+  .total-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .message{
+    margin-top: 20px;
+  }
+  .user-options {
+    display: flex;
+    flex-direction: column;
+  }
   .user-options img{
     border-radius: 200px;
     width: 300px;
@@ -76,7 +99,7 @@
   .progress-status {
     display: flex;
     z-index: 1;
-    top: 188px;
+    top: 207px;
     left: 0;
     width: 10px;
     position: absolute;
@@ -134,6 +157,7 @@
   body {
     background-color: lightgrey;
     overflow-x: hidden;
+    /* overflow-y: hidden; */
   }
 
   .branch {
@@ -258,19 +282,3 @@
     font-size: 24px;
   }
 </style>
-
-<script>
-  const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
-  const sidebarCloseBtn = document.querySelector('.sidebar-close-btn');
-  const sidebar = document.querySelector('.sidebar');
-
-  sidebarToggleBtn.addEventListener('click', () => {
-    sidebar.classList.add('active');
-  });
-
-  sidebarCloseBtn.addEventListener('click', () => {
-    sidebar.classList.remove('active');
-  });
-</script>
-
-</html>

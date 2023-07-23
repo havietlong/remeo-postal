@@ -1,3 +1,6 @@
+<?php
+$staff_id = $_SESSION['user_id'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,8 +35,8 @@
             </div>
         </div>
         <div class="progress-status"></div>
-        <div class="user-options" >
-            
+        <div class="user-options">
+
 
             <div class="container">
                 <div class="left-column" style="margin-bottom: 20px;">
@@ -44,12 +47,61 @@
                             <th>Tên thiết bị</th>
                             <th>Số lượng</th>
                         </tr>
-                        <!-- Add table rows with data here -->
+                        <?php
+                        if (!isset($_SESSION['cart'])||empty($_SESSION['cart'])) {
+                        ?>
+                            <tr>
+                                <td colspan="4">Không thiết bị nào được thêm vào</td>
+                            </tr>
+
+                        <?php }
+                        $i = 0;
+                        foreach ($_SESSION['cart'] as $item) {
+                            if (!isset($count_by_id[$item])) {
+                                $count_by_id[$item] = 1;
+                            } else {
+                                $count_by_id[$item]++;
+                            }
+                        }
+                        $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+                        
+                        foreach ($count_by_id as $id => $count) {
+                            $i++;
+                            $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
+                            $result = mysqli_query($connect, $sql);
+                            $row = mysqli_fetch_assoc($result);
+                            $product_id = $row['equipment_id'];
+                            $name_product = $row['name'];
+                           
+                        ?>
+
+                            <tr>
+                                <td><?= $i ?></td>
+                                <td></td>
+                                <td><?= $name_product ?></td>
+                                <td><?= $count ?></td>
+                            </tr>
+                        <?php }
+
+                        mysqli_close($connect);
+                        ?>
                     </table>
                 </div>
-                <div class="right-column">
-                    <h3>Xác nhận</h3>
-                    <button><a href="index.php?role=staff&action=verified">Xác nhận</a></button>
+                <div class="right-section" style="display: flex;flex-direction: column;">
+                    <form action="index.php?role=staff&action=verified" method="post">
+                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                        <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                        <div class="right-column" style="margin-bottom: 30px;">
+                            <h3>Xác nhận</h3>
+                            <button type="submit">Xác nhận</button>
+                        </div>
+                        <div class="right-column">
+                            <textarea name="reason" cols="43" rows="13" style="border: none;outline: none;padding-top: 10px;" placeholder="Điền nguyên nhân cho yêu cầu này"></textarea>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

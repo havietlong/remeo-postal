@@ -29,17 +29,17 @@ function fetchProduct()
     }
     include 'connections/openConnect.php';
     if ($deviceType === 'computerParts' && $category == 'Case') {
-        $sql = 
-        $products = mysqli_query($connect, $sql);
+        $sql =
+            $products = mysqli_query($connect, $sql);
     } else if ($deviceType === 'computerParts' && $category == 'Keyboard') {
-        $sql = 
-        $products = mysqli_query($connect, $sql);
+        $sql =
+            $products = mysqli_query($connect, $sql);
     } else if ($deviceType === 'computerParts' && $category == 'Monitor') {
-        $sql = 
-        $products = mysqli_query($connect, $sql);
+        $sql =
+            $products = mysqli_query($connect, $sql);
     } else if ($deviceType === 'computerParts' && $category == 'Mouse') {
-        $sql = 
-        $products = mysqli_query($connect, $sql);
+        $sql =
+            $products = mysqli_query($connect, $sql);
     } else if ($deviceType === 'computerParts') {
         $sql = "SELECT * From equipment
         WHERE equipment_id IN (4,5,6,7)";
@@ -102,15 +102,84 @@ function fetchCategories()
         return $categories;
     }
     include 'connections/closeConnect.php';
-    
 }
 
-function fetchBrand(){
+function fetchBrand()
+{
     include "connections/openConnect.php";
     $sql = "SELECT * FROM manufacturer";
     $brands = mysqli_query($connect, $sql);
     include "connections/closeConnect.php";
     return $brands;
+}
+
+
+function createUser_requests()
+{
+    $reason = $_POST['reason'];
+    $staff_id = $_POST['staff_id'];
+    include "connections/openConnect.php";
+
+    // Sanitize user inputs to prevent SQL injection
+    $reason = mysqli_real_escape_string($connect, $reason);
+    $staff_id = mysqli_real_escape_string($connect, $staff_id);
+
+    // Build the SQL query string
+    $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status) 
+            VALUES ('$staff_id', '$reason', NOW(), 'Pending')";
+    var_dump($sql);
+    // Execute the query
+    mysqli_query($connect, $sql);
+
+    // Close the database connection
+    include "connections/closeConnect.php";
+
+    // Redirect back to the previous page
+    // header("Location: " . $_SERVER['HTTP_REFERER']);
+}
+
+function insertEquipment_requests()
+{
+    $i = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        if (!isset($count_by_id[$item])) {
+            $count_by_id[$item] = 1;
+        } else {
+            $count_by_id[$item]++;
+        }
+    }
+    $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+    $sql = "SELECT * FROM user_requests ORDER BY id DESC LIMIT 1";
+    $result = mysqli_query($connect, $sql);
+    $latestRequest = mysqli_fetch_assoc($result);
+    $request_id = $latestRequest['id'];
+    foreach ($count_by_id as $id => $count) {
+        $i++;
+        $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
+        $result = mysqli_query($connect, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $product_id = $row['equipment_id'];
+        // $name_product = $row['name'];
+        $sql = "INSERT INTO equipment_requests(request_id,equipment_id,quantity) VALUES ($request_id,'$product_id',$count)";
+        // var_dump($sql);
+        mysqli_query($connect, $sql);
+        
+    }
+    mysqli_close($connect);
+}
+
+function fetchUser_requests(){
+    $staff_id = $_POST['staff_id'];
+    include "connections/openConnect.php";
+
+    // Build the SQL query string
+    $sql = "SELECT * FROM user_requests WHERE staff_id = $staff_id ";
+    // Execute the query
+    $request = mysqli_query($connect, $sql);
+
+    // Close the database connection
+    include "connections/closeConnect.php";
+    return $request;
 }
 
 function getProduct()
@@ -265,7 +334,7 @@ function validateRole()
 
     $email = $_POST['email'];
     $password = $_POST['password'];
-    
+
     include_once 'connections/openConnect.php';
     // Check if user is a staff member
     $sql = "SELECT * FROM postalstaff WHERE email = '$email' AND password = '$password'";
@@ -274,8 +343,8 @@ function validateRole()
 
     if ($staff_rows == 1) {
         $staff = mysqli_fetch_assoc($staffs);
-        $_SESSION['user_name'] = $staff['name_staff'];
-        $_SESSION['user_id'] = $staff['id_staff'];
+        $_SESSION['user_name'] = $staff['name'];
+        $_SESSION['user_id'] = $staff['staff_id'];
         $_SESSION['user_type'] = 'staff';
         return 1;
     }
@@ -375,10 +444,18 @@ switch ($action) {
         // case 'productPage':
         //     $product = productPage();
         //     break;
-        case 'insertCart':
-            insertCart();
-            // $product = productPage();
-            break;
+    case 'insertCart':
+        insertCart();
+        // $product = productPage();
+        break;
+    case 'verified':
+        createUser_requests();
+        insertEquipment_requests();
+        // $product = productPage();
+        break;
+    case 'manage_requests':
+        $requests = fetchUser_requests();
+        break;
         // case 'removeCart':
         //     removeCart();
         //     break;

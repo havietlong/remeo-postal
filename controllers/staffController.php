@@ -24,7 +24,7 @@ switch ($action) {
         if (isset($_SESSION['test'])) {
             $test = $_SESSION['test'];
             // use the $test variable as needed
-            if ($test == 1) {
+            if ($test == 1) {                
                 unset($_SESSION['invalid']);
                 header('Location:index.php?role=staff&action=index');
             } else if ($test == 0) {
@@ -47,12 +47,14 @@ switch ($action) {
         include_once 'views/Employee_maintenance_form.php';
         break;
     case 'manage_requests':
+        include_once 'models/staffModel.php';
         include_once 'views/Employee_manage_requests.php';
         break;
     case 'verifyRequest':
         include_once 'views/Employee_step3_showCard.php';
         break;
     case 'verified':
+        include_once 'models/staffModel.php';
         include_once 'views/Employee_step4.php';
         break;
         // case 'productPage':
