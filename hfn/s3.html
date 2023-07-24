@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <link href="s3.css" rel = "stylesheet"/>
+    <title>Document</title>
+</head>
+
+<body>
+    
+    <div class="total-container">
+        <div class="navi">
+            <div class="header">
+                <box-icon  name='user-circle' class="logo-user" onclick="togglePopup()"></box-icon>
+            </div>
+        
+            <div class="popup" id="popup">
+                <div class="popup-item">
+                    <box-icon name='user' type='solid' class="popup-icon" ></box-icon>
+                    Người dùng
+                </div>
+                <div class="popup-item">
+                    <box-icon name='git-branch' class="popup-icon"></box-icon>
+                    Chi nhánh
+                </div>
+                <div class="popup-item">
+                    <box-icon name='slider' class="popup-icon" ></box-icon>
+                    Bộ phận
+                </div>
+                <div class="popup-item">
+                    <box-icon name='bell' class="popup-icon"></box-icon> 
+                    Vai trò
+                </div>
+            </div>
+        
+           
+        </div>
+        <div class="progress-bar">
+            <div class="outter-circle">
+                <div class="inner-circle active"></div>
+            </div>
+            <div class="outter-circle">
+                <div class="inner-circle active"></div>
+            </div>
+            <div class="outter-circle">
+                <div class="inner-circle non-active"></div>
+            </div>
+            <div class="outter-circle">
+                <div class="inner-circle non-active"></div>
+            </div>
+        </div>
+        <div class="progress-status"></div>
+        <div class="user-options">
+            <button class="sidebar-toggle-btn">
+                <i class="bx bx-menu"></i>
+            </button>
+            <div class="sidebar">
+                <button class="sidebar-close-btn">
+                    <i class="bx bx-x"></i>
+                </button>
+                <!-- Add your sidebar content here -->
+            </div>
+          
+            <div class="container">
+                <div class="left-column">
+                    <table>   
+                        <tr>
+                            <th><h3 >Thông tin giao hàng</h3></th>
+                        </tr>
+                    </table>
+                
+                  <br>
+                  <br>
+                 
+                  <p><strong>Họ tên:</strong></p>
+                  <br>
+                  <p><strong>Công ty:</strong></p>
+                  <br>
+                  <p><strong>Email:</strong></p>
+                  <br>
+                  <p><strong>Điện thoại:</strong></p>
+                  <br>
+                  <p><strong>Thành phố:</strong></p>
+                  <br>
+                  <p><strong>Quận huyện:</strong></p>
+                  <br>
+                  <p><strong>Địa chỉ giao:</strong></p>
+                  <br>
+                  <p><strong>Thời gian giao:</strong></p>
+
+                  <div class="wtf">
+                    <p><strong>Lý do lắp đặt:</strong></p>
+                  </div>
+                  
+                </div>
+                <div class="right-column">
+                  <h3 >Xác nhận</h3>
+                  <button><a href="index.php?role=staff&action=verified">Xác nhận</a></button>
+                </div>
+              </div>
+              <div class="bottom-row">
+                <table>
+                  <tr>
+                    <th>Stt</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Hình ảnh sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá (VND)</th>
+                    <th>Tổng (VND)</th>
+                  </tr>
+                  <!-- Add table rows with data here -->
+                </table>
+                
+              </div>
+        </div>
+        <div class="footer">
+            <div class="footer-column">
+                <div class="footer-title">Về chúng tôi</div>
+                <ul class="footer-list">
+                    <li>Giới thiệu</li>
+                    <li>Tin tức</li>
+                    <li>Sản phẩm</li>
+                    <li>Blog</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <div class="footer-title">Công ty TNHH HVL</div>
+                <ul class="footer-list footer-content">
+                    <li>96 Định Công, Thanh Xuân, Hà Nội</li>
+                    <li>098432421 - 098342384</li>
+                    <li>contact@hvl.com</li>
+                    <li>
+                        
+                        <img src="https://cdn.dangkywebsitevoibocongthuong.com/wp-content/uploads/2018/06/huong-dan-dang-ky-website-voi-Bo-Cong-Thuong-3.png" alt="Logo Bộ Công Thương" class="footer-logo">
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <div class="footer-title">Đăng ký nhận dịch vụ từ HVL</div>
+                <form class="footer-form">
+                    <label for="name"></label>
+                    <input type="text" id="name" name="name" placeholder="Nhập họ tên" required>
+                    <label for="phone"></label>
+                    <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+                    <label for="email"></label>
+                    <input type="email" id="email" name="email" placeholder="Nhập email" required>
+                    <label for="message"></label>
+                    <textarea id="message" name="message" rows="4" placeholder="Nhập nội dung yêu cầu" required></textarea>
+                    <button type="submit">Gửi yêu cầu</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <style>
+        .header {
+       
+        margin-top: 30px;
+        margin-left: 43cm;
+    }
+
+    .logo-user {
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    /* Cửa sổ popup */
+    .popup {
+        display: none;
+        position: absolute;
+        bottom: 19cm;
+        right: 20px;
+        background-color: white;
+        border: 1px solid black;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+      width:6cm;
+      height:4cm;
+
+    }
+
+    .popup-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color:black;
+       
+    }
+
+    .popup-icon {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    /* Hover hiển thị popup */
+    .header:hover .popup {
+        display: block;
+    }
+
+    /* Style cho footer */
+ 
+    </style>
+    <script>
+           function togglePopup() {
+            var popup = document.getElementById("popup");
+            if (popup.style.display === "block") {
+                popup.style.display = "none";
+            } else {
+                popup.style.display = "block";
+            }
+        }
+        
+        const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
+        const sidebarCloseBtn = document.querySelector('.sidebar-close-btn');
+        const sidebar = document.querySelector('.sidebar');
+
+        sidebarToggleBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        sidebarCloseBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+   
+
+    </script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+</body>
