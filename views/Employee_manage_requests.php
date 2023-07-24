@@ -65,50 +65,67 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Loại yêu cầu</th>
-                                    <th>Nội dung yêu cầu</th>
                                     <th>Người yêu cầu</th>
                                     <th>Người thực hiện</th>
-                                    <th>Ghi chú</th>
+                                    <!-- <th>Ghi chú</th> -->
                                     <th>Tiến độ xử lí</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Loại 1</td>
-                                    <td>Nội dung yêu cầu 1</td>
-                                    <td>Người yêu cầu 1</td>
-                                    <td>Người thực hiện 1</td>
-                                    <td>Ghi chú 1</td>
-                                    <td>Đang xử lí</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="7">
-                                        <div class="panel">
-                                            <!-- Content of the panel goes here -->
-                                            <h3>Panel content 1</h3>
-                                            <p>Additional details can be added here.</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Loại 2</td>
-                                    <td>Nội dung yêu cầu 2</td>
-                                    <td>Người yêu cầu 2</td>
-                                    <td>Người thực hiện 2</td>
-                                    <td>Ghi chú 2</td>
-                                    <td>Hoàn thành</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="7">
-                                        <div class="panel">
-                                            <!-- Content of the panel goes here -->
-                                            <h3>Panel content 2</h3>
-                                            <p>Additional details can be added here.</p>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <?php
+                                $i = 0;
+                                foreach ($requests as $request) {
+                                    $i++ ?>
+                                    <tr>
+                                        <td><?= $request['id'] ?></td>
+                                        <td><?php if ($request['request_type'] == 1) {
+                                                echo "Lắp đặt";
+                                            } else {
+                                                echo "Bảo trì";
+                                            } ?></td>
+                                        <td><?= $request['name'] ?></td>
+                                        <td>Người thực hiện 1</td>
+                                        <!-- <td>Ghi chú 1</td> -->
+                                        <td>Đang xử lí</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7">
+                                            <div class="panel">
+                                                <!-- Content of the panel goes here -->
+                                                <h3>Nội dung yêu cầu</h3>
+                                                <table>
+                                                    <tr>
+                                            
+                                                        <th>Hình ảnh thiết bị</th>
+                                                        <th>Tên thiết bị</th>
+                                                        <th>Số lượng</th>
+                                                    </tr>
+                                                    <tbody>
+                                                        <?php foreach ($request_details as $request_detail) {
+                                                            if ($request_detail['request_id'] == $request['id']) {    ?>
+                                                                <tr>
+                                                                  
+                                                                    <td></td>
+                                                                    <td><?= $request_detail['name'] ?></td>
+                                                                    <td><?= $request_detail['quantity'] ?></td>
+                                                                </tr>
+
+                                                            <?php }} 
+                                                             
+                                                            ?>
+                                                            <tr>
+                                                            <td colspan="3"><b>Nguyên nhân yêu cầu</b</td>
+                                                            </tr>
+                                                            <tr>                                                                
+                                                                <td colspan="3"><?= $request['request_text'] ?></td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                            
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
@@ -122,8 +139,8 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $(".productsTab tbody tr").click(function () {
+        $(document).ready(function() {
+            $(".productsTab tbody tr").click(function() {
                 var panel = $(this).next("tr").find(".panel");
                 panel.slideToggle("slow");
             });
@@ -131,10 +148,11 @@
     </script>
 </body>
 <style>
-    .left_section_step3{
+    .left_section_step3 {
         display: flex;
         flex-direction: column;
     }
+
     .productsTab table {
         width: 100%;
         border-collapse: collapse;

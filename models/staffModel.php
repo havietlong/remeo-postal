@@ -118,6 +118,7 @@ function createUser_requests()
 {
     $reason = $_POST['reason'];
     $staff_id = $_POST['staff_id'];
+    $request_type = $_POST['request_type'];
     include "connections/openConnect.php";
 
     // Sanitize user inputs to prevent SQL injection
@@ -125,8 +126,8 @@ function createUser_requests()
     $staff_id = mysqli_real_escape_string($connect, $staff_id);
 
     // Build the SQL query string
-    $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status) 
-            VALUES ('$staff_id', '$reason', NOW(), 'Pending')";
+    $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status,request_type) 
+            VALUES ('$staff_id', '$reason', NOW(), 'Pending', $request_type)";
     var_dump($sql);
     // Execute the query
     mysqli_query($connect, $sql);
@@ -169,17 +170,38 @@ function insertEquipment_requests()
 }
 
 function fetchUser_requests(){
-    $staff_id = $_POST['staff_id'];
+    $staff_id = $_SESSION['user_id'];
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT * FROM user_requests WHERE staff_id = $staff_id ";
+    $sql = "SELECT user_requests.*, postalstaff.*
+    FROM `user_requests`
+    INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+    WHERE `user_requests`.`staff_id` = $staff_id";
+
     // Execute the query
     $request = mysqli_query($connect, $sql);
 
     // Close the database connection
     include "connections/closeConnect.php";
     return $request;
+}
+
+function fetchEquipment_requests(){
+  
+    include "connections/openConnect.php";
+
+    // Build the SQL query string
+    $sql = "SELECT equipment_requests.*, equipment.*
+    FROM `equipment_requests`
+    INNER JOIN `equipment` ON `equipment_requests`.`equipment_id` = `equipment`.`equipment_id`";
+
+    // Execute the query
+    $equipment_request = mysqli_query($connect, $sql);
+
+    // Close the database connection
+    include "connections/closeConnect.php";
+    return $equipment_request;
 }
 
 function getProduct()
@@ -346,7 +368,16 @@ function validateRole()
         $_SESSION['user_name'] = $staff['name'];
         $_SESSION['user_id'] = $staff['staff_id'];
         $_SESSION['user_type'] = 'staff';
-        return 1;
+        $staff_role = $staff['role_id'];
+        if($staff_role==1){
+            return 1;
+        }elseif($staff_role==2){
+            return 2;
+        }elseif($staff_role==3){
+            return 3;
+        }elseif($staff_role==4){
+            return 4;
+        }
     }
 
     // If email and password do not match any records, return false
@@ -455,6 +486,7 @@ switch ($action) {
         break;
     case 'manage_requests':
         $requests = fetchUser_requests();
+        $request_details = fetchEquipment_requests();
         break;
         // case 'removeCart':
         //     removeCart();

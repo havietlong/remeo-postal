@@ -1,3 +1,6 @@
+<?php $role = $_GET['role']; 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +36,16 @@
         <div class="progress-status">
         </div>
         <div class="user-options">
-            <a href="index.php?role=staff&action=install">
+            <?php 
+            
+            switch($role){
+                case 'staff': echo "<a href='index.php?role=staff&action=install'>";
+                break;
+                case 'maintenance': echo "<a href='index.php?role=maintenance&action=install'>";
+                break;
+            }
+            ?>
+            
                 <button>
                     <div class="option-box">
                         <i class='bx bx-wrench'></i>
@@ -42,20 +54,20 @@
                 </button>
             </a>
             <a href="index.php?role=staff&action=maintenance">
-            <button>
-                <div class="option-box">
-                    <i class='bx bx-cog'></i>
-                    <h3>Bảo trì</h3>
-                </div>
-            </button>
+                <button>
+                    <div class="option-box">
+                        <i class='bx bx-cog'></i>
+                        <h3>Bảo trì</h3>
+                    </div>
+                </button>
             </a>
             <a href="index.php?role=staff&action=manage_requests">
-            <button>
-                <div class="option-box">
-                    <i class='bx bx-list-ul'></i>
-                    <h3>Quản lý yêu cầu</h3>
-                </div>
-            </button>
+                <button>
+                    <div class="option-box">
+                        <i class='bx bx-list-ul'></i>
+                        <h3>Quản lý yêu cầu</h3>
+                    </div>
+                </button>
             </a>
         </div>
 
@@ -78,11 +90,35 @@
         position: absolute;
         height: 10px;
         width: 12%;
-        background-color: red;
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+        }
+        ?>
     }
 
     .active {
-        background-color: red;
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+        }
+        ?>
     }
 
     .non-active {
@@ -133,7 +169,19 @@
 
     .branch {
         margin-right: 20px;
-        color: red;
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>color: blue;
+        <?php
+                break;
+        }
+        ?>
     }
 
     .nav {
@@ -173,7 +221,20 @@
         position: relative;
         width: 100%;
         border-top: 10px solid grey;
-        border-bottom: 10px solid red;
+        
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+        }
+        ?>
     }
 
     .user-options i {
@@ -182,7 +243,19 @@
     }
 
     .option-box {
-        background-color: red;
+        <?php
+        
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+        }
+        ?>
         margin-right: 10px;
         border-radius: 10px;
         height: 200px;

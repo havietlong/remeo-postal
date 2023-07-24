@@ -1,3 +1,6 @@
+<?php
+$role = $_GET['role'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,42 +45,83 @@
         </button>
         <!-- Sidebar content -->
       </div>
-      <a href="index.php?role=staff&action=install&deviceType=computerParts">
-        <button>
-          <div class="option-box rectangle">
-            <i class="bx bx-laptop"></i>
-            <h3>Máy tính</h3>
-          </div>
-        </button>
-      </a>
-      <a href="index.php?role=staff&action=install&deviceType=printer">
-        <button>
-          <div class="option-box square">
-            <i class="bx bx-printer"></i>
-            <h3>Máy in</h3>
-          </div>
-        </button>
-      </a>
-      <a href="index.php?role=staff&action=install&deviceType=wifi">
-        <button>
-          <div class="option-box square">
-            <i class="bx bx-wifi"></i>
-            <h3>Thiết bị mạng</h3>
-          </div>
-        </button>
-      </a>
-      <a href="index.php?role=staff&action=verifyRequest">
-        <button>
-          <div class="option-box square">
-            <h3>Tiếp</h3>
-          </div>
-        </button>
-      </a>
-    </div>
+      <?php
+      switch ($role) {
+        case 'staff': ?>
+          <a href="index.php?role=staff&action=install&deviceType=computerParts">
+            <button>
+              <div class="option-box rectangle">
+                <i class="bx bx-laptop"></i>
+                <h3>Máy tính</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=install&deviceType=printer">
+            <button>
+              <div class="option-box square">
+                <i class="bx bx-printer"></i>
+                <h3>Máy in</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=install&deviceType=wifi">
+            <button>
+              <div class="option-box square">
+                <i class="bx bx-wifi"></i>
+                <h3>Thiết bị mạng</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=verifyRequest">
+            <button>
+              <div class="option-box square">
+                <h3>Tiếp</h3>
+              </div>
+            </button>
+          </a>
+    
+<?php 
+break;
+case 'maintenance':?>
+<a href="index.php?role=staff&action=maintenance&deviceType=computerParts">
+            <button>
+              <div class="option-box rectangle">
+              <i class='bx bx-broadcast'></i>
+                <h3>Băng chuyền</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=install&deviceType=printer">
+            <button>
+              <div class="option-box square">
+              <i class='bx bx-hourglass'></i>
+                <h3>Cân</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=install&deviceType=wifi">
+            <button>
+              <div class="option-box square">
+              <i class='bx bx-plug'></i>   
+                <h3>Sạc</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=verifyRequest">
+            <button>
+              <div class="option-box square">
+              <i class='bx bxs-bolt'></i>
+                <h3>Máy phát điện</h3>
+              </div>
+            </button>
+          </a>
+<?php
+} ?>
 
-    <div class="footer">
-      <b>Footer</b>
-    </div>
+</div>
+<div class="footer">
+  <b>Footer</b>
+</div>
   </div>
 </body>
 <style>

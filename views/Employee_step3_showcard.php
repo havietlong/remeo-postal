@@ -48,13 +48,6 @@ $staff_id = $_SESSION['user_id'];
                             <th>Số lượng</th>
                         </tr>
                         <?php
-                        if (!isset($_SESSION['cart'])||empty($_SESSION['cart'])) {
-                        ?>
-                            <tr>
-                                <td colspan="4">Không thiết bị nào được thêm vào</td>
-                            </tr>
-
-                        <?php }
                         $i = 0;
                         foreach ($_SESSION['cart'] as $item) {
                             if (!isset($count_by_id[$item])) {
@@ -88,12 +81,9 @@ $staff_id = $_SESSION['user_id'];
                     </table>
                 </div>
                 <div class="right-section" style="display: flex;flex-direction: column;">
-                    <form action="index.php?role=staff&action=verified" method="post">
-                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
-                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
-                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
-                    <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                    <form action="index.php?role=staff&action=verified" method="post">                    
                         <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
+                        <input type="text" name="request_type" value="1" hidden>
                         <div class="right-column" style="margin-bottom: 30px;">
                             <h3>Xác nhận</h3>
                             <button type="submit">Xác nhận</button>

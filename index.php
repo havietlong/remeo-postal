@@ -11,9 +11,9 @@
         case '':
             header("Location:index.php?role=staff&action=login");
             break;
-        // case 'user':
-        //     include_once 'controllers/userController.php';
-        //     break;
+        case 'maintenance':
+            include_once 'controllers/maintenanceController.php';
+            break;
         case 'staff':
             include_once 'controllers/staffController.php';
             break;
