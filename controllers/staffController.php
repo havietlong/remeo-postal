@@ -24,28 +24,28 @@ switch ($action) {
         if (isset($_SESSION['test'])) {
             $test = $_SESSION['test'];
             // use the $test variable as needed
-            if ($test == 1) {                
+            if ($test == 1) {
                 unset($_SESSION['invalid']);
                 header('Location:index.php?role=staff&action=index');
-            }else if ($test == 2) {
+            } else if ($test == 2) {
                 header('Location:index.php?role=maintenance&action=index');
-            }else if ($test == 3) {
+            } else if ($test == 3) {
                 header('Location:index.php?role=manager&action=index');
-            }else if ($test == 4) {
+            } else if ($test == 4) {
                 header('Location:index.php?role=staff&action=index');
-            }else if ($test == 0) {
+            } else if ($test == 0) {
                 header('Location:index.php?role=staff&action=login');
             }
         }
         break;
     case 'install':
-        if (isset($deviceType) == 'computerParts') {
-            include_once 'models/staffModel.php';
-            include_once 'views/Employee_step2.php';
-        } else if (isset($deviceDetail)) {
+        if (isset($deviceDetail)) {
             include_once 'models/staffModel.php';
             include_once 'views/Employee_step2_detail.php';
-        }else{
+        } else if (isset($deviceType) == 'computerParts') {
+            include_once 'models/staffModel.php';
+            include_once 'views/Employee_step2.php';
+        } else {
             include_once 'views/Employee_step1.php';
         }
         break;
@@ -67,10 +67,10 @@ switch ($action) {
         //     include_once 'model/customerModel.php';
         //     include_once 'views/customer/product.php';
         //     break;
-        case 'insertCart':
-            include_once 'models/staffModel.php';
-            include_once 'views/Employee_step2_detail.php';
-            break;  
+    case 'insertCart':
+        include_once 'models/staffModel.php';
+        include_once 'views/Employee_step2_detail.php';
+        break;
         // case 'removeCart':
         //     include_once 'model/customerModel.php';
         //     break;  

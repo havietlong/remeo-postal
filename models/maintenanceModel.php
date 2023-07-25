@@ -80,21 +80,7 @@ function fetchCategories()
 
     include 'connections/openConnect.php';
     if ($deviceType == 'computerParts' && $category == 'Mouse') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (7)";
-        $categories = mysqli_query($connect, $sql);
-        return $categories;
-    } else if ($deviceType == 'computerParts' && $category == 'Keyboard') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (6)";
-        $categories = mysqli_query($connect, $sql);
-        return $categories;
-    } else if ($deviceType == 'computerParts' && $category == 'Case') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (5)";
-        $categories = mysqli_query($connect, $sql);
-        return $categories;
-    } else if ($deviceType == 'computerParts' && $category == 'Monitor') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (4)";
-        $categories = mysqli_query($connect, $sql);
-        return $categories;
+       
     } else if ($deviceType == 'scale') {
         $sql = "SELECT * FROM equipmenttype WHERE type_id IN (8)";
         $categories = mysqli_query($connect, $sql);

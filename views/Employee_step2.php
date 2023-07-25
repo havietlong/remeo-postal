@@ -1,5 +1,24 @@
 <?php
-$actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+if(isset($_SESSION['role'])){
+    $role = $_SESSION['role'];
+    switch($role){
+        case 1:
+            $role='staff';
+            break;
+        case 2:
+            $role='maintenance';
+            break;
+    }
+}
+if(isset($_GET['deviceType'])){
+    $deviceType = $_GET['deviceType'];
+}
+if(isset($_GET['category'])){
+    $categoryy = $_GET['category'];
+}else{
+    $categoryy=null;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,18 +65,27 @@ $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP
                 <!-- Add your sidebar content here -->
             </div>
             <div class="cookieCrumb">
-                <i class='bx bx-home'></i>
+               <a href="index.php?role=staff&action=install"><i class='bx bx-home'></i></a>
                 <div class="arrow">/</div>
-                <div class="product">Printer</div>
+                <div class="product"><?php if(isset($_GET['category'])){
+                    echo $_GET['category'];
+                }else{
+                    echo 'Tất cả thiết bị';
+                }
+                
+                ?></div>
             </div>
             <div class="shopping-container">
                 <div class="categoriesTab">
                     <div class="label"><b>DANH MỤC</b></div>
                     <div class="label-content">
-                        <?php foreach ($categories as $category) { ?>
+                        <?php
+
+                        foreach ($categories as $category) {
+                        ?>
                             <div class="type-label">
                                 <div class="type" style="padding-left:10px;padding-top: 5px;">
-                                    <a style="text-decoration: none; color:black;" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
+                                    <a style="text-decoration: none; color:black;" href="index.php?role=staff&action=install&deviceType=<?= $deviceType?>&category=<?= $category['name'] ?>">
                                         <b><?= $category['name'] ?></b>
                                     </a>
                                 </div>
@@ -71,7 +99,11 @@ $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP
                         <div class="brandOptions">
                             <?php foreach ($brands as $brand) { ?>
                                 <div class="optionContainer">
-                                    <input type="checkbox" class="brandCheckbox" data-url="<?= $actual_link ?>&brand=<?= $brand['name'] ?>" style="margin-right: 5px; cursor: pointer;">
+                                    <input type="checkbox" class="brandCheckbox" data-url="<?php if(isset($_GET['category'])){ 
+                                      echo  "index.php?role=".$role."&action=install&deviceType=". $deviceType."&category=".$categoryy."&brand=".$brand['name']."";
+                                   }else{
+                                    echo  "index.php?role=".$role."&action=install&deviceType=". $deviceType."&brand=".$brand['name']."";
+                              } ?>" style="margin-right: 5px; cursor: pointer;">
                                     <?= $brand['name'] ?>
                                 </div>
                             <?php } ?>
@@ -79,8 +111,9 @@ $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP
                     </div>
                     <div class="productsTab">
                         <div class="product">
-                            <?php foreach ($products as $product) { ?>
-                                <a href="index.php?role=staff&action=install&deviceDetail=<?= $product['equipment_id'] ?>">
+                            <?php foreach ($products as $product) { 
+                                ?>
+                                <a href="index.php?role=staff&action=install&deviceType=computerParts&deviceDetail=<?= $product['equipment_id'] ?>">
                                     <div class="product-container">
                                         <div class="product-items">
                                             <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image">
@@ -114,20 +147,20 @@ $actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP
         });
     </script>
     <script>
-    // Get all the checkbox elements with the 'brandCheckbox' class
-    const checkboxes = document.querySelectorAll('.brandCheckbox');
+        // Get all the checkbox elements with the 'brandCheckbox' class
+        const checkboxes = document.querySelectorAll('.brandCheckbox');
 
-    // Add an event listener for each checkbox
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('click', function() {
-            // Get the URL from the data-url attribute of the checkbox
-            const url = this.getAttribute('data-url');
+        // Add an event listener for each checkbox
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                // Get the URL from the data-url attribute of the checkbox
+                const url = this.getAttribute('data-url');
 
-            // Redirect the user to the desired URL
-            window.location.href = url;
+                // Redirect the user to the desired URL
+                window.location.href = url;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 <!-- <style>
     .cookieCrumb {

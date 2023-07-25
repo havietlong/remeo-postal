@@ -37,26 +37,13 @@
                     <div class="categoriesTab">
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
-                            <div class="type-label">
-                                <div class="type"><b>Printer</b></div>
-                            </div>
-                            <div class="brand"><i>HP</i></div>
+                          
+                                <a href="index.php?role=staff&action=manage_requests&requestType=install" style="color: black;text-decoration: none;"><div class="type" ><b>Lắp đặt</b></div></a>
+                                <a href="index.php?role=staff&action=manage_requests&requestType=maintenance" style="color: black;text-decoration: none;"><div class="type"><b>Bảo hành</b></div></a>
+                            
                         </div>
                     </div>
-                    <br>
-                    <div class="categoriesTab">
-                        <div class="label"><b>THÔNG BÁO</b></div>
-                        <div class="label-content">
-                            <div class="ticker-result">
-                                -<i>Your request id <b>1</b> has been denied on</i>
-                                <div class="time"><b>random time</b></div>
-                            </div>
-                            <div class="ticker-result">
-                                -<i>Your request id <b>1</b> has been denied on</i>
-                                <div class="time"><b>random time</b></div>
-                            </div>
-                        </div>
-                    </div>
+    
                 </div>
                 <div class="right_section_step3">
                     <div class="productsTab">

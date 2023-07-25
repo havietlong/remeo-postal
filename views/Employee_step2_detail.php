@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,6 +43,7 @@
                 </button>
                 <div class="siderBar_container">
                     <?php
+                    if(isset($_SESSION['cart'])){
                     foreach ($_SESSION['cart'] as $item) {
                         if (!isset($count_by_id[$item])) {
                           $count_by_id[$item] = 1;
@@ -74,7 +76,7 @@
                             <i class='bx bx-trash' style="font-size: 25px;position:relative;top:9px"></i>
                         </div>
                     </div>
-                    <?php } ?>
+                    <?php }} ?>
                 </div>
             </div>
             <div class="cookieCrumb">
@@ -86,7 +88,8 @@
                 <div class="categoriesTab">
                     <div class="label"><b>DANH MỤC</b></div>
                     <div class="label-content">
-                        <?php foreach ($categories as $category) { ?>
+                        <?php foreach ($categories as $category) { 
+                            ?>
                             <div class="type-label">
                                 <div class="type" style="padding-left:10px;">
                                     <a style="text-decoration: none; color:black" href="index.php?role=staff&action=install&deviceType=computerParts&category=<?= $category['name'] ?>">
