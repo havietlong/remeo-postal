@@ -22,232 +22,32 @@ function fetchProduct()
         $deviceType = '';
     }
 
-
-
-
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+    } else {
+        $category = '';
+    }
     include 'connections/openConnect.php';
-
-    if ($deviceType == 'computerParts') {
-        $category = "";
-        if (isset($_GET['category'])) {
-            $category = $_GET['category'];
-            switch ($category) {
-                case 'Màn hình':
-                    if (isset($_GET['brand'])) {
-                        $brand = $_GET['brand'];
-                        switch ($brand) {
-                            case 'HP':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 11 AND category_id = 7 AND manufacturer_id = 7";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Asus':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 11 AND category_id = 7 AND manufacturer_id = 8";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Samsung':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 11 AND category_id = 7 AND manufacturer_id = 9";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Lenovo':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 11 AND category_id = 7 AND manufacturer_id = 10";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'LG':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 11 AND category_id = 7 AND manufacturer_id = 11";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                        }
-                    } else {
-                        $sql = "SELECT * From equipment
-                    WHERE type_id = 11 AND category_id = 7";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    }
-                case 'Case':
-                    if (isset($_GET['brand'])) {
-                        $brand = $_GET['brand'];
-                        switch ($brand) {
-                            case 'HP':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 12 AND category_id = 7 AND manufacturer_id = 7";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Asus':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 12 AND category_id = 7 AND manufacturer_id = 8";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Samsung':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 12 AND category_id = 7 AND manufacturer_id = 9";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Lenovo':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 12 AND category_id = 7 AND manufacturer_id = 10";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'LG':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 12 AND category_id = 7 AND manufacturer_id = 11";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                        }
-                    } else {
-                        $sql = "SELECT * From equipment
-                    WHERE type_id = 12 AND category_id = 7";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    }
-                case 'Bàn phím':
-                    if (isset($_GET['brand'])) {
-                        $brand = $_GET['brand'];
-                        switch ($brand) {
-                            case 'HP':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 13 AND category_id = 7 AND manufacturer_id = 7";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Asus':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 13 AND category_id = 7 AND manufacturer_id = 8";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Samsung':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 13 AND category_id = 7 AND manufacturer_id = 9";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Lenovo':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 13 AND category_id = 7 AND manufacturer_id = 10";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'LG':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 13 AND category_id = 7 AND manufacturer_id = 11";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                        }
-                    } else {
-                        $sql = "SELECT * From equipment
-                    WHERE type_id = 13 AND category_id = 7";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    }
-                case 'Chuột':
-                    if (isset($_GET['brand'])) {
-                        $brand = $_GET['brand'];
-                        switch ($brand) {
-                            case 'HP':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 14 AND category_id = 7 AND manufacturer_id = 7";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Asus':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 14 AND category_id = 7 AND manufacturer_id = 8";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Samsung':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 14 AND category_id = 7 AND manufacturer_id = 9";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'Lenovo':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 14 AND category_id = 7 AND manufacturer_id = 10";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                            case 'LG':
-                                $sql = "SELECT * From equipment
-                                WHERE type_id = 14 AND category_id = 7 AND manufacturer_id = 11";
-                                $products = mysqli_query($connect, $sql);
-                                return $products;
-                                break;
-                        }
-                    } else {
-                        $sql = "SELECT * From equipment
-                    WHERE type_id = 14 AND category_id = 7";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    }
-            }
-        } else {
-            if (isset($_GET['brand'])) {
-                $brand = $_GET['brand'];
-                switch ($brand) {
-                    case 'HP':
-                        $sql = "SELECT * From equipment
-                        WHERE  manufacturer_id = 7";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    case 'Asus':
-                        $sql = "SELECT * From equipment
-                        WHERE  manufacturer_id = 8";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    case 'Samsung':
-                        $sql = "SELECT * From equipment
-                        WHERE  manufacturer_id = 9";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    case 'Lenovo':
-                        $sql = "SELECT * From equipment
-                        WHERE  manufacturer_id = 10";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                    case 'LG':
-                        $sql = "SELECT * From equipment
-                        WHERE  manufacturer_id = 11";
-                        $products = mysqli_query($connect, $sql);
-                        return $products;
-                        break;
-                }
-                $sql = "SELECT * From equipment WHERE category_id = 7";
-                $products = mysqli_query($connect, $sql);
-                return $products;
-            } else {
-                $sql = "SELECT * From equipment WHERE category_id = 7";
-                $products = mysqli_query($connect, $sql);
-                return $products;
-            }
-        }
+    if ($deviceType === 'computerParts' && $category == 'Case') {
+        $sql =
+            $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Keyboard') {
+        $sql =
+            $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Monitor') {
+        $sql =
+            $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'computerParts' && $category == 'Mouse') {
+        $sql =
+            $products = mysqli_query($connect, $sql);
+    } else if ($deviceType === 'scale') {
+        $sql = "SELECT * From equipment
+        WHERE category_id IN (8)";
+        $products = mysqli_query($connect, $sql);
     }
 
     include 'connections/closeConnect.php';
+    return $products;
 }
 
 function fetchCategories()
@@ -272,19 +72,35 @@ function fetchCategories()
         $deviceType = '';
     }
 
-    // if (isset($_GET['category'])) {
-    //     $category = $_GET['category'];
-    // } else {
-    //     $category = '';
-    // }
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+    } else {
+        $category = '';
+    }
 
     include 'connections/openConnect.php';
-    if ($deviceType == 'computerParts') {
-        $sql = "SELECT * FROM equipmenttype";
+    if ($deviceType == 'computerParts' && $category == 'Mouse') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (7)";
         $categories = mysqli_query($connect, $sql);
-        include 'connections/closeConnect.php';
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Keyboard') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (6)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Case') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (5)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'computerParts' && $category == 'Monitor') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (4)";
+        $categories = mysqli_query($connect, $sql);
+        return $categories;
+    } else if ($deviceType == 'scale') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (8)";
+        $categories = mysqli_query($connect, $sql);
         return $categories;
     }
+    include 'connections/closeConnect.php';
 }
 
 function fetchBrand()
@@ -347,12 +163,12 @@ function insertEquipment_requests()
         $sql = "INSERT INTO equipment_requests(request_id,equipment_id,quantity) VALUES ($request_id,'$product_id',$count)";
         // var_dump($sql);
         mysqli_query($connect, $sql);
+        
     }
     mysqli_close($connect);
 }
 
-function fetchUser_requests()
-{
+function fetchUser_requests(){
     $staff_id = $_SESSION['user_id'];
     include "connections/openConnect.php";
 
@@ -370,9 +186,8 @@ function fetchUser_requests()
     return $request;
 }
 
-function fetchEquipment_requests()
-{
-
+function fetchEquipment_requests(){
+  
     include "connections/openConnect.php";
 
     // Build the SQL query string
@@ -553,13 +368,13 @@ function validateRole()
         $_SESSION['user_id'] = $staff['staff_id'];
         $_SESSION['user_type'] = 'staff';
         $staff_role = $staff['role_id'];
-        if ($staff_role == 1) {
+        if($staff_role==1){
             return 1;
-        } elseif ($staff_role == 2) {
+        }elseif($staff_role==2){
             return 2;
-        } elseif ($staff_role == 3) {
+        }elseif($staff_role==3){
             return 3;
-        } elseif ($staff_role == 4) {
+        }elseif($staff_role==4){
             return 4;
         }
     }

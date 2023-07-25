@@ -1,3 +1,6 @@
+<?php
+$actual_link = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,10 +69,11 @@
                     <div class="filterTab">
                         <labe>Lọc theo hãng</labe>
                         <div class="brandOptions">
-                        <?php foreach ($brands as $brand) { ?>
-                            <div class="optionContainer">
-                            <input type="checkbox" style="margin-right: 5px;"><?= $brand['name'] ?>
-                            </div>
+                            <?php foreach ($brands as $brand) { ?>
+                                <div class="optionContainer">
+                                    <input type="checkbox" class="brandCheckbox" data-url="<?= $actual_link ?>&brand=<?= $brand['name'] ?>" style="margin-right: 5px; cursor: pointer;">
+                                    <?= $brand['name'] ?>
+                                </div>
                             <?php } ?>
                         </div>
                     </div>
@@ -109,6 +113,21 @@
             sidebar.classList.remove('active');
         });
     </script>
+    <script>
+    // Get all the checkbox elements with the 'brandCheckbox' class
+    const checkboxes = document.querySelectorAll('.brandCheckbox');
+
+    // Add an event listener for each checkbox
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', function() {
+            // Get the URL from the data-url attribute of the checkbox
+            const url = this.getAttribute('data-url');
+
+            // Redirect the user to the desired URL
+            window.location.href = url;
+        });
+    });
+</script>
 </body>
 <!-- <style>
     .cookieCrumb {

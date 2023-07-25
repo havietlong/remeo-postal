@@ -83,7 +83,7 @@ $role = $_GET['role'];
 <?php 
 break;
 case 'maintenance':?>
-<a href="index.php?role=staff&action=maintenance&deviceType=computerParts">
+<a href="index.php?role=maintenance&action=install&deviceType=computerParts">
             <button>
               <div class="option-box rectangle">
               <i class='bx bx-broadcast'></i>
@@ -91,7 +91,7 @@ case 'maintenance':?>
               </div>
             </button>
           </a>
-          <a href="index.php?role=staff&action=install&deviceType=printer">
+          <a href="index.php?role=maintenance&action=install&deviceType=scale">
             <button>
               <div class="option-box square">
               <i class='bx bx-hourglass'></i>
@@ -99,7 +99,7 @@ case 'maintenance':?>
               </div>
             </button>
           </a>
-          <a href="index.php?role=staff&action=install&deviceType=wifi">
+          <a href="index.php?role=maintenance&action=install&deviceType=charger">
             <button>
               <div class="option-box square">
               <i class='bx bx-plug'></i>   
@@ -107,11 +107,20 @@ case 'maintenance':?>
               </div>
             </button>
           </a>
-          <a href="index.php?role=staff&action=verifyRequest">
+          <a href="index.php?role=maintenance&action=install&deviceType=generator">
+          <!-- index.php?role=staff&action=verifyRequest -->
+          
             <button>
               <div class="option-box square">
               <i class='bx bxs-bolt'></i>
                 <h3>Máy phát điện</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=staff&action=verifyRequest">
+            <button>
+              <div class="option-box square">
+                <h3>Tiếp</h3>
               </div>
             </button>
           </a>

@@ -16,31 +16,9 @@ switch ($action) {
         // $_SESSION['name_user'] = '';
         include_once 'views/index.php';
         break;
-    case 'login':
-        include_once 'views/login.php';
-        break;
-    case 'loginValidate':
-        include_once 'models/staffModel.php';
-        if (isset($_SESSION['test'])) {
-            $test = $_SESSION['test'];
-            // use the $test variable as needed
-            if ($test == 1) {                
-                unset($_SESSION['invalid']);
-                header('Location:index.php?role=staff&action=index');
-            }else if ($test == 2) {
-                header('Location:index.php?role=maintenance&action=index');
-            }else if ($test == 3) {
-                header('Location:index.php?role=manager&action=index');
-            }else if ($test == 4) {
-                header('Location:index.php?role=staff&action=index');
-            }else if ($test == 0) {
-                header('Location:index.php?role=staff&action=login');
-            }
-        }
-        break;
     case 'install':
-        if (isset($deviceType) == 'computerParts') {
-            include_once 'models/staffModel.php';
+        if (isset($deviceType) == 'scale') {
+            include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2.php';
         } else if (isset($deviceDetail)) {
             include_once 'models/staffModel.php';
