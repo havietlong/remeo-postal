@@ -19,27 +19,24 @@
             <div class="header">
                 <box-icon  name='user-circle' class="logo-user" onclick="togglePopup()"></box-icon>
             </div>
-        
-            <div class="popup" id="popup">
-                <div class="popup-item">
-                    <box-icon name='user' type='solid' class="popup-icon" ></box-icon>
-                    Người dùng
-                </div>
-                <div class="popup-item">
-                    <box-icon name='git-branch' class="popup-icon"></box-icon>
-                    Chi nhánh
-                </div>
-                <div class="popup-item">
-                    <box-icon name='slider' class="popup-icon" ></box-icon>
-                    Bộ phận
-                </div>
-                <div class="popup-item">
-                    <box-icon name='bell' class="popup-icon"></box-icon> 
-                    Vai trò
-                </div>
+        </div>
+        <div class="popup" id="popup">
+            <div class="popup-item">
+                <box-icon name='user' type='solid' class="popup-icon" ></box-icon>
+                Người dùng
             </div>
-        
-           
+            <div class="popup-item">
+                <box-icon name='git-branch' class="popup-icon"></box-icon>
+                Chi nhánh
+            </div>
+            <div class="popup-item">
+                <box-icon name='slider' class="popup-icon" ></box-icon>
+                Bộ phận
+            </div>
+            <div class="popup-item">
+                <box-icon name='bell' class="popup-icon"></box-icon> 
+                Vai trò
+            </div>
         </div>
         <div class="progress-bar">
             <div class="outter-circle">
@@ -173,10 +170,10 @@
     .popup {
         display: none;
         position: absolute;
-        bottom: 19cm;
+        top:2.5cm;
         right: 20px;
         background-color: white;
-        border: 1px solid black;
+       
         padding: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         z-index: 999;

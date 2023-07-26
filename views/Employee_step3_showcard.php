@@ -49,23 +49,28 @@ $staff_id = $_SESSION['user_id'];
                         </tr>
                         <?php
                         $i = 0;
-                        foreach ($_SESSION['cart'] as $item) {
-                            if (!isset($count_by_id[$item])) {
-                                $count_by_id[$item] = 1;
-                            } else {
-                                $count_by_id[$item]++;
+                        if (isset($_SESSION['cart'])) {
+                            $_SESSION['noCart'] = "Không có thiết bị trong rỏ";
+                    
+                            foreach ($_SESSION['cart'] as $item) {
+                                if (!isset($count_by_id[$item])) {
+                                    $count_by_id[$item] = 1;
+                                } else {
+                                    $count_by_id[$item]++;
+                                }
                             }
-                        }
+                        
                         $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
                         
                         foreach ($count_by_id as $id => $count) {
                             $i++;
                             $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
+                            var_dump($sql);
                             $result = mysqli_query($connect, $sql);
                             $row = mysqli_fetch_assoc($result);
                             $product_id = $row['equipment_id'];
                             $name_product = $row['name'];
-                           
+
                         ?>
 
                             <tr>
@@ -75,13 +80,14 @@ $staff_id = $_SESSION['user_id'];
                                 <td><?= $count ?></td>
                             </tr>
                         <?php }
-
-                        mysqli_close($connect);
+                         mysqli_close($connect);
+                        }
+                       
                         ?>
                     </table>
                 </div>
                 <div class="right-section" style="display: flex;flex-direction: column;">
-                    <form action="index.php?role=staff&action=verified" method="post">                    
+                    <form action="index.php?role=staff&action=verified" method="post">
                         <input type="text" name="staff_id" value="<?= $staff_id ?> " hidden>
                         <input type="text" name="request_type" value="1" hidden>
                         <div class="right-column" style="margin-bottom: 30px;">

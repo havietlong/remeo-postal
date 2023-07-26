@@ -172,6 +172,7 @@ body {
     height: 100%;
     /* Set height to 100% to fill the available space */
     position: relative;
+    /* top: 140px; */
     width: 100%;
     border-top: 10px solid grey;
     border-bottom: 10px solid red;

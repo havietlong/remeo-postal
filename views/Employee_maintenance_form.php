@@ -13,63 +13,34 @@
 
 <body>
     <div class="total-container">
-        <div class="nav">
-            <div class="branch"><b>Chi nhánh</b></div>
-        </div>
-        <!-- <div class="progress-bar">
-            <div class="outter-circle">
-                <div class="inner-circle active"></div>
-            </div>
-            <div class="outter-circle">
-                <div class="inner-circle active"></div>
-            </div>
-            <div class="outter-circle">
-                <div class="inner-circle non-active"></div>
-            </div>
-            <div class="outter-circle">
-                <div class="inner-circle non-active"></div>
-            </div>
-        </div>
-        <div class="progress-status"></div> -->
+    <?php include "views/components/navBar.php" ?>
         <div class="user-options">
 
-            <h1>Technology Maintenance Form</h1>
+            <h1>Bảo hành thiết bị</h1>
             <br>
-            <form id="maintenance-form">
-                <label for="device-name">Device Serial</label>
+            <form id="maintenance-form" action="index.php?role=staff&action=maintenance_request" method="post">
+                <label for="device-name">Serial thiết bị</label>
+                <input type="text" name="request_type" id="device-name" value="2" hidden>
+                <input type="text" name="staff_id" id="staff-id" value="<?= $_SESSION['user_id'] ?>" hidden>
                 <div id="device-options" class="device-options">
                     <div class="device-serial-row">
-                        <select id="device-type">
-                            <option value="">Device Type</option>
-                            <option value="Hardware">Hardware</option>
-                            <option value="Software">Software</option>
-                            <option value="Network">Network</option>
-                            <option value="Other">Don't know</option>
+                        <select name="device-type" class="device-type" required disabled>
+                        <option value="">Chọn loại thiết bị</option>    
+                        <?php foreach($categories as $category){ ?>
+                            <option value="<?= $category['type_id'] ?>"><?= $category['name'] ?></option>
+                        <?php } ?>
                         </select>
-                        <input type="text" id="device-name">
-                        <button id="plus-button"><i class='bx bxs-plus-circle'></i></button>
+                        <input type="text" name="device-serial" class="device-name" required disabled>
+                        <button id="plus-button" onclick="addNewDeviceOption(event)"><i class='bx bxs-plus-circle'></i></button>
                     </div>
                 </div>
                 <br>
                 <div>
-                    <label for="issue-description">Issue Description</label>
-                    <textarea id="issue-description"></textarea>
+                    <label for="issue-description">Miêu tả vấn đề</label>
+                    <textarea name="reason" id="issue-description"></textarea>
                 </div>
-                <br>
-                <div>
-                    <label for="maintenance-type">Maintenance Type</label>
-                    <select id="maintenance-type">
-                        <option value="">Maintenance Type</option>
-                        <option value="Hardware">Hardware</option>
-                        <option value="Software">Software</option>
-                        <option value="Network">Network</option>
-                        <option value="Other">Don't know</option>
-                    </select>
-                </div>
-                <br>
                 <button type="submit">Submit</button>
             </form>
-
         </div>
 
         <div class="footer">
@@ -78,8 +49,11 @@
     </div>
 
     <script>
-        // Handle click event on the plus button
-        document.getElementById('plus-button').addEventListener('click', function (event) {
+        // Variable to keep track of the index for generating unique names
+        var dynamicIndex = 0;
+
+        // Function to add a new product row to the array
+        function addNewDeviceOption(event) {
             event.preventDefault(); // Prevent form submission or page refresh
 
             // Create a new .device-options element
@@ -90,24 +64,34 @@
             var firstDeviceOptions = document.querySelector('.device-serial-row');
             deviceOptions.innerHTML = firstDeviceOptions.innerHTML;
 
+            // Generate unique names for the select and input elements
+            dynamicIndex++;
+            var deviceTypeSelect = deviceOptions.querySelector('select[name="device-type"]');
+            var deviceNameInput = deviceOptions.querySelector('input[name="device-serial"]');
+
+            if (deviceTypeSelect) {
+                deviceTypeSelect.name = "device-type-" + dynamicIndex;
+                deviceTypeSelect.disabled = false; // Enable the new select
+            }
+            if (deviceNameInput) {
+                deviceNameInput.name = "device-serial-" + dynamicIndex;
+                deviceNameInput.disabled = false; // Enable the new input
+            }
+
             // Remove the plus button from the new .device-options element
             var plusButton = deviceOptions.querySelector('#plus-button');
             plusButton.parentNode.removeChild(plusButton);
 
             // Append the new .device-options element to #maintenance-form
             document.getElementById('device-options').appendChild(deviceOptions);
-        });
-
-        // Handle form submission event
-        document.getElementById('maintenance-form').addEventListener('submit', function (event) {
-            // Perform any necessary form submission logic here
-            // This code will execute when the form is submitted
-            // You can remove or modify this code based on your requirements
-            alert('Form submitted!');
-        });
+        }
     </script>
-
 </body>
+
+
+
+
+
 
 <style>
     .device-options {
@@ -116,7 +100,7 @@
         width: 110%;
     }
 
-    .device-serial-row{
+    .device-serial-row {
         display: flex;
     }
 
@@ -295,8 +279,8 @@
     .footer {
         background-color: rgb(26, 26, 47);
         height: 100px;
-        /* position: absolute;
-        bottom: 0; */
+        position: fixed;
+        bottom: 0;
         margin-top: 88px;
         width: 100%;
     }
@@ -313,6 +297,7 @@
     }
 
     .user-options {
+        padding: 50px;
         margin-top: 50px;
         display: flex;
         flex-direction: column;

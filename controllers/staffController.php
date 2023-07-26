@@ -50,6 +50,11 @@ switch ($action) {
         }
         break;
     case 'maintenance':
+        include_once 'models/staffModel.php';
+        include_once 'views/Employee_maintenance_form.php';
+        break;
+    case 'maintenance_request':
+        include_once 'models/staffModel.php';
         include_once 'views/Employee_maintenance_form.php';
         break;
     case 'manage_requests':

@@ -5,15 +5,15 @@ function fetchProduct()
 {
     $deviceType = $_GET['deviceType'];
     switch ($deviceType) {
-        case 'computerParts' :
+        case 'computerParts':
             $category_id = 7;
             break;
-        case 'printer' :
+        case 'printer':
             $category_id = 8;
-            break; 
-        case 'wifi' :
+            break;
+        case 'wifi':
             $category_id = 9;
-            break; 
+            break;
     }
     if (isset($_GET['brand'])) {
         $brand = $_GET['brand'];
@@ -65,18 +65,18 @@ function fetchProduct()
         }
     }
     include_once "connections/openConnect.php";
-    if(isset($_GET['brand'])&&isset($_GET['deviceType'])&&isset($_GET['category'])){
-    $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id AND type_id =  $type_id ";    
-    }else if(isset($_GET['brand'])&&isset($_GET['deviceType'])){
-    $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id";
-    }else if (isset($_GET['category'])&&isset($_GET['deviceType'])){
-    $sql = "SELECT * From equipment WHERE type_id = $type_id AND category_id = $category_id";    
-    }else{
-    $sql = "SELECT * From equipment WHERE category_id = $category_id"; 
+    if (isset($_GET['brand']) && isset($_GET['deviceType']) && isset($_GET['category'])) {
+        $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id AND type_id =  $type_id ";
+    } else if (isset($_GET['brand']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id";
+    } else if (isset($_GET['category']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE type_id = $type_id AND category_id = $category_id";
+    } else {
+        $sql = "SELECT * From equipment WHERE category_id = $category_id";
     }
     $products = mysqli_query($connect, $sql);
     return $products;
-    include_once "connections/closeConnect.php";  
+    include_once "connections/closeConnect.php";
 }
 
 function fetchCategories()
@@ -110,6 +110,11 @@ function fetchCategories()
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
+    } else {
+        $sql = "SELECT * FROM equipmenttype";
+        $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+        return $categories;
     }
 }
 
@@ -137,7 +142,7 @@ function createUser_requests()
     // Build the SQL query string
     $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status,request_type) 
             VALUES ('$staff_id', '$reason', NOW(), 'Pending', $request_type)";
-    var_dump($sql);
+
     // Execute the query
     mysqli_query($connect, $sql);
 
@@ -159,7 +164,7 @@ function insertEquipment_requests()
         }
     }
     $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
-    $sql = "SELECT * FROM user_requests ORDER BY id DESC LIMIT 1";
+    $sql = "SELECT * FROM user_requests WHERE request_type = 1 ORDER BY id DESC LIMIT 1 ";
     $result = mysqli_query($connect, $sql);
     $latestRequest = mysqli_fetch_assoc($result);
     $request_id = $latestRequest['id'];
@@ -298,6 +303,49 @@ function getProduct()
     }
 }
 
+function insertMaintenance_requests()
+{
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $dynamicDeviceTypes = array();
+        $dynamicDeviceNames = array();
+        $index = 1; // Start with index 1, as the first input and select elements have no index
+
+        while (isset($_POST['device-type-' . $index]) && isset($_POST['device-serial-' . $index])) {
+            $dynamicDeviceTypes[] = $_POST['device-type-' . $index];
+            $dynamicDeviceNames[] = $_POST['device-serial-' . $index];
+            $index++;
+        }
+
+
+        
+
+        $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+        $sql = "SELECT * FROM user_requests WHERE request_type = 2 ORDER BY id DESC LIMIT 1 ";
+        $result = mysqli_query($connect, $sql);
+        $latestRequest = mysqli_fetch_assoc($result);
+        $request_id = $latestRequest['id'];
+
+        for ($i = 0; $i < count($dynamicDeviceTypes); $i++) {
+            // echo "Device Type " . ($i + 1) . ": " . $dynamicDeviceTypes[$i] . "<br>";
+            // echo "Device Name " . ($i + 1) . ": " . $dynamicDeviceNames[$i] . "<br>";
+
+            // Replace "type_id here" and "serial_number here" with the corresponding array elements
+            $typeId = $dynamicDeviceTypes[$i];
+            $serialNumber = $dynamicDeviceNames[$i];
+
+            $sql = "INSERT INTO maintenance_requests(user_request_id, type_id, serial_number) VALUES ($request_id, $typeId, '$serialNumber')";
+
+            mysqli_query($connect, $sql);
+        }
+    }
+
+    // Close the database connection after the insertions
+    mysqli_close($connect);
+}
+
+
 function insertCart()
 {
     if (empty($_SESSION['cart'])) {
@@ -313,7 +361,7 @@ function insertCart()
     for ($i = 1; $i <= $quantity_product; $i++) {
         array_push($_SESSION['cart'], $_GET['deviceID']);
     }
-    $_SESSION['msg1'] = "Đã thêm vào giỏ hàng";
+
     header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
@@ -505,9 +553,13 @@ switch ($action) {
         $categories = fetchCategories();
         $brands = fetchBrand();
         break;
-        // case 'productPage':
-        //     $product = productPage();
-        //     break;
+    case 'maintenance':
+        $categories = fetchCategories();
+        break;
+    case 'maintenance_request':
+        // createUser_requests();
+        insertMaintenance_requests();
+        break;
     case 'insertCart':
         insertCart();
         // $product = productPage();

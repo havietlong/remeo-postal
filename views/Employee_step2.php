@@ -36,9 +36,7 @@ if(isset($_GET['category'])){
 
 <body>
     <div class="total-container">
-        <div class="nav">
-            <div class="branch"><b>Chi nhánh</b></div>
-        </div>
+        <?php include "views/components/navBar.php" ?> 
         <div class="progress-bar">
             <div class="outter-circle">
                 <div class="inner-circle active"></div>
