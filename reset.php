@@ -8,4 +8,4 @@ unset($_SESSION['user_type']);
 // Destroy the session
 session_destroy();
 
-header("location:index.php?role=staff&action=index");
+header("location:/remeo-postal/");

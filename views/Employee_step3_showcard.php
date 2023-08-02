@@ -65,7 +65,6 @@ $staff_id = $_SESSION['user_id'];
                         foreach ($count_by_id as $id => $count) {
                             $i++;
                             $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
-                            var_dump($sql);
                             $result = mysqli_query($connect, $sql);
                             $row = mysqli_fetch_assoc($result);
                             $product_id = $row['equipment_id'];
@@ -92,7 +91,11 @@ $staff_id = $_SESSION['user_id'];
                         <input type="text" name="request_type" value="1" hidden>
                         <div class="right-column" style="margin-bottom: 30px;">
                             <h3>Xác nhận</h3>
+                            <?php if(isset($_SESSION['cart'])){ ?>
                             <button type="submit">Xác nhận</button>
+                            <?php }else{ ?>
+                            <label>chưa có thiết bị được yêu cầu</label>
+                            <?php } ?>
                         </div>
                         <div class="right-column">
                             <textarea name="reason" cols="43" rows="13" style="border: none;outline: none;padding-top: 10px;" placeholder="Điền nguyên nhân cho yêu cầu này"></textarea>

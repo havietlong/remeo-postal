@@ -81,7 +81,7 @@ $role = $_GET['role'];
 <?php 
 break;
 case 'maintenance':?>
-<a href="index.php?role=maintenance&action=install&deviceType=computerParts">
+<a href="index.php?role=maintenance&action=install&deviceType=conveyor">
             <button>
               <div class="option-box rectangle">
               <i class='bx bx-broadcast'></i>
@@ -155,11 +155,11 @@ case 'maintenance':?>
     position: absolute;
     height: 10px;
     width: 37%;
-    background-color: red;
+    background-color: <?php echo $role === 'maintenance' ? 'blue' : 'red'; ?>;
   }
 
   .active {
-    background-color: red;
+    background-color: <?php echo $role === 'maintenance' ? 'blue' : 'red'; ?>;
   }
 
   .non-active {
@@ -212,7 +212,7 @@ case 'maintenance':?>
 
   .branch {
     margin-right: 20px;
-    color: red;
+    color: <?php echo $role === 'maintenance' ? 'blue' : 'red'; ?>;
   }
 
   .nav {
@@ -251,7 +251,7 @@ case 'maintenance':?>
     position: relative;
     width: 100%;
     border-top: 10px solid grey;
-    border-bottom: 10px solid red;
+    border-bottom: 10px solid <?php echo $role === 'maintenance' ? 'blue' : 'red'; ?>;
   }
 
   .user-options i {
@@ -260,7 +260,7 @@ case 'maintenance':?>
   }
 
   .option-box {
-    background-color: red;
+    background-color: <?php echo $role === 'maintenance' ? 'blue' : 'red'; ?>;
     margin-right: 10px;
     border-radius: 10px;
     display: flex;

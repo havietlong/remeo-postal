@@ -17,13 +17,13 @@ switch ($action) {
         include_once 'views/index.php';
         break;
     case 'install':
-        if (isset($deviceType) == 'scale') {
+        if (isset($deviceDetail)) {
+            include_once 'models/maintenanceModel.php';
+            include_once 'views/Employee_step2_detail.php';
+        }else if (isset($deviceType)) {
             include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2.php';
-        } else if (isset($deviceDetail)) {
-            include_once 'models/staffModel.php';
-            include_once 'views/Employee_step2_detail.php';
-        }else{
+        } else {
             include_once 'views/Employee_step1.php';
         }
         break;

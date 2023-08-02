@@ -42,7 +42,7 @@ switch ($action) {
         if (isset($deviceDetail)) {
             include_once 'models/staffModel.php';
             include_once 'views/Employee_step2_detail.php';
-        } else if (isset($deviceType) == 'computerParts') {
+        } else if (isset($deviceType)) {
             include_once 'models/staffModel.php';
             include_once 'views/Employee_step2.php';
         } else {

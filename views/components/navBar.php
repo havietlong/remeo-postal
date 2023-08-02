@@ -20,6 +20,10 @@
     <i class='bx bx-bell popup-icon' ></i>
         Vai trò
     </div>
+    <div class="popup-item">
+    <a href="/remeo-postal/reset.php"><i class='bx bx-door-open popup-icon'></i>
+    Đăng xuất</a>
+    </div>
 </div>
 <style>
     .nav {

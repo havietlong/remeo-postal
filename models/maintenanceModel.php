@@ -3,96 +3,200 @@
 
 function fetchProduct()
 {
-    if (isset($_GET['deviceDetail'])) {
-        include 'connections/openConnect.php';
-        $deviceDetail = $_GET['deviceDetail'];
-        $sql = "SELECT e.*, m.name AS manufacturer_name
-        FROM equipment AS e
-        INNER JOIN manufacturer AS m ON e.manufacturer_id = m.manufacturer_id
-        WHERE e.equipment_id IN ($deviceDetail)";
-        $products = mysqli_query($connect, $sql);
-        include 'connections/closeConnect.php';
-    } else {
-        $deviceDetail = '';
+    $deviceType = $_GET['deviceType'];
+    switch ($deviceType) {
+        case 'conveyor':
+            $category_id = 10;
+            break;
+        case 'scale':
+            $category_id = 11;
+            break;
+        case 'charger':
+            $category_id = 12;
+            break;
+        case 'generator':
+            $category_id = 13;
+            break;
     }
-
-    if (isset($_GET['deviceType'])) {
-        $deviceType = $_GET['deviceType'];
-    } else {
-        $deviceType = '';
+    if (isset($_GET['brand'])) {
+        $brand = $_GET['brand'];
+        switch ($brand) {
+            case 'HP':
+                $manufacturer_id = 7;
+                break;
+            case 'Asus':
+                $manufacturer_id = 8;
+                break;
+            case 'Samsung':
+                $manufacturer_id = 9;
+                break;
+            case 'Lenovo':
+                $manufacturer_id = 10;
+                break;
+            case 'LG':
+                $manufacturer_id = 11;
+                break;
+        }
     }
-
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
+        switch ($category) {
+            case 'Màn hình':
+                $type_id = 11;
+                break;
+            case 'Case':
+                $type_id = 12;
+                break;
+            case 'Bàn phím':
+                $type_id = 13;
+                break;
+            case 'Chuột':
+                $type_id = 14;
+                break;
+            case 'Máy in':
+                $type_id = 15;
+                break;
+            case 'Máy in tem':
+                $type_id = 16;
+                break;
+            case 'Giấy in':
+                $type_id = 17;
+                break;
+            case 'Giấy in tem':
+                $type_id = 18;
+                break;
+            case 'Router':
+                $type_id = 19;
+                break;
+            case 'Dây mạng LAN':
+                $type_id = 20;
+                break;
+        }
+    }
+    if (isset($_GET['deviceDetail'])) {
+        $deviceDetail = $_GET['deviceDetail'];
+    }
+    include_once "connections/openConnect.php";
+    if (isset($_GET['brand']) && isset($_GET['deviceType']) && isset($_GET['category'])) {
+        $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id AND type_id =  $type_id ";
+    } else if (isset($_GET['brand']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id";
+    } else if (isset($_GET['category']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE type_id = $type_id AND category_id = $category_id";
+    }else if (isset($_GET['deviceDetail']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE equipment_id = $deviceDetail AND category_id = $category_id";
     } else {
-        $category = '';
+        $sql = "SELECT * From equipment WHERE category_id = $category_id";
     }
-    include 'connections/openConnect.php';
-    if ($deviceType === 'computerParts' && $category == 'Case') {
-        $sql =
-            $products = mysqli_query($connect, $sql);
-    } else if ($deviceType === 'computerParts' && $category == 'Keyboard') {
-        $sql =
-            $products = mysqli_query($connect, $sql);
-    } else if ($deviceType === 'computerParts' && $category == 'Monitor') {
-        $sql =
-            $products = mysqli_query($connect, $sql);
-    } else if ($deviceType === 'computerParts' && $category == 'Mouse') {
-        $sql =
-            $products = mysqli_query($connect, $sql);
-    } else if ($deviceType === 'scale') {
-        $sql = "SELECT * From equipment
-        WHERE category_id IN (8)";
-        $products = mysqli_query($connect, $sql);
-    }
-
-    include 'connections/closeConnect.php';
+    $products = mysqli_query($connect, $sql);
     return $products;
+    include_once "connections/closeConnect.php";
 }
 
 function fetchCategories()
 {
-    if (isset($_GET['deviceDetail'])) {
-        include 'connections/openConnect.php';
-        $deviceDetail = $_GET['deviceDetail'];
-        $sql = "SELECT e.*, m.name AS manufacturer_name
-        FROM equipment AS e
-        INNER JOIN manufacturer AS m ON e.manufacturer_id = m.manufacturer_id
-        WHERE e.type_id IN ($deviceDetail)";
-        $categories = mysqli_query($connect, $sql);
-        return $categories;
-        include 'connections/closeConnect.php';
-    } else {
-        $deviceDetail = '';
-    }
-
     if (isset($_GET['deviceType'])) {
         $deviceType = $_GET['deviceType'];
     } else {
         $deviceType = '';
     }
 
-    if (isset($_GET['category'])) {
-        $category = $_GET['category'];
-    } else {
-        $category = '';
-    }
+    // if (isset($_GET['category'])) {
+    //     $category = $_GET['category'];
+    // } else {
+    //     $category = '';
+    // }
 
     include 'connections/openConnect.php';
-    if ($deviceType == 'computerParts' && $category == 'Mouse') {
-       
-    } else if ($deviceType == 'scale') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (8)";
+    if ($deviceType == 'conveyor') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (22)";
         $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+        return $categories;
+    } else if ($deviceType == 'scale') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (23)";
+        $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+        return $categories;
+    } else if ($deviceType == 'charger') {
+        $sql = "SELECT * FROM equipmenttype ";
+        $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+        return $categories;
+    } else {
+        $sql = "SELECT * FROM equipmenttype";
+        $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
         return $categories;
     }
-    include 'connections/closeConnect.php';
 }
 
 function fetchBrand()
 {
+   $deviceType = $_GET['deviceType'];
+    switch ($deviceType) {
+        case 'conveyor':
+            $category_id = 10;
+            break;
+        case 'scale':
+            $category_id = 11;
+            break;
+        case 'charger':
+            $category_id = 12;
+            break;
+        case 'generator':
+            $category_id = 13;
+            break;
+    }
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+        switch ($category) {
+            case 'Màn hình':
+                $type_id = 11;
+                break;
+            case 'Case':
+                $type_id = 12;
+                break;
+            case 'Bàn phím':
+                $type_id = 13;
+                break;
+            case 'Chuột':
+                $type_id = 14;
+                break;
+            case 'Máy in':
+                $type_id = 15;
+                break;
+            case 'Máy in tem':
+                $type_id = 16;
+                break;
+            case 'Giấy in':
+                $type_id = 17;
+                break;
+            case 'Giấy in tem':
+                $type_id = 18;
+                break;
+            case 'Router':
+                $type_id = 19;
+                break;
+            case 'Dây mạng LAN':
+                $type_id = 20;
+                break;
+            case 'Mực in':
+                $type_id = 21;
+                break;
+        }
+        include "connections/openConnect.php";
+    $sql = "SELECT distinct manufacturer.name
+    FROM equipment 
+    INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id AND type_id = $type_id ";
+    $brands = mysqli_query($connect, $sql);
+    include "connections/closeConnect.php";
+    return $brands;
+    }
     include "connections/openConnect.php";
-    $sql = "SELECT * FROM manufacturer";
+    $sql = "SELECT distinct manufacturer.name
+    FROM equipment 
+    INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id;";
     $brands = mysqli_query($connect, $sql);
     include "connections/closeConnect.php";
     return $brands;

@@ -33,8 +33,82 @@ function fetchProduct()
             case 'LG':
                 $manufacturer_id = 11;
                 break;
+            case 'Gigabyte':
+                $manufacturer_id = 12; // Add the ID for Gigabyte
+                break;
+            case 'ViewSonic':
+                $manufacturer_id = 13; // Add the ID for ViewSonic
+                break;
+            case 'AOC':
+                $manufacturer_id = 14; // Add the ID for AOC
+                break;
+            // Add the rest of the brand cases with their respective IDs
+            case 'Edra':
+                $manufacturer_id = 15;
+                break;
+            case 'Lecoo':
+                $manufacturer_id = 16;
+                break;
+            case 'Vortex':
+                $manufacturer_id = 17;
+                break;
+            case 'Quadstellar':
+                $manufacturer_id = 18;
+                break;
+            case 'Brother':
+                $manufacturer_id = 19;
+                break;
+            case 'Canon':
+                $manufacturer_id = 20;
+                break;
+            case 'Zebra':
+                $manufacturer_id = 21;
+                break;
+            case 'A+':
+                $manufacturer_id = 22;
+                break;
+            case 'Idea':
+                $manufacturer_id = 23;
+                break;
+            case 'IKplus':
+                $manufacturer_id = 24;
+                break;
+            case 'Xppro':
+                $manufacturer_id = 25;
+                break;
+            case 'Epson':
+                $manufacturer_id = 26;
+                break;
+            case 'Vention':
+                $manufacturer_id = 27;
+                break;
+            case 'Orico':
+                $manufacturer_id = 28;
+                break;
+            case 'Lention':
+                $manufacturer_id = 29;
+                break;
+            case 'TP-Link':
+                $manufacturer_id = 30;
+                break;
+            case 'Aptek':
+                $manufacturer_id = 31;
+                break;
+            case 'Linksys':
+                $manufacturer_id = 32;
+                break;
+            case 'Camry':
+                $manufacturer_id = 33;
+                break;
+            case 'MSI':
+                $manufacturer_id = 34;
+                break;
+            case 'N/a':
+                $manufacturer_id = 34;
+                break;
         }
     }
+    
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
         switch ($category) {
@@ -62,7 +136,19 @@ function fetchProduct()
             case 'Giấy in tem':
                 $type_id = 18;
                 break;
+            case 'Router':
+                $type_id = 19;
+                break;
+            case 'Dây mạng LAN':
+                $type_id = 20;
+                break;
+            case 'Mực in':
+                $type_id = 21;
+                break;
         }
+    }
+    if (isset($_GET['deviceDetail'])) {
+        $deviceDetail = $_GET['deviceDetail'];
     }
     include_once "connections/openConnect.php";
     if (isset($_GET['brand']) && isset($_GET['deviceType']) && isset($_GET['category'])) {
@@ -71,6 +157,8 @@ function fetchProduct()
         $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id";
     } else if (isset($_GET['category']) && isset($_GET['deviceType'])) {
         $sql = "SELECT * From equipment WHERE type_id = $type_id AND category_id = $category_id";
+    } else if (isset($_GET['deviceDetail']) && isset($_GET['deviceType'])) {
+        $sql = "SELECT * From equipment WHERE equipment_id = $deviceDetail AND category_id = $category_id";
     } else {
         $sql = "SELECT * From equipment WHERE category_id = $category_id";
     }
@@ -120,8 +208,67 @@ function fetchCategories()
 
 function fetchBrand()
 {
+    $deviceType = $_GET['deviceType'];
+    switch ($deviceType) {
+        case 'computerParts':
+            $category_id = 7;
+            break;
+        case 'printer':
+            $category_id = 8;
+            break;
+        case 'wifi':
+            $category_id = 9;
+            break;
+    }
+    if (isset($_GET['category'])) {
+        $category = $_GET['category'];
+        switch ($category) {
+            case 'Màn hình':
+                $type_id = 11;
+                break;
+            case 'Case':
+                $type_id = 12;
+                break;
+            case 'Bàn phím':
+                $type_id = 13;
+                break;
+            case 'Chuột':
+                $type_id = 14;
+                break;
+            case 'Máy in':
+                $type_id = 15;
+                break;
+            case 'Máy in tem':
+                $type_id = 16;
+                break;
+            case 'Giấy in':
+                $type_id = 17;
+                break;
+            case 'Giấy in tem':
+                $type_id = 18;
+                break;
+            case 'Router':
+                $type_id = 19;
+                break;
+            case 'Dây mạng LAN':
+                $type_id = 20;
+                break;
+            case 'Mực in':
+                $type_id = 21;
+                break;
+        }
+        include "connections/openConnect.php";
+    $sql = "SELECT distinct manufacturer.name
+    FROM equipment 
+    INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id AND type_id = $type_id ";
+    $brands = mysqli_query($connect, $sql);
+    include "connections/closeConnect.php";
+    return $brands;
+    }
     include "connections/openConnect.php";
-    $sql = "SELECT * FROM manufacturer";
+    $sql = "SELECT distinct manufacturer.name
+    FROM equipment 
+    INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id;";
     $brands = mysqli_query($connect, $sql);
     include "connections/closeConnect.php";
     return $brands;
@@ -319,7 +466,7 @@ function insertMaintenance_requests()
         }
 
 
-        
+
 
         $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
         $sql = "SELECT * FROM user_requests WHERE request_type = 2 ORDER BY id DESC LIMIT 1 ";
