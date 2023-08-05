@@ -1,8 +1,8 @@
-<?php include "views/components/head.php"?>
+<?php include "views/components/head.php" ?>
 
 <body>
     <div class="total-container">
-        <?php 
+        <?php
         include "views/components/navBar.php"
         ?>
         <div class="progress-bar">
@@ -22,39 +22,118 @@
         <div class="progress-status">
         </div>
         <div class="user-options">
-            <?php 
-            
-            switch($role){
-                case 'staff': echo "<a href='index.php?role=staff&action=install'>";
-                break;
-                case 'maintenance': echo "<a href='index.php?role=maintenance&action=install'>";
-                break;
+            <?php
+            switch ($role) {
+                case 'staff': ?>
+                
+                <a href='index.php?role=staff&action=install'>
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-wrench'></i>
+                                <h3>Lắp đặt</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=staff&action=maintenance">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-cog'></i>
+                                <h3>Bảo trì</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=staff&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý yêu cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+
+                <?php break;
+                case 'maintenance': ?><a href='index.php?role=maintenance&action=install'>
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-wrench'></i>
+                                <h3>Lắp đặt</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=maintenance&action=maintenance">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-cog'></i>
+                                <h3>Bảo trì</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=maintenance&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý yêu cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+                <?php break;
+                case 'manager':
+                ?>
+                    <a href="index.php?role=manager&action=manage_equipments">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-devices'></i>
+                                <h3>Quản lý thiết bị</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=manager&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý yêu cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=manager&action=manage_staffs">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-user'></i>
+                                <h3>Quản lý nhân viên</h3>
+                            </div>
+                        </button>
+                    </a>
+                <?php break;
+                case 'director':
+                ?>
+                    <a href="index.php?role=director&action=manage_equipments">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-devices'></i>
+                                <h3>Quản lý thiết bị</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=director&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý yêu cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=director&action=manage_staffs">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-user'></i>
+                                <h3>Quản lý nhân viên</h3>
+                            </div>
+                        </button>
+                    </a>
+            <?php break;
             }
             ?>
-            
-                <button>
-                    <div class="option-box">
-                        <i class='bx bx-wrench'></i>
-                        <h3>Lắp đặt</h3>
-                    </div>
-                </button>
-            </a>
-            <a href="index.php?role=staff&action=maintenance">
-                <button>
-                    <div class="option-box">
-                        <i class='bx bx-cog'></i>
-                        <h3>Bảo trì</h3>
-                    </div>
-                </button>
-            </a>
-            <a href="index.php?role=staff&action=manage_requests">
-                <button>
-                    <div class="option-box">
-                        <i class='bx bx-list-ul'></i>
-                        <h3>Quản lý yêu cầu</h3>
-                    </div>
-                </button>
-            </a>
+
         </div>
 
         <div class="footer">
@@ -87,6 +166,14 @@
         ?>background-color: blue;
         <?php
                 break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
         }
         ?>
     }
@@ -101,6 +188,14 @@
                 break;
             case 'maintenance':
         ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
         <?php
                 break;
         }
@@ -159,11 +254,19 @@
         $role = $_GET['role'];
         switch ($role) {
             case 'staff':
-        ?>color: red;
+        ?>background-color: red;
         <?php
                 break;
             case 'maintenance':
-        ?>color: blue;
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
         <?php
                 break;
         }
@@ -207,7 +310,7 @@
         position: relative;
         width: 100%;
         border-top: 10px solid grey;
-        
+
         <?php
         $role = $_GET['role'];
         switch ($role) {
@@ -217,6 +320,14 @@
                 break;
             case 'maintenance':
         ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>border-bottom: 10px solid #0AC10A;
         <?php
                 break;
         }
@@ -230,7 +341,7 @@
 
     .option-box {
         <?php
-        
+        $role = $_GET['role'];
         switch ($role) {
             case 'staff':
         ?>background-color: red;
@@ -240,8 +351,15 @@
         ?>background-color: blue;
         <?php
                 break;
-        }
-        ?>
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        } ?>
         margin-right: 10px;
         border-radius: 10px;
         height: 200px;

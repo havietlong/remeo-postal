@@ -5,14 +5,17 @@ function fetchProduct()
 {
     $deviceType = $_GET['deviceType'];
     switch ($deviceType) {
-        case 'computerParts':
-            $category_id = 7;
+        case 'conveyor':
+            $category_id = 10;
             break;
-        case 'printer':
-            $category_id = 8;
+        case 'scale':
+            $category_id = 11;
             break;
-        case 'wifi':
-            $category_id = 9;
+        case 'charger':
+            $category_id = 12;
+            break;
+        case 'generator':
+            $category_id = 13;
             break;
     }
     if (isset($_GET['brand'])) {
@@ -33,82 +36,8 @@ function fetchProduct()
             case 'LG':
                 $manufacturer_id = 11;
                 break;
-            case 'Gigabyte':
-                $manufacturer_id = 12; // Add the ID for Gigabyte
-                break;
-            case 'ViewSonic':
-                $manufacturer_id = 13; // Add the ID for ViewSonic
-                break;
-            case 'AOC':
-                $manufacturer_id = 14; // Add the ID for AOC
-                break;
-            // Add the rest of the brand cases with their respective IDs
-            case 'Edra':
-                $manufacturer_id = 15;
-                break;
-            case 'Lecoo':
-                $manufacturer_id = 16;
-                break;
-            case 'Vortex':
-                $manufacturer_id = 17;
-                break;
-            case 'Quadstellar':
-                $manufacturer_id = 18;
-                break;
-            case 'Brother':
-                $manufacturer_id = 19;
-                break;
-            case 'Canon':
-                $manufacturer_id = 20;
-                break;
-            case 'Zebra':
-                $manufacturer_id = 21;
-                break;
-            case 'A+':
-                $manufacturer_id = 22;
-                break;
-            case 'Idea':
-                $manufacturer_id = 23;
-                break;
-            case 'IKplus':
-                $manufacturer_id = 24;
-                break;
-            case 'Xppro':
-                $manufacturer_id = 25;
-                break;
-            case 'Epson':
-                $manufacturer_id = 26;
-                break;
-            case 'Vention':
-                $manufacturer_id = 27;
-                break;
-            case 'Orico':
-                $manufacturer_id = 28;
-                break;
-            case 'Lention':
-                $manufacturer_id = 29;
-                break;
-            case 'TP-Link':
-                $manufacturer_id = 30;
-                break;
-            case 'Aptek':
-                $manufacturer_id = 31;
-                break;
-            case 'Linksys':
-                $manufacturer_id = 32;
-                break;
-            case 'Camry':
-                $manufacturer_id = 33;
-                break;
-            case 'MSI':
-                $manufacturer_id = 34;
-                break;
-            case 'N/a':
-                $manufacturer_id = 34;
-                break;
         }
     }
-    
     if (isset($_GET['category'])) {
         $category = $_GET['category'];
         switch ($category) {
@@ -142,9 +71,6 @@ function fetchProduct()
             case 'Dây mạng LAN':
                 $type_id = 20;
                 break;
-            case 'Mực in':
-                $type_id = 21;
-                break;
         }
     }
     if (isset($_GET['deviceDetail'])) {
@@ -169,7 +95,6 @@ function fetchProduct()
 
 function fetchCategories()
 {
-
     if (isset($_GET['deviceType'])) {
         $deviceType = $_GET['deviceType'];
     } else {
@@ -183,18 +108,18 @@ function fetchCategories()
     // }
 
     include 'connections/openConnect.php';
-    if ($deviceType == 'computerParts') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (11,12,13,14)";
+    if ($deviceType == 'conveyor') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (22)";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
-    } else if ($deviceType == 'printer') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (15,16,17,18)";
+    } else if ($deviceType == 'scale') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (23)";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
-    } else if ($deviceType == 'wifi') {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (19,20)";
+    } else if ($deviceType == 'charger') {
+        $sql = "SELECT * FROM equipmenttype ";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
@@ -210,14 +135,17 @@ function fetchBrand()
 {
     $deviceType = $_GET['deviceType'];
     switch ($deviceType) {
-        case 'computerParts':
-            $category_id = 7;
+        case 'conveyor':
+            $category_id = 10;
             break;
-        case 'printer':
-            $category_id = 8;
+        case 'scale':
+            $category_id = 11;
             break;
-        case 'wifi':
-            $category_id = 9;
+        case 'charger':
+            $category_id = 12;
+            break;
+        case 'generator':
+            $category_id = 13;
             break;
     }
     if (isset($_GET['category'])) {
@@ -258,12 +186,12 @@ function fetchBrand()
                 break;
         }
         include "connections/openConnect.php";
-    $sql = "SELECT distinct manufacturer.name
+        $sql = "SELECT distinct manufacturer.name
     FROM equipment 
     INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id AND type_id = $type_id ";
-    $brands = mysqli_query($connect, $sql);
-    include "connections/closeConnect.php";
-    return $brands;
+        $brands = mysqli_query($connect, $sql);
+        include "connections/closeConnect.php";
+        return $brands;
     }
     include "connections/openConnect.php";
     $sql = "SELECT distinct manufacturer.name
@@ -289,7 +217,7 @@ function createUser_requests()
     // Build the SQL query string
     $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status,request_type) 
             VALUES ('$staff_id', '$reason', NOW(), 'Pending', $request_type)";
-
+    var_dump($sql);
     // Execute the query
     mysqli_query($connect, $sql);
 
@@ -311,7 +239,7 @@ function insertEquipment_requests()
         }
     }
     $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
-    $sql = "SELECT * FROM user_requests WHERE request_type = 1 ORDER BY id DESC LIMIT 1 ";
+    $sql = "SELECT * FROM user_requests ORDER BY id DESC LIMIT 1";
     $result = mysqli_query($connect, $sql);
     $latestRequest = mysqli_fetch_assoc($result);
     $request_id = $latestRequest['id'];
@@ -332,36 +260,15 @@ function insertEquipment_requests()
 function fetchUser_requests()
 {
     $staff_id = $_SESSION['user_id'];
+    $staff_role = $_SESSION['role'];
     include "connections/openConnect.php";
-
-    // Build the SQL query string
-    if (isset($_GET['requestType'])) {
-        $requestType = $_GET['requestType'];
-        switch ($requestType) {
-            case 'install':
-                $sql = "SELECT user_requests.*, postalstaff.*
-                FROM `user_requests`
-                INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-                WHERE `user_requests`.`staff_id` = $staff_id AND `user_requests`.`request_type`= 1";
-                $request = mysqli_query($connect, $sql);
-                include "connections/closeConnect.php";
-                return $request;
-                break;
-            case 'maintenance':
-                $sql = "SELECT user_requests.*, postalstaff.*
-                FROM `user_requests`
-                INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-                WHERE `user_requests`.`staff_id` = $staff_id AND `user_requests`.`request_type`= 2";
-                $request = mysqli_query($connect, $sql);
-                include "connections/closeConnect.php";
-                return $request;
-        }
-    }else if (isset($_SESSION['branch'])==4){
- 
-        $sql = "SELECT user_requests.*, postalstaff.*
+    if ($staff_role == 1 || $staff_role == 2) {
+        if (!isset($_GET['requestType'])) {
+            // Build the SQL query string
+            $sql = "SELECT user_requests.*, postalstaff.*
         FROM `user_requests`
         INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-        ";
+        WHERE `user_requests`.`staff_id` = $staff_id";
 
             // Execute the query
             $request = mysqli_query($connect, $sql);
@@ -369,19 +276,70 @@ function fetchUser_requests()
             // Close the database connection
             include "connections/closeConnect.php";
             return $request;
-    }else {
-        $sql = "SELECT user_requests.*, postalstaff.*
-    FROM `user_requests`
-    INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-    WHERE `user_requests`.`staff_id` = $staff_id";
-    var_dump($sql);
+        } else {
+            $request_type = $_GET['requestType'];
+            switch ($request_type) {
+                case 'maintenance':
+                    $request_typee = 1;
+                case 'install':
+                    $request_typee = 2;
+            }
+            $sql = "SELECT user_requests.*, postalstaff.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            WHERE `user_requests`.`staff_id` = $staff_id AND `user_requests`.`request_type` = $request_typee";
 
-        // Execute the query
-        $request = mysqli_query($connect, $sql);
+            // Execute the query
+            $request = mysqli_query($connect, $sql);
 
-        // Close the database connection
-        include "connections/closeConnect.php";
-        return $request;
+            // Close the database connection
+            include "connections/closeConnect.php";
+            return $request;
+        }
+    } else if ($staff_role == 3) {
+        if (!isset($_GET['requestType'])) {
+            $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`";
+
+            // Execute the query
+            $request = mysqli_query($connect, $sql);
+
+            // Close the database connection
+            include "connections/closeConnect.php";
+            return $request;
+        } else {
+            $request_type = $_GET['requestType'];
+            switch ($request_type) {
+                case 'install':
+                    $request_typee = 1;
+                    $sql = "SELECT user_requests.*, postalstaff.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            WHERE `user_requests`.`request_type` = $request_typee";
+
+                    // Execute the query
+                    $request = mysqli_query($connect, $sql);
+
+                    // Close the database connection
+                    include "connections/closeConnect.php";
+                    return $request;
+                case 'maintenance':
+                    $request_typee = 2;
+                    $sql = "SELECT user_requests.*, postalstaff.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            WHERE `user_requests`.`request_type` = $request_typee";
+
+                    // Execute the query
+                    $request = mysqli_query($connect, $sql);
+
+                    // Close the database connection
+                    include "connections/closeConnect.php";
+                    return $request;
+            }
+        }
     }
 }
 
@@ -401,6 +359,24 @@ function fetchEquipment_requests()
     // Close the database connection
     include "connections/closeConnect.php";
     return $equipment_request;
+}
+
+function fetchMaintenance_requests()
+{
+
+    include "connections/openConnect.php";
+
+    // Build the SQL query string
+    $sql = "SELECT maintenance_requests.*, equipment.*
+    FROM `maintenance_requests`
+    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+
+    // Execute the query
+    $maintenance_requests = mysqli_query($connect, $sql);
+
+    // Close the database connection
+    include "connections/closeConnect.php";
+    return $maintenance_requests;
 }
 
 function getProduct()
@@ -464,49 +440,6 @@ function getProduct()
     }
 }
 
-function insertMaintenance_requests()
-{
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        $dynamicDeviceTypes = array();
-        $dynamicDeviceNames = array();
-        $index = 1; // Start with index 1, as the first input and select elements have no index
-
-        while (isset($_POST['device-type-' . $index]) && isset($_POST['device-serial-' . $index])) {
-            $dynamicDeviceTypes[] = $_POST['device-type-' . $index];
-            $dynamicDeviceNames[] = $_POST['device-serial-' . $index];
-            $index++;
-        }
-
-
-
-
-        $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
-        $sql = "SELECT * FROM user_requests WHERE request_type = 2 ORDER BY id DESC LIMIT 1 ";
-        $result = mysqli_query($connect, $sql);
-        $latestRequest = mysqli_fetch_assoc($result);
-        $request_id = $latestRequest['id'];
-
-        for ($i = 0; $i < count($dynamicDeviceTypes); $i++) {
-            // echo "Device Type " . ($i + 1) . ": " . $dynamicDeviceTypes[$i] . "<br>";
-            // echo "Device Name " . ($i + 1) . ": " . $dynamicDeviceNames[$i] . "<br>";
-
-            // Replace "type_id here" and "serial_number here" with the corresponding array elements
-            $typeId = $dynamicDeviceTypes[$i];
-            $serialNumber = $dynamicDeviceNames[$i];
-
-            $sql = "INSERT INTO maintenance_requests(user_request_id, type_id, serial_number) VALUES ($request_id, $typeId, '$serialNumber')";
-            var_dump($sql);
-            mysqli_query($connect, $sql);
-        }
-    }
-
-    // Close the database connection after the insertions
-    mysqli_close($connect);
-}
-
-
 function insertCart()
 {
     if (empty($_SESSION['cart'])) {
@@ -522,7 +455,7 @@ function insertCart()
     for ($i = 1; $i <= $quantity_product; $i++) {
         array_push($_SESSION['cart'], $_GET['deviceID']);
     }
-
+    $_SESSION['msg1'] = "Đã thêm vào giỏ hàng";
     header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
@@ -609,8 +542,7 @@ function validateRole()
         $staff = mysqli_fetch_assoc($staffs);
         $_SESSION['user_name'] = $staff['name'];
         $_SESSION['user_id'] = $staff['staff_id'];
-        $_SESSION['role'] = $staff['role_id'];
-        $_SESSION['branch'] = $staff['branch_id'];
+        $_SESSION['user_type'] = 'staff';
         $staff_role = $staff['role_id'];
         if ($staff_role == 1) {
             return 1;
@@ -626,6 +558,48 @@ function validateRole()
     // If email and password do not match any records, return false
     $_SESSION['invalid'] = 'invalid password or username';
     return 0;
+}
+
+function cancleMaintenance()
+{
+    if (!isset($_POST['submit'])) {
+        die("Phai nhap du lieu tu form");
+    }
+    (int)$idGet = $_POST['id'];
+    $id = (int)$idGet;
+    $conn = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+    $sql = " DELETE FROM maintenance_requests WHERE user_request_id = $id ";
+    $rs = mysqli_query($conn, $sql);
+    $sql = " DELETE FROM user_requests WHERE id = $id ";
+    $rs = mysqli_query($conn, $sql);
+    if ($rs == true) {
+        // echo "Thêm thành công!";
+        header("location:index.php?role=manager&action=manage_requests");
+    } else {
+        echo "Xoá thất bại: " . mysqli_error($conn);
+    }
+    mysqli_close($conn);
+}
+
+function acceptMaintenance()
+{
+    if (!isset($_POST['submit'])) {
+        die("Phai nhap du lieu tu form");
+    }
+    (int)$idGet = $_POST['id'];
+    $id = (int)$idGet;
+    $conn = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+    $sql = " UPDATE user_requests
+    SET status = '2'
+    WHERE id = $id";
+    $rs = mysqli_query($conn, $sql);
+    if ($rs == true) {
+        // echo "Thêm thành công!";
+        header("location:index.php?role=manager&action=manage_requests");
+    } else {
+        echo "Xoá thất bại: " . mysqli_error($conn);
+    }
+    mysqli_close($conn);
 }
 
 function search()
@@ -666,33 +640,6 @@ function viewReceipt()
     return $receipt;
 }
 
-function fetchMaintenance_requests()
-{
-
-    include "connections/openConnect.php";
-
-    // Build the SQL query string
-    $sql = "SELECT maintenance_requests.*, equipment.*
-    FROM `maintenance_requests`
-    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
-
-    // Execute the query
-    $maintenance_requests = mysqli_query($connect, $sql);
-
-    // Close the database connection
-    include "connections/closeConnect.php";
-    return $maintenance_requests;
-}
-
-function fetchMaintenanceInfo(){
-        include "connections/openConnect.php";
-        $sql = "SELECT * FROM item";
-        $categories = mysqli_query($connect, $sql);
-        include 'connections/closeConnect.php';
-        return $categories;
-    
-}
-
 function billDetail()
 {
     $id_invocieUser = $_GET['id_invoiceUser'];
@@ -730,14 +677,115 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
 
-function fetchSerial(){
+function fetchCentralOffices()
+{
+    $manager_id = $_SESSION['user_id'];
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
-    $item_serials = mysqli_query($connect, $sql);
-    include 'connections/closeConnect.php';
-    return $item_serials;
+    $sql = "SELECT * FROM postaloffice WHERE manager_id = $manager_id AND isCentralOffice = 1";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
 }
 
+function fetchRuralOffices()
+{
+    $manager_id = $_SESSION['user_id'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postaloffice WHERE manager_id = $manager_id AND isCentralOffice = 0";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function fetchEquipmentsFromOffice()
+{
+    $office_id = $_POST['office'];
+    include './connections/openConnect.php';
+    $sql = "SELECT equipment.equipment_id, equipment.name, equipment.category_id, equipment.image_path, COUNT(item.equipment_id) AS quantity
+    FROM equipment
+    INNER JOIN item ON equipment.equipment_id = item.equipment_id
+    WHERE item.office_id = $office_id 
+    GROUP BY item.equipment_id";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function fetchEquipmentsFromOfficeSerial()
+{
+    $office_id = $_POST['office'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM item WHERE office_id = $office_id  ";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function fetchStaffsByOffice()
+{
+    $office_id = $_POST['office'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postalstaff WHERE office_id = $office_id  ";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function fetchStaffsByBranch()
+{
+    $branch_id = $_SESSION['branch'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postalstaff WHERE branch_id = $branch_id  ";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function fetchRoles()
+{
+
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM roles WHERE role_id IN (1,2)";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+    include './connections/closeConnect.php';
+}
+
+function alterStaff()
+{
+    $id_staff = $_POST['id_staff'];
+    $name = $_POST['name_staff'];
+    $email = $_POST['email_staff'];
+    $phone = $_POST['phone_staff'];
+    $role_id = $_POST['role_staff'];
+    $password = $_POST['password_staff'];
+    include './connections/openConnect.php';
+    $sql = "UPDATE postalstaff
+    SET name = '$name', email = '$email', phone = $phone,role_id = $role_id,password = '$password'
+    WHERE staff_id = $id_staff";
+    var_dump($sql);
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    header("location:index.php?role=manager&action=manage_staffs");
+    return $result;
+}
+
+function sendRequestToStaff()
+{
+    $id_staff = $_POST['staff_id'];
+    $id = $_POST['id'];
+    $request_estimate_time = new DateTime();
+    $request_estimate_time->modify('+2 hours');
+    $request_estimate_time = $request_estimate_time->format('Y-m-d H:i:s');
+    include './connections/openConnect.php';
+    $sql = "UPDATE user_requests
+    SET installer_id = $id_staff, status = 4, request_estimate_time = '$request_estimate_time'
+    WHERE id = $id";
+    var_dump($sql);
+    mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    header("location:index.php?role=manager&action=manage_requests");
+}
 
 //Kiểm tra hành động hiện tại
 switch ($action) {
@@ -750,29 +798,54 @@ switch ($action) {
         $categories = fetchCategories();
         $brands = fetchBrand();
         break;
-    case 'maintenance':
-        $categories = fetchCategories();
-        $serials = fetchMaintenanceInfo();
-        break;
-    case 'maintenance_request':
-        createUser_requests();
-        insertMaintenance_requests();
-        break;
     case 'insertCart':
         insertCart();
-        // $product = productPage();
+
         break;
     case 'verified':
         createUser_requests();
         insertEquipment_requests();
-        // $product = productPage();
+
         break;
     case 'manage_requests':
         $requests = fetchUser_requests();
         $request_details = fetchEquipment_requests();
         $maintenance_details = fetchMaintenance_requests();
-        $item_serials = fetchSerial();
+        $staffs = fetchStaffsByBranch();
         break;
+    case 'cancle_maintenance':
+        cancleMaintenance();
+        break;
+    case 'accept_maintenance':
+        acceptMaintenance();
+        break;
+    case 'manage_equipments':
+        $centralOffices = fetchCentralOffices();
+        $ruralOffices = fetchRuralOffices();
+        break;
+    case 'displayEquipments':
+        $centralOffices = fetchCentralOffices();
+        $ruralOffices = fetchRuralOffices();
+        $equipments = fetchEquipmentsFromOffice();
+        $equipmentSerials = fetchEquipmentsFromOfficeSerial();
+        break;
+    case 'manage_staffs':
+        $centralOffices = fetchCentralOffices();
+        $ruralOffices = fetchRuralOffices();
+        break;
+    case 'displayStaffs':
+        $centralOffices = fetchCentralOffices();
+        $ruralOffices = fetchRuralOffices();
+        $staffs = fetchStaffsByOffice();
+        $roles = fetchRoles();
+        break;
+    case 'alterStaffs':
+        alterStaff();
+        break;
+    case 'send_request':
+        sendRequestToStaff();
+        break;
+
         // case 'removeCart':
         //     removeCart();
         //     break;

@@ -32,9 +32,8 @@ switch ($action) {
             } else if ($test == 3) {
                 header('Location:index.php?role=manager&action=index');
             } else if ($test == 4) {
-                header('Location:index.php?role=staff&action=index');
-            } else if ($test == 0) {
-                header('Location:index.php?role=staff&action=login');
+            
+                header('Location:index.php?role=director&action=index');
             }
         }
         break;

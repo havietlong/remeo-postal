@@ -13,7 +13,7 @@
 
 <body>
     <div class="total-container">
-    <?php include "views/components/navBar.php" ?>
+        <?php include "views/components/navBar.php" ?>
         <div class="user-options">
 
             <h1>Bảo hành thiết bị</h1>
@@ -24,13 +24,23 @@
                 <input type="text" name="staff_id" id="staff-id" value="<?= $_SESSION['user_id'] ?>" hidden>
                 <div id="device-options" class="device-options">
                     <div class="device-serial-row">
+                    <form method="post">
                         <select name="device-type" class="device-type" required disabled>
-                        <option value="">Chọn loại thiết bị</option>    
-                        <?php foreach($categories as $category){ ?>
-                            <option value="<?= $category['type_id'] ?>"><?= $category['name'] ?></option>
-                        <?php } ?>
+                            <option value="">Chọn loại thiết bị</option>
+                            <?php foreach ($categories as $category) { ?>
+                                <option value="<?= $category['type_id'] ?>"><?= $category['name'] ?></option>
+                            <?php
+                            }
+                            ?>
                         </select>
-                        <input type="text" name="device-serial" class="device-name" required disabled>
+                        
+                        <!-- <input type="text" name="device-serial" class="device-name" required disabled> -->
+                        <select name="device-serial" class="device-type" required disabled>
+                            <option value="">Chọn serial thiết bị</option>
+                            <?php foreach ($serials as $serial) { ?>
+                                <option value="<?= $serial['serial_number'] ?>"><?= $serial['serial_number'] ?></option>
+                            <?php } ?>
+                        </select>
                         <button id="plus-button" onclick="addNewDeviceOption(event)"><i class='bx bxs-plus-circle'></i></button>
                     </div>
                 </div>
@@ -52,6 +62,10 @@
         // Variable to keep track of the index for generating unique names
         var dynamicIndex = 0;
 
+        function getType() {
+
+        }
+
         // Function to add a new product row to the array
         function addNewDeviceOption(event) {
             event.preventDefault(); // Prevent form submission or page refresh
@@ -67,7 +81,7 @@
             // Generate unique names for the select and input elements
             dynamicIndex++;
             var deviceTypeSelect = deviceOptions.querySelector('select[name="device-type"]');
-            var deviceNameInput = deviceOptions.querySelector('input[name="device-serial"]');
+            var deviceNameInput = deviceOptions.querySelector('select[name="device-serial"]');
 
             if (deviceTypeSelect) {
                 deviceTypeSelect.name = "device-type-" + dynamicIndex;
@@ -85,6 +99,8 @@
             // Append the new .device-options element to #maintenance-form
             document.getElementById('device-options').appendChild(deviceOptions);
         }
+
+        
     </script>
 </body>
 

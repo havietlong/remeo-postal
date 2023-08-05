@@ -41,7 +41,44 @@ $role = $_GET['role'];
         <button class="sidebar-close-btn">
           <i class="bx bx-x"></i>
         </button>
-        <!-- Sidebar content -->
+        <div class="siderBar_container">
+          <?php
+          if (isset($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $item) {
+              if (!isset($count_by_id[$item])) {
+                $count_by_id[$item] = 1;
+              } else {
+                $count_by_id[$item]++;
+              }
+            }
+            $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+
+            foreach ($count_by_id as $id => $count) {
+              $sql = "SELECT * FROM equipment WHERE equipment_id = $id";
+              $result = mysqli_query($connect, $sql);
+              $row = mysqli_fetch_assoc($result);
+              $name_product = $row['name'];
+          ?>
+              <div class="sideBarProduct" style="display: flex;align-items: center;">
+                <div class="siderBar_img">
+                  <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image" style="width: 100px;height: auto;">
+                </div>
+                <div class="siderBar_right" style="display: flex;flex-direction: column;">
+                  <div class="sideBar_name">
+                    <?= $name_product ?>
+                  </div>
+                  <div class="sideBar_quantity">
+                    <input type="number" value="<?= $count ?>">
+                  </div>
+
+                </div>
+                <div class="sideBar_delete" style="padding-left: 9px;">
+                  <i class='bx bx-trash' style="font-size: 25px;position:relative;top:9px"></i>
+                </div>
+              </div>
+          <?php }
+          } ?>
+        </div>
       </div>
       <?php
       switch ($role) {
@@ -77,14 +114,14 @@ $role = $_GET['role'];
               </div>
             </button>
           </a>
-    
-<?php 
-break;
-case 'maintenance':?>
-<a href="index.php?role=maintenance&action=install&deviceType=conveyor">
+
+        <?php
+          break;
+        case 'maintenance': ?>
+          <a href="index.php?role=maintenance&action=install&deviceType=conveyor">
             <button>
               <div class="option-box rectangle">
-              <i class='bx bx-broadcast'></i>
+                <i class='bx bx-broadcast'></i>
                 <h3>Băng chuyền</h3>
               </div>
             </button>
@@ -92,7 +129,7 @@ case 'maintenance':?>
           <a href="index.php?role=maintenance&action=install&deviceType=scale">
             <button>
               <div class="option-box square">
-              <i class='bx bx-hourglass'></i>
+                <i class='bx bx-hourglass'></i>
                 <h3>Cân</h3>
               </div>
             </button>
@@ -100,17 +137,17 @@ case 'maintenance':?>
           <a href="index.php?role=maintenance&action=install&deviceType=charger">
             <button>
               <div class="option-box square">
-              <i class='bx bx-plug'></i>   
+                <i class='bx bx-plug'></i>
                 <h3>Sạc</h3>
               </div>
             </button>
           </a>
           <a href="index.php?role=maintenance&action=install&deviceType=generator">
-          <!-- index.php?role=staff&action=verifyRequest -->
-          
+            <!-- index.php?role=staff&action=verifyRequest -->
+
             <button>
               <div class="option-box square">
-              <i class='bx bxs-bolt'></i>
+                <i class='bx bxs-bolt'></i>
                 <h3>Máy phát điện</h3>
               </div>
             </button>
@@ -122,13 +159,13 @@ case 'maintenance':?>
               </div>
             </button>
           </a>
-<?php
-} ?>
+      <?php
+      } ?>
 
-</div>
-<div class="footer">
-  <b>Footer</b>
-</div>
+    </div>
+    <div class="footer">
+      <b>Footer</b>
+    </div>
   </div>
 </body>
 <style>
@@ -301,6 +338,7 @@ case 'maintenance':?>
   }
 
   .sidebar {
+    z-index: 2;
     position: absolute;
     top: 0;
     right: 0;

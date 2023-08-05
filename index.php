@@ -17,8 +17,11 @@
         case 'staff':
             include_once 'controllers/staffController.php';
             break;
-        // case 'admin':
-        //     include_once 'controller/adminController.php';
-        //     break;
+        case 'manager':
+            include_once 'controllers/managerController.php';
+            break;
+        case 'director':
+            include_once 'controllers/directorController.php';
+            break;
     }
     ?>
