@@ -245,10 +245,7 @@
         color: grey;
         font-size: 24px;
     }
-.product-title{
-    font-size: 32px;
-    color: red;
-}
+
 .product-container {
     display: flex;
     align-items: center;
@@ -307,17 +304,6 @@
     padding: 10px;
 }
 
-.spec-title {
-    color: red;
-    font-weight: bold;
-    font-size: 24px;
-}
-
-.red-line {
-    height: 1px;
-    background-color: red;
-    margin-bottom: 10px;
-}
 
 .product-name {
     margin-bottom: 10px;

@@ -1,4 +1,7 @@
-
+<?php
+$product = mysqli_fetch_assoc($products); 
+$product_name = $product['name'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,10 +82,19 @@
                     <?php }} ?>
                 </div>
             </div>
+            <br>
             <div class="cookieCrumb">
-                <i class='bx bx-home'></i>
+                <a href="index.php?role=<?= $role ?>&action=install"><i class='bx bx-home'></i></a>
                 <div class="arrow">/</div>
-                <div class="product">Printer</div>
+                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>">Danh mục</a>
+                <div class="arrow">/</div>
+                <div class="product"><?php if (isset($_GET['category'])) {
+                                            echo $_GET['category'];
+                                        } else {
+                                            echo $product_name;
+                                        }
+
+                                        ?></div>
             </div>
             <div class="shopping-container">
                 <div class="categoriesTab">
@@ -106,7 +118,7 @@
 
                         <div class="productsTab">
                             <div class="product-container">
-                                <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image">
+                                <img src="<?= $product['image_path'] ?>" alt="Ảnh sản phẩm" class="product-image">
                                 <div>
                                     <form action="index.php?role=staff&action=insertCart&deviceID=<?= $product['equipment_id'] ?>" method="post">
                                         <div class="number-selector">
@@ -114,32 +126,17 @@
                                             <input name="equipment_quantity" type="number" min="1" value="1">
                                         </div>
                                         <br>
-                                        <div class="green-text">
-                                            <span class="checkmark">&#10004;</span> Hà Nội: 094233244 - 098372131
-                                        </div>
-                                        <div class="green-text">
-                                            <span class="checkmark">&#10004;</span> Đảm bảo hàng mới 100% nguyên đai nguyên kiện
-                                        </div>
-                                        <div class="green-text">
-                                            <span class="checkmark">&#10004;</span> Dịch vụ hỗ trợ 24/7
-                                        </div>
-                                        <div class="green-text">
-                                            <span class="checkmark">&#10004;</span> Giao hàng tận nơi khu vực nội thành Hà Nội
-                                        </div>
+                                        
 
                                         <input name="equipment_name" value="<?= $product['name'] ?>" hidden>
-                                        <button type="submit" style="background-color: red;width:150px;height:50px;color:white;font-size: 20px; border-radius: 5px; cursor: pointer;">Thêm</button>
+                                        <button class="active" type="submit" style="width:150px;height:50px;color:white;font-size: 20px; border-radius: 5px; cursor: pointer;">Thêm</button>
                                     </form>
                                 </div>
                             </div>
                             <div class="info-container">
                                 <div class="spec-title">Thông số kĩ thuật</div>
                                 <div class="red-line"></div>
-                                <div class="product-name">Sản phẩm Ricoh P C200W</div>
-                                <br>
-                                <div class="product-info">Chức năng: in</div>
-                                <div class="product-info">Thời gian khởi động: 60.7 s</div>
-                                <div class="product-info">DKM long, vietbiz nó đéo cho copy mệt vãi lồn</div>
+                                <div><?= $product['equipment_description'] ?></div>
                             </div>
                         </div>
                     <?php } ?>
@@ -165,253 +162,211 @@
         });
     </script>
 </body>
-<!-- <style>
-    .cookieCrumb {
-        margin-top: 10px;
-        width: 100%;
-        padding-left: 65px;
-        display: flex;
-        font-size: 20px;
-    }
-
-    .cookieCrumb i {
-        font-size: 23px;
-
-    }
-
-    .filterTab {
-        background-color: lightgray;
-        height: 100px;
-        width: 70vw;
-        border-radius: 5px;
-        box-shadow: 0px 2px 15px 3px rgba(186, 200, 204, 0.598);
-    }
-
-    .productsTab {
-        background-color: white;
-        height: 1000px;
-        width: 70vw;
-        margin-top: 20px;
-        margin-bottom: 50px;
-        box-shadow: 0px 2px 15px 3px rgba(186, 200, 204, 0.598);
-    }
-
+<style>
     .label {
+    
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>
         border: 6px solid red;
         background-color: red;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-    }
+        <?php
+                break;
+            case 'maintenance':
+        ?>
+        border: 6px solid blue;
+        background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border: 6px solid #DBAB06;
+        background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border: 6px solid #0AC10A;
+        background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.progress-status {
+    display: flex;
+    z-index: 1;
+    top: 190px;
+    left: 0;
+    width: 10px;
+    position: absolute;
+    height: 10px;
+    width: 37%;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+}
+.active {
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+}
+.user-options {
 
-    .categoriesTab {
-        box-shadow: 0px 2px 15px 3px rgba(186, 200, 204, 0.598);
-        width: 300px;
-        height: 100%;
-        border-radius: 5px;
-    }
+display: flex;
+flex-direction: column;
+/* justify-content: center; */
+align-items: center;
+background-color: white;
+height: 100%;
+/* Set height to 100% to fill the available space */
+position: relative;
+/* top: 140px; */
+width: 100%;
+border-top: 10px solid grey;
+<?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-bottom: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
 
-    .shopping-container {
-        display: flex;
-        width: 100%;
-        margin-top: 10px;
-        justify-content: space-around;
-    }
+/* overflow: auto; */
+/* Enable scrolling when content exceeds the container's height */
+}
+.product-title{
+    font-size: 32px;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+}
 
-    * {
-        font-family: 'Roboto', sans-serif;
-    }
+.spec-title {
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+    font-weight: bold;
+    font-size: 24px;
+}
 
-    .rectangle {
-        height: 200px;
-        width: 400px;
-    }
+.red-line {
+    height: 1px;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+    margin-bottom: 10px;
+}
 
-    .square {
-        height: 200px;
-        width: 200px;
-    }
-
-    .progress-status {
-        display: flex;
-        z-index: 1;
-        top: 190px;
-        left: 0;
-        position: absolute;
-        height: 10px;
-        width: 37%;
-        background-color: red;
-    }
-
-    .active {
-        background-color: red;
-    }
-
-    .non-active {
-        background-color: lightgrey;
-    }
-
-    .progress-bar {
-        z-index: 2;
-        top: 29px;
-        position: relative;
-        display: flex;
-        width: 100%;
-        justify-content: space-around;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-    }
-
-    .outter-circle {
-        height: 50px;
-        width: 50px;
-        background-color: white;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0px 2px 15px 3px rgba(186, 200, 204, 0.598);
-    }
-
-    .inner-circle {
-        height: 20px;
-        width: 20px;
-        /* background-color: red; */
-        border-radius: 50%;
-    }
-
-    button {
-        background-color: transparent;
-        outline: none;
-        border: none;
-    }
-
-    body {
-        background-color: lightgrey;
-        margin: 0;
-        overflow-x: hidden;
-    }
-
-    .branch {
-        margin-right: 20px;
-        color: red;
-    }
-
-    .nav {
-        background-color: white;
-        color: white;
-        width: 100%;
-        height: 100px;
-        padding: 20px;
-
-    }
-
-    .footer {
-        background-color: rgb(26, 26, 47);
-        height: 100px;
-    }
-
-    .total-container {
-        display: flex;
-        flex-direction: column;
-        /* justify-content: center; */
-        /* Align content vertically */
-        align-items: center;
-        /* Align content horizontally */
-        min-height: 100vh;
-        /* Use min-height instead of height */
-    }
-
-    .user-options {
-
-        display: flex;
-        flex-direction: column;
-        /* justify-content: center; */
-        align-items: center;
-        background-color: white;
-        height: 100%;
-        /* Set height to 100% to fill the available space */
-        position: relative;
-        width: 100%;
-        border-top: 10px solid grey;
-        border-bottom: 10px solid red;
-        /* overflow: auto; */
-        /* Enable scrolling when content exceeds the container's height */
-    }
-
-
-
-    .option-box {
-        background-color: red;
-        margin-right: 10px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0px 10px 15px 3px lightblue;
-    }
-
-    .option-box:hover {
-        cursor: pointer;
-    }
-
-    .option-box h3 {
-        color: white;
-    }
-
-    .footer {
-        width: 100%;
-    }
-
-    .sidebar-toggle-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: transparent;
-        border: none;
-        outline: none;
-        cursor: pointer;
-    }
-
-    .sidebar-toggle-btn i {
-        color: grey;
-        font-size: 24px;
-    }
-
-    .sidebar {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 300px;
-        /* Adjust the width as needed */
-        height: 100%;
-        background-color: white;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        transform: translateX(100%);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .sidebar.active {
-        transform: translateX(0%);
-    }
-
-    .sidebar-close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: transparent;
-        border: none;
-        outline: none;
-        cursor: pointer;
-    }
-
-    .sidebar-close-btn i {
-        color: grey;
-        font-size: 24px;
-    }
-</style> -->
-
+</style>
 </html>

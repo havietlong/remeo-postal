@@ -298,9 +298,11 @@ function fetchUser_requests()
         }
     } else if ($staff_role == 3) {
         if (!isset($_GET['requestType'])) {
-            $sql = "SELECT user_requests.*, postalstaff.*
+            $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
-            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`";
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
+            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`";
 
             // Execute the query
             $request = mysqli_query($connect, $sql);
@@ -341,9 +343,11 @@ function fetchUser_requests()
         }
     }else{
         if (!isset($_GET['requestType'])) {
-            $sql = "SELECT user_requests.*, postalstaff.*
+            $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
-            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`";
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
+            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`";
 
             // Execute the query
             $request = mysqli_query($connect, $sql);
@@ -633,7 +637,7 @@ function acceptMaintenance()
     $id = (int)$idGet;
     $conn = mysqli_connect('localhost', 'root', '', 'remeo_postal');
     $sql = " UPDATE user_requests
-    SET status = 3
+    SET status_id = 3
     WHERE id = $id";
     $rs = mysqli_query($conn, $sql);
     if ($rs == true) {

@@ -83,7 +83,7 @@ function fetchProduct()
         $sql = "SELECT * From equipment WHERE category_id = $category_id AND manufacturer_id =  $manufacturer_id";
     } else if (isset($_GET['category']) && isset($_GET['deviceType'])) {
         $sql = "SELECT * From equipment WHERE type_id = $type_id AND category_id = $category_id";
-    }else if (isset($_GET['deviceDetail']) && isset($_GET['deviceType'])) {
+    } else if (isset($_GET['deviceDetail']) && isset($_GET['deviceType'])) {
         $sql = "SELECT * From equipment WHERE equipment_id = $deviceDetail AND category_id = $category_id";
     } else {
         $sql = "SELECT * From equipment WHERE category_id = $category_id";
@@ -119,12 +119,12 @@ function fetchCategories()
         include 'connections/closeConnect.php';
         return $categories;
     } else if ($deviceType == 'charger') {
-        $sql = "SELECT * FROM equipmenttype ";
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (24)";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
     } else {
-        $sql = "SELECT * FROM equipmenttype";
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (25)";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
@@ -133,7 +133,7 @@ function fetchCategories()
 
 function fetchBrand()
 {
-   $deviceType = $_GET['deviceType'];
+    $deviceType = $_GET['deviceType'];
     switch ($deviceType) {
         case 'conveyor':
             $category_id = 10;
@@ -186,12 +186,12 @@ function fetchBrand()
                 break;
         }
         include "connections/openConnect.php";
-    $sql = "SELECT distinct manufacturer.name
+        $sql = "SELECT distinct manufacturer.name
     FROM equipment 
     INNER JOIN manufacturer ON equipment.manufacturer_id = manufacturer.manufacturer_id where category_id = $category_id AND type_id = $type_id ";
-    $brands = mysqli_query($connect, $sql);
-    include "connections/closeConnect.php";
-    return $brands;
+        $brands = mysqli_query($connect, $sql);
+        include "connections/closeConnect.php";
+        return $brands;
     }
     include "connections/openConnect.php";
     $sql = "SELECT distinct manufacturer.name
@@ -215,8 +215,8 @@ function createUser_requests()
     $staff_id = mysqli_real_escape_string($connect, $staff_id);
 
     // Build the SQL query string
-    $sql = "INSERT INTO user_requests (staff_id, request_text, request_date, status,request_type) 
-            VALUES ('$staff_id', '$reason', NOW(), 'Pending', $request_type)";
+    $sql = "INSERT INTO user_requests (staff_id, request_text, request_date,status_id,request_type) 
+            VALUES ('$staff_id', '$reason', NOW(), 1, $request_type)";
     var_dump($sql);
     // Execute the query
     mysqli_query($connect, $sql);
@@ -253,20 +253,30 @@ function insertEquipment_requests()
         $sql = "INSERT INTO equipment_requests(request_id,equipment_id,quantity) VALUES ($request_id,'$product_id',$count)";
         // var_dump($sql);
         mysqli_query($connect, $sql);
-        
     }
     mysqli_close($connect);
 }
 
-function fetchUser_requests(){
+function fetchUser_requests()
+{
     $staff_id = $_SESSION['user_id'];
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT user_requests.*, postalstaff.*
-    FROM `user_requests`
-    INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+    if($_SESSION['branch']!=4){
+    $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
+            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`
     WHERE `user_requests`.`staff_id` = $staff_id";
+    }else{
+    $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
+            FROM `user_requests`
+            INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
+            INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
+            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`";    
+    }
 
     // Execute the query
     $request = mysqli_query($connect, $sql);
@@ -276,8 +286,9 @@ function fetchUser_requests(){
     return $request;
 }
 
-function fetchEquipment_requests(){
-  
+function fetchEquipment_requests()
+{
+
     include "connections/openConnect.php";
 
     // Build the SQL query string
@@ -458,13 +469,13 @@ function validateRole()
         $_SESSION['user_id'] = $staff['staff_id'];
         $_SESSION['user_type'] = 'staff';
         $staff_role = $staff['role_id'];
-        if($staff_role==1){
+        if ($staff_role == 1) {
             return 1;
-        }elseif($staff_role==2){
+        } elseif ($staff_role == 2) {
             return 2;
-        }elseif($staff_role==3){
+        } elseif ($staff_role == 3) {
             return 3;
-        }elseif($staff_role==4){
+        } elseif ($staff_role == 4) {
             return 4;
         }
     }
@@ -549,6 +560,95 @@ if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
 
+function finishRequest()
+{
+    $id = $_GET['request_id'];
+    include './connections/openConnect.php';
+    $sql = "UPDATE user_requests
+    SET status_id = 5
+    WHERE id = $id";
+    mysqli_query($connect, $sql);
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    include 'connections/closeConnect.php';
+}
+
+function fetchMaintenanceInfo()
+{
+    include "connections/openConnect.php";
+    $sql = "SELECT * FROM item";
+    $categories = mysqli_query($connect, $sql);
+    include 'connections/closeConnect.php';
+    return $categories;
+}
+
+function insertMaintenance_requests()
+{
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $dynamicDeviceTypes = array();
+        $dynamicDeviceNames = array();
+        $index = 1; // Start with index 1, as the first input and select elements have no index
+
+        while (isset($_POST['device-type-' . $index]) && isset($_POST['device-serial-' . $index])) {
+            $dynamicDeviceTypes[] = $_POST['device-type-' . $index];
+            $dynamicDeviceNames[] = $_POST['device-serial-' . $index];
+            $index++;
+        }
+
+
+
+
+        $connect = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+        $sql = "SELECT * FROM user_requests WHERE request_type = 2 ORDER BY id DESC LIMIT 1 ";
+        $result = mysqli_query($connect, $sql);
+        $latestRequest = mysqli_fetch_assoc($result);
+        $request_id = $latestRequest['id'];
+
+        for ($i = 0; $i < count($dynamicDeviceTypes); $i++) {
+            // echo "Device Type " . ($i + 1) . ": " . $dynamicDeviceTypes[$i] . "<br>";
+            // echo "Device Name " . ($i + 1) . ": " . $dynamicDeviceNames[$i] . "<br>";
+
+            // Replace "type_id here" and "serial_number here" with the corresponding array elements
+            $typeId = $dynamicDeviceTypes[$i];
+            $serialNumber = $dynamicDeviceNames[$i];
+
+            $sql = "INSERT INTO maintenance_requests(user_request_id, type_id, serial_number) VALUES ($request_id, $typeId, '$serialNumber')";
+            var_dump($sql);
+            mysqli_query($connect, $sql);
+        }
+    }
+
+    // Close the database connection after the insertions
+    mysqli_close($connect);
+}
+
+function fetchSerial()
+{
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
+    $item_serials = mysqli_query($connect, $sql);
+    include 'connections/closeConnect.php';
+    return $item_serials;
+}
+
+function fetchMaintenance_requests()
+{
+
+    include "connections/openConnect.php";
+
+    // Build the SQL query string
+    $sql = "SELECT maintenance_requests.*, equipment.*
+    FROM `maintenance_requests`
+    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+
+    // Execute the query
+    $maintenance_requests = mysqli_query($connect, $sql);
+
+    // Close the database connection
+    include "connections/closeConnect.php";
+    return $maintenance_requests;
+}
 
 //Kiểm tra hành động hiện tại
 switch ($action) {
@@ -561,6 +661,15 @@ switch ($action) {
         $categories = fetchCategories();
         $brands = fetchBrand();
         break;
+    case 'maintenance':
+        $categories = fetchCategories();
+        $serials = fetchMaintenanceInfo();
+        break;
+    case 'maintenance_request':
+        createUser_requests();
+        insertMaintenance_requests();
+        break;
+            
         // case 'productPage':
         //     $product = productPage();
         //     break;
@@ -576,6 +685,11 @@ switch ($action) {
     case 'manage_requests':
         $requests = fetchUser_requests();
         $request_details = fetchEquipment_requests();
+        $maintenance_details = fetchMaintenance_requests();
+        $item_serials = fetchSerial();
+        break;
+    case 'finish_requests':
+        finishRequest();
         break;
         // case 'removeCart':
         //     removeCart();

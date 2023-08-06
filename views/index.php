@@ -22,6 +22,7 @@
         <div class="progress-status">
         </div>
         <div class="user-options">
+            
             <?php
             switch ($role) {
                 case 'staff': ?>

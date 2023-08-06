@@ -62,6 +62,7 @@ if (isset($_GET['category'])) {
                 </button>
                 <!-- Add your sidebar content here -->
             </div>
+            <br>
             <div class="cookieCrumb">
                 <a href="index.php?role=<?= $role ?>&action=install"><i class='bx bx-home'></i></a>
                 <div class="arrow">/</div>
@@ -163,5 +164,134 @@ if (isset($_GET['category'])) {
         });
     </script>
 </body>
+<style>
+    .label {
+    
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>
+        border: 6px solid red;
+        background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>
+        border: 6px solid blue;
+        background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border: 6px solid #DBAB06;
+        background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border: 6px solid #0AC10A;
+        background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.progress-status {
+    display: flex;
+    z-index: 1;
+    top: 190px;
+    left: 0;
+    width: 10px;
+    position: absolute;
+    height: 10px;
+    width: 37%;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+}
+.active {
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+}
+.user-options {
 
+display: flex;
+flex-direction: column;
+/* justify-content: center; */
+align-items: center;
+background-color: white;
+height: 100%;
+/* Set height to 100% to fill the available space */
+position: relative;
+/* top: 140px; */
+width: 100%;
+border-top: 10px solid grey;
+<?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-bottom: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+
+/* overflow: auto; */
+/* Enable scrolling when content exceeds the container's height */
+}
+</style>
 </html>

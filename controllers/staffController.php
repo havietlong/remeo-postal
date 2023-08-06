@@ -75,6 +75,7 @@ switch ($action) {
         include_once 'models/staffModel.php';
         include_once 'views/Employee_step2_detail.php';
         break;
+   
         // case 'removeCart':
         //     include_once 'model/customerModel.php';
         //     break;  

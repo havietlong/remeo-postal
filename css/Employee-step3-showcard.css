@@ -64,20 +64,7 @@
         width: 200px;
     }
 
-    .progress-status {
-        display: flex;
-        z-index: 1;
-        top: 190px;
-        left: 0;
-        position: absolute;
-        height: 10px;
-        width: 37%;
-        background-color: red;
-    }
-
-    .active {
-        background-color: red;
-    }
+   
 
     .non-active {
         background-color: lightgrey;
@@ -156,23 +143,7 @@
         min-height: 100vh;
         /* Use min-height instead of height */
     }
-
-    .user-options {
-
-        display: flex;
-        flex-direction: column;
-        /* justify-content: center; */
-        align-items: center;
-        background-color: white;
-        height: 100%;
-        /* Set height to 100% to fill the available space */
-        position: relative;
-        width: 100%;
-        border-top: 10px solid grey;
-        border-bottom: 10px solid red;
-        /* overflow: auto; */
-        /* Enable scrolling when content exceeds the container's height */
-    }
+    
 
 
 

@@ -58,10 +58,11 @@ $role = $_GET['role'];
               $result = mysqli_query($connect, $sql);
               $row = mysqli_fetch_assoc($result);
               $name_product = $row['name'];
+              $image_product = $row['image_path'];
           ?>
               <div class="sideBarProduct" style="display: flex;align-items: center;">
                 <div class="siderBar_img">
-                  <img src="https://vietbis.vn/Image/Picture/Ricoh/ricoh-p-c200w.jpg" alt="Ảnh sản phẩm" class="product-image" style="width: 100px;height: auto;">
+                  <img src="<?= $image_product ?>" alt="Ảnh sản phẩm" class="product-image" style="width: 100px;height: auto;">
                 </div>
                 <div class="siderBar_right" style="display: flex;flex-direction: column;">
                   <div class="sideBar_name">
@@ -143,8 +144,6 @@ $role = $_GET['role'];
             </button>
           </a>
           <a href="index.php?role=maintenance&action=install&deviceType=generator">
-            <!-- index.php?role=staff&action=verifyRequest -->
-
             <button>
               <div class="option-box square">
                 <i class='bx bxs-bolt'></i>
@@ -152,7 +151,7 @@ $role = $_GET['role'];
               </div>
             </button>
           </a>
-          <a href="index.php?role=staff&action=verifyRequest">
+          <a href="index.php?role=maintenance&action=verifyRequest">
             <button>
               <div class="option-box square">
                 <h3>Tiếp</h3>

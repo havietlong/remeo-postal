@@ -15,10 +15,9 @@
     <div class="total-container">
         <?php include "views/components/navBar.php" ?>
         <div class="user-options">
-
             <h1>Bảo hành thiết bị</h1>
             <br>
-            <form id="maintenance-form" action="index.php?role=staff&action=maintenance_request" method="post">
+            <form id="maintenance-form" action="index.php?role=<?= $_GET['role'] ?>&action=maintenance_request" method="post">
                 <label for="device-name">Serial thiết bị</label>
                 <input type="text" name="request_type" id="device-name" value="2" hidden>
                 <input type="text" name="staff_id" id="staff-id" value="<?= $_SESSION['user_id'] ?>" hidden>
@@ -37,7 +36,8 @@
                         <!-- <input type="text" name="device-serial" class="device-name" required disabled> -->
                         <select name="device-serial" class="device-type" required disabled>
                             <option value="">Chọn serial thiết bị</option>
-                            <?php foreach ($serials as $serial) { ?>
+                            <?php foreach ($serials as $serial) { 
+                                ?>
                                 <option value="<?= $serial['serial_number'] ?>"><?= $serial['serial_number'] ?></option>
                             <?php } ?>
                         </select>
@@ -324,8 +324,52 @@
         /* Set height to 100% to fill the available space */
         /* position: relative; */
         width: 100%;
-        border-top: 10px solid red;
-        border-bottom: 10px solid red;
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-top: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-top: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-top: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-top: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-bottom: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
         /* overflow: auto; */
         /* Enable scrolling when content exceeds the container's height */
     }

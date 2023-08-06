@@ -35,12 +35,6 @@
     flex-wrap: wrap;
 }
 
-.label {
-    border: 6px solid red;
-    background-color: red;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
 
 .categoriesTab {
     box-shadow: 0px 2px 15px 3px rgba(186, 200, 204, 0.598);
@@ -70,21 +64,9 @@
     width: 200px;
 }
 
-.progress-status {
-    display: flex;
-    z-index: 1;
-    top: 190px;
-    left: 0;
-    width: 10px;
-    position: absolute;
-    height: 10px;
-    width: 37%;
-    background-color: red;
-}
 
-.active {
-    background-color: red;
-}
+
+
 
 .non-active {
     background-color: lightgrey;
@@ -159,23 +141,7 @@ body {
     /* Use min-height instead of height */
 }
 
-.user-options {
 
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    background-color: white;
-    height: 100%;
-    /* Set height to 100% to fill the available space */
-    position: relative;
-    /* top: 140px; */
-    width: 100%;
-    border-top: 10px solid grey;
-    border-bottom: 10px solid red;
-    /* overflow: auto; */
-    /* Enable scrolling when content exceeds the container's height */
-}
 
 
 

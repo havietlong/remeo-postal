@@ -56,7 +56,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         z-index: 999;
         width: 6cm;
-        height: 4cm;
+        height: 5cm;
 
     }
 

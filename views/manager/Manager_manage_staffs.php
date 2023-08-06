@@ -41,11 +41,11 @@
                                     <option value="">Chọn chi nhánh</option>
                                     <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
                                     <?php foreach ($centralOffices as $centralOffice) { ?>
-                                        <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['name'] ?></option>
+                                        <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
                                     <?php } ?>
                                     <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
                                     <?php foreach ($ruralOffices as $ruralOffice) { ?>
-                                        <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['name'] ?></option>
+                                        <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
                                     <?php } ?>
                                 </select>
                             </form>
@@ -266,8 +266,35 @@
     }
 
     .label {
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>
         border: 6px solid red;
         background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>
+        border: 6px solid blue;
+        background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border: 6px solid #DBAB06;
+        background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border: 6px solid #0AC10A;
+        background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
     }
@@ -403,8 +430,52 @@
         /* Set height to 100% to fill the available space */
         position: relative;
         width: 100%;
-        border-top: 10px solid red;
-        border-bottom: 10px solid red;
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-top: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-top: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-top: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-top: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
+        <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-bottom: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
         /* overflow: auto; */
         /* Enable scrolling when content exceeds the container's height */
     }

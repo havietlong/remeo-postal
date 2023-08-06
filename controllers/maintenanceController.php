@@ -20,7 +20,7 @@ switch ($action) {
         if (isset($deviceDetail)) {
             include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2_detail.php';
-        }else if (isset($deviceType)) {
+        } else if (isset($deviceType)) {
             include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2.php';
         } else {
@@ -28,27 +28,35 @@ switch ($action) {
         }
         break;
     case 'maintenance':
+        include_once 'models/maintenanceModel.php';
         include_once 'views/Employee_maintenance_form.php';
         break;
+        case 'maintenance_request':
+            include_once 'models/staffModel.php';
+            include_once 'views/Employee_maintenance_form.php';
+            break;
     case 'manage_requests':
-        include_once 'models/staffModel.php';
+        include_once 'models/maintenanceModel.php';
         include_once 'views/Employee_manage_requests.php';
         break;
     case 'verifyRequest':
         include_once 'views/Employee_step3_showCard.php';
         break;
     case 'verified':
-        include_once 'models/staffModel.php';
+        include_once 'models/maintenanceModel.php';
         include_once 'views/Employee_step4.php';
         break;
         // case 'productPage':
         //     include_once 'model/customerModel.php';
         //     include_once 'views/customer/product.php';
         //     break;
-        case 'insertCart':
-            include_once 'models/staffModel.php';
-            include_once 'views/Employee_step2_detail.php';
-            break;  
+    case 'insertCart':
+        include_once 'models/maintenanceModel.php';
+        include_once 'views/Employee_step2_detail.php';
+        break;
+    case 'finish_requests':
+        include_once 'models/maintenanceModel.php';
+        break;
         // case 'removeCart':
         //     include_once 'model/customerModel.php';
         //     break;  

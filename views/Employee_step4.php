@@ -46,7 +46,7 @@
     <div class="progress-status"></div>
     <div class="user-options">
       <img src="https://static.vecteezy.com/system/resources/previews/006/657/739/non_2x/payment-receipt-with-coin-cartoon-illustration-flat-isolated-object-free-vector.jpg">
-      <label class="message">Yêu cầu của bạn đã được gửi!</label><span>Bạn có thể quản lý yêu cầu <a href="index.php?role=staff&action=manage_requests" style="color: red;">tại đây</a></span>
+      <label class="message">Yêu cầu của bạn đã được gửi!</label><span>Bạn có thể quản lý yêu cầu <a href="index.php?role=<?= $_GET['role'] ?>&action=manage_requests" style="color: red;">tại đây</a></span>
     </div>
 
     <div class="footer">
@@ -105,11 +105,51 @@
     position: absolute;
     height: 10px;
     width: 100%;
-    background-color: red;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
   }
 
   .active {
-    background-color: red;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>background-color: red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>background-color: blue;
+        <?php
+                break;
+            case 'manager':
+        ?>background-color: #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>background-color: #0AC10A;
+        <?php
+                break;
+        }
+        ?>
   }
 
   .non-active {
@@ -201,7 +241,29 @@
     position: relative;
     width: 100%;
     border-top: 10px solid grey;
-    border-bottom: 10px solid red;
+    <?php
+        $role = $_GET['role'];
+        switch ($role) {
+            case 'staff':
+        ?>border-bottom: 10px solid red;
+        <?php
+                break;
+            case 'maintenance':
+        ?>border-bottom: 10px solid blue;
+        <?php
+                break;
+            case 'manager':
+        ?>
+        border-bottom: 10px solid #DBAB06;
+        <?php
+                break;
+            case 'director':
+        ?>
+        border-bottom: 10px solid #0AC10A;
+        <?php
+                break;
+        }
+        ?>
   }
 
   .user-options i {
