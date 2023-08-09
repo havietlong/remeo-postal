@@ -734,13 +734,16 @@ function fetchStaffsByOffice()
 
 function fetchStaffsByBranch()
 {
+
     $branch_id = $_SESSION['branch'];
+
     include './connections/openConnect.php';
     $sql = "SELECT * FROM postalstaff WHERE branch_id = $branch_id  AND role_id IN (1,2)";
     $result = mysqli_query($connect, $sql);
     return $result;
     include './connections/closeConnect.php';
 }
+
 
 function fetchRoles()
 {
@@ -846,6 +849,10 @@ switch ($action) {
     case 'send_request':
         sendRequestToStaff();
         break;
+        // case 'data_report':
+        //     $centralOffices = fetchCentralOffices();
+        //     $ruralOffices = fetchRuralOffices();
+        //     break;
 
         // case 'removeCart':
         //     removeCart();

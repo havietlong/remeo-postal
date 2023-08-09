@@ -1,3 +1,6 @@
+<?php if (!isset($requests)) {
+    $request = '';
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,14 +33,16 @@
         </div> -->
         <!-- <div class="progress-status"></div> -->
         <div class="user-options">
-
+            <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <div class="shopping-container">
                 <div class="left_section_step3">
                     <div class="categoriesTab">
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
                             <label><i>Chi nhánh</i></label>
-                            <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipmentsDirector" method="post">
+                            <form action="index.php?role=<?= $_GET['role'] ?>&action=displayRequests" method="post">
                                 <?php if ($_GET['role'] != 'director') { ?>
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
@@ -50,7 +55,7 @@
                                             <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
                                         <?php } ?>
                                     </select>
-                                <?php }else{?>
+                                <?php } else { ?>
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
@@ -74,128 +79,77 @@
 
                 </div>
                 <div class="right_section_step3">
-                    <h3>Văn phòng</h3>
+            
                     <div id="maintenance" class="productsTab">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Thiết bị</th>
-                                    <th>Tên</th>
-                                    <th>Số lượng</th>
+                                    <th>Ngày</th>
+                                    <th>Số Yêu Cầu</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $i = 0;
-                                if (isset($equipments))
-                                    foreach ($equipments as $equipment) {
-                                        if ($equipment['category_id'] == 7 || $equipment['category_id'] == 8 || $equipment['category_id'] == 9) {
-                                ?>
-                                        <tr>
-                                            <td><?= $equipment['equipment_id'] ?></td>
-                                            <td><img style="width: 120px;height:auto;" src="<?= $equipment['image_path'] ?>"></td>
-                                            <td><?= $equipment['name'] ?></td>
-                                            <td><?= $equipment['quantity'] ?></td>
+                                if (isset($requests))
+                                    foreach ($requests as $request) { ?>
+                                    <tr>
+                                        <td><?= $request['request_date'] ?></td>
+                                        <td><?= $request['request_count'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7">
+                                            <div class="panel">
+                                                <table>
+                                                    <tr>
+                                                        <th>Người yêu cầu</th>
+                                                        <th>Người triển khai</th>
+                                                        <th>Thời gian yêu cầu</th>
+                                                        <th>Thời gian triển khai</th>
+                                                        <th>Trạng thái</th>
+                                                        <th>Thiết bị yêu cầu</th>
+                                                    </tr>
 
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7">
-                                                <div class="panel">
-                                                    <!-- Content of the panel goes here -->
-                                                    <h3>Serial</h3>
-                                                    <table>
-                                                        <tr>
-                                                            <th>Serial</th>
-                                                            <th>Tình trạng</th>
-                                                            <th>Lệnh</th>
-                                                        </tr>
-                                                        <tbody>
-                                                            <?php
-                                                            foreach ($equipmentSerials as $equipmentSerial) {
-                                                                if ($equipmentSerial['equipment_id'] == $equipment['equipment_id']) { ?>
-                                                                    <tr>
-                                                                        <td><?= $equipmentSerial['serial_number'] ?></td>
-                                                                        <td><?= $equipmentSerial['status'] ?></td>
-                                                                        <td>null</td>
-                                                                    </tr>
-                                                            <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
+                                                    <?php
 
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    foreach ($requestDetails as $requestDetail) {
+                                                        $new_date = date("Y-m-d", strtotime($requestDetail['request_date']));
+                                                        $new_time = date("H:i:s", strtotime($requestDetail['request_date']));
+                                                        if ($new_date === $request['request_date']) {
+                                                    ?>
+                                                            <tr>
+                                                                <td><?= $requestDetail['name'] ?></td>
+                                                                <td><?php if($requestDetail['installer_name']) ?></td>
+                                                                <td><?= $new_time ?></td> 
+                                                                <td><?= $new_time ?></td>                                                      
+                                                                <td><?= $requestDetail['name_status'] ?></td>
+                                                                <td>
+                                                                    <div class="menu-container">
+                                                                        <ul class="menu">
+                                                                            <?php foreach ($item_serials as $item_serial) {   
+                                                                                $new_serial_date = date("Y-m-d", strtotime($item_serial['request_date']));                                                            
+                                                                                if ($item_serial['staff_id'] == $requestDetail['staff_id'] && $new_serial_date === $request['request_date']) {
+                                                                            ?>
+
+                                                                                    <li><a href="#home"><?= $item_serial['serial_number'] ?></a></li>
+                                                                            <?php }
+                                                                            } ?>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                    <?php }
+                                                    } ?>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php
-                                        }
-                                    } ?>
+                                    }
+                                ?>
                             </tbody>
                         </table>
                     </div>
-                    <h3>Bảo trì</h3>
-                    <div id="maintenance" class="productsTab">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Thiết bị</th>
-                                    <th>Tên</th>
-                                    <th>Số lượng</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $i = 0;
-                                if (isset($equipments))
-                                    foreach ($equipments as $equipment) {
-                                        if ($equipment['category_id'] == 10 || $equipment['category_id'] == 11 || $equipment['category_id'] == 12 || $equipment['category_id'] == 13) {
-                                ?>
-                                        <tr>
-                                            <td><?= $equipment['equipment_id'] ?></td>
-                                            <td><img style="width: 120px;height:auto;" src="<?= $equipment['image_path'] ?>"></td>
-                                            <td><?= $equipment['name'] ?></td>
-                                            <td><?= $equipment['quantity'] ?></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7">
-                                                <div class="panel">
-                                                    <!-- Content of the panel goes here -->
-                                                    <h3>Serial</h3>
-                                                    <table>
-                                                        <tr>
-                                                            <th>Serial</th>
-                                                            <th>Tình trạng</th>
-                                                            <th>Lệnh</th>
-                                                        </tr>
-                                                        <tbody>
-                                                            <?php
-                                                            foreach ($equipmentSerials as $equipmentSerial) {
-                                                                if ($equipmentSerial['equipment_id'] == $equipment['equipment_id']) { ?>
-                                                                    <tr>
-                                                                        <td><?= $equipmentSerial['serial_number'] ?></td>
-                                                                        <td><?= $equipmentSerial['status'] ?></td>
-                                                                        <td>null</td>
-                                                                    </tr>
-                                                            <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                <?php
-                                        }
-                                    } ?>
-                            </tbody>
-                        </table>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -215,6 +169,35 @@
     </script>
 </body>
 <style>
+    .menu-container {
+        width: 200px;
+        /* Adjust the width as needed */
+        height: 140px;
+        /* Adjust the height as needed */
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+    }
+
+    .menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu li {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .menu li a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .menu li a:hover {
+        color: #007bff;
+    }
+
     .left_section_step3 {
         display: flex;
         flex-direction: column;

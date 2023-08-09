@@ -367,7 +367,7 @@ function fetchUser_requests()
             FROM `user_requests`
             INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
             INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
-            ";
+            ";        
 
                 // Execute the query
                 $request = mysqli_query($connect, $sql);

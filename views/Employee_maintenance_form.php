@@ -15,6 +15,9 @@
     <div class="total-container">
         <?php include "views/components/navBar.php" ?>
         <div class="user-options">
+        <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <h1>Bảo hành thiết bị</h1>
             <br>
             <form id="maintenance-form" action="index.php?role=<?= $_GET['role'] ?>&action=maintenance_request" method="post">

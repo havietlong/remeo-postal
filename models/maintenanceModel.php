@@ -123,8 +123,13 @@ function fetchCategories()
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
+    } else if ($deviceType == 'generator') {
+        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (25";
+        $categories = mysqli_query($connect, $sql);
+        include 'connections/closeConnect.php';
+        return $categories;
     } else {
-        $sql = "SELECT * FROM equipmenttype WHERE type_id IN (25)";
+        $sql = "SELECT * FROM equipmenttype ";
         $categories = mysqli_query($connect, $sql);
         include 'connections/closeConnect.php';
         return $categories;
@@ -263,19 +268,19 @@ function fetchUser_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    if($_SESSION['branch']!=4){
-    $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
+    if ($_SESSION['branch'] != 4) {
+        $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
             INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
             INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
             INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`
     WHERE `user_requests`.`staff_id` = $staff_id";
-    }else{
-    $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
+    } else {
+        $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
             INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
             INNER JOIN `postaloffice` ON `postalstaff`.`office_id` = `postaloffice`.`office_id`
-            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`";    
+            INNER JOIN `request_status` ON `user_requests`.`status_id` = `request_status`.`status_id`";
     }
 
     // Execute the query
@@ -614,7 +619,6 @@ function insertMaintenance_requests()
             $serialNumber = $dynamicDeviceNames[$i];
 
             $sql = "INSERT INTO maintenance_requests(user_request_id, type_id, serial_number) VALUES ($request_id, $typeId, '$serialNumber')";
-            var_dump($sql);
             mysqli_query($connect, $sql);
         }
     }
@@ -623,7 +627,16 @@ function insertMaintenance_requests()
     mysqli_close($connect);
 }
 
-function fetchSerial()
+function fetchSerialStaff()
+{
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
+    $item_serials = mysqli_query($connect, $sql);
+    include 'connections/closeConnect.php';
+    return $item_serials;
+}
+
+function fetchSerialMaintenance()
 {
     include './connections/openConnect.php';
     $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
@@ -650,6 +663,14 @@ function fetchMaintenance_requests()
     return $maintenance_requests;
 }
 
+function fetchSerial(){
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
+    $item_serials = mysqli_query($connect, $sql);
+    include 'connections/closeConnect.php';
+    return $item_serials;
+}
+
 //Kiểm tra hành động hiện tại
 switch ($action) {
     case 'loginValidate':
@@ -669,7 +690,7 @@ switch ($action) {
         createUser_requests();
         insertMaintenance_requests();
         break;
-            
+
         // case 'productPage':
         //     $product = productPage();
         //     break;

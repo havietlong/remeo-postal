@@ -1,3 +1,6 @@
+<?php var_dump($requests); 
+var_dump($_SESSION['branch']);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,24 +38,6 @@
                 <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
             </div>
             <div class="shopping-container">
-                <div class="left_section_step3">
-                    <div class="categoriesTab">
-                        <div class="label"><b>DANH MỤC</b></div>
-                        <div class="label-content">
-                            <a href="index.php?role=staff&action=manage_requests" style="text-decoration: none;">
-                                <div class="type"><b>Tất cả</b></div>
-                            </a>
-                            <a href="index.php?role=staff&action=manage_requests&requestType=install" style="color: black;text-decoration: none;">
-                                <div class="type"><b>Lắp đặt</b></div>
-                            </a>
-                            <a href="index.php?role=staff&action=manage_requests&requestType=maintenance" style="color: black;text-decoration: none;">
-                                <div class="type"><b>Bảo hành</b></div>
-                            </a>
-
-                        </div>
-                    </div>
-
-                </div>
                 <div class="right_section_step3">
                     <?php if ($_SESSION['branch'] == 4) { ?>
                         <div class="productsTab">
@@ -161,7 +146,7 @@
                                 <tbody>
                                     <?php
                                     foreach ($requests as $request) {
-                                        if ($request['status_id'] == 4) {
+                                        if ($request['status_id'] === '4') {
                                             $i++ ?>
                                             <tr>
                                                 <td><?= $request['id'] ?></td>

@@ -341,7 +341,7 @@ function fetchUser_requests()
                     return $request;
             }
         }
-    }else{
+    } else {
         if (!isset($_GET['requestType'])) {
             $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
@@ -386,7 +386,6 @@ function fetchUser_requests()
                     return $request;
             }
         }
-
     }
 }
 
@@ -621,7 +620,7 @@ function cancleMaintenance()
     $rs = mysqli_query($conn, $sql);
     if ($rs == true) {
         // echo "Thêm thành công!";
-        header('Location:index.php?role=manager&action=manage_requests');
+        header('Location:index.php?role=director&action=manage_requests');
     } else {
         echo "Xoá thất bại: " . mysqli_error($conn);
     }
@@ -631,7 +630,7 @@ function cancleMaintenance()
 function acceptMaintenance()
 {
     if (!isset($_POST['submit'])) {
-        header('Location: index.php?role=manager&action=manage_requests');
+        header('Location: index.php?role=director&action=manage_requests');
     }
     (int)$idGet = $_POST['id'];
     $id = (int)$idGet;
@@ -642,7 +641,7 @@ function acceptMaintenance()
     $rs = mysqli_query($conn, $sql);
     if ($rs == true) {
         // echo "Thêm thành công!";
-        header('Location: index.php?role=manager&action=manage_requests');
+        header('Location: index.php?role=director&action=manage_requests');
     } else {
         echo "Xoá thất bại: " . mysqli_error($conn);
     }
@@ -744,7 +743,8 @@ function fetchRuralOffices()
     include './connections/closeConnect.php';
 }
 
-function fetchEquipmentsFromOffice(){
+function fetchEquipmentsFromOffice()
+{
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
     $sql = "SELECT equipment.equipment_id, equipment.name, equipment.category_id, equipment.image_path, COUNT(item.equipment_id) AS quantity
@@ -757,7 +757,8 @@ function fetchEquipmentsFromOffice(){
     include './connections/closeConnect.php';
 }
 
-function fetchEquipmentsFromOfficeSerial(){
+function fetchEquipmentsFromOfficeSerial()
+{
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
     $sql = "SELECT * FROM item WHERE office_id = $office_id  ";
@@ -766,7 +767,8 @@ function fetchEquipmentsFromOfficeSerial(){
     include './connections/closeConnect.php';
 }
 
-function fetchStaffsByOffice(){
+function fetchStaffsByOffice()
+{
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
     $sql = "SELECT * FROM postalstaff WHERE office_id = $office_id  ";
@@ -775,8 +777,9 @@ function fetchStaffsByOffice(){
     include './connections/closeConnect.php';
 }
 
-function fetchRoles(){
-   
+function fetchRoles()
+{
+
     include './connections/openConnect.php';
     $sql = "SELECT * FROM roles WHERE role_id IN (1,2)";
     $result = mysqli_query($connect, $sql);
@@ -784,7 +787,8 @@ function fetchRoles(){
     include './connections/closeConnect.php';
 }
 
-function alterStaff(){
+function alterStaff()
+{
     $id_staff = $_POST['id_staff'];
     $name = $_POST['name_staff'];
     $email = $_POST['email_staff'];
@@ -800,7 +804,65 @@ function alterStaff(){
     include './connections/closeConnect.php';
     header("location:index.php?role=manager&action=manage_staffs");
     return $result;
-    
+}
+
+function fetchOffices()
+{
+    if(!isset($office_id)){
+   
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postaloffice WHERE office_id ";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+    }else{
+        $office_id = $_POST['office'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postaloffice WHERE office_id = $office_id";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+   
+}
+
+function fetchUser_requestsDirector()
+{
+    include './connections/openConnect.php';
+    $sql = "SELECT DATE(request_date) AS request_date, COUNT(*) AS request_count FROM user_requests GROUP BY DATE(request_date) ORDER BY request_date";
+    var_dump($sql);
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+   
+}
+
+function fetchUser_requestsDirectorDetail(){
+    include './connections/openConnect.php';
+    $sql = "SELECT postalstaff.*,user_requests.*,request_status.name_status
+    FROM user_requests
+    JOIN postalstaff ON postalstaff.staff_id = user_requests.staff_id
+     JOIN request_status ON user_requests.status_id = request_status.status_id";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+
+function fetchSerial()
+{
+    include './connections/openConnect.php';
+    $sql = "SELECT
+    postalstaff.staff_id,
+    postalstaff.name AS staff_name,
+    item.serial_number,
+    user_requests.request_date
+FROM item
+JOIN equipment_requests ON item.equipment_id = equipment_requests.equipment_id
+JOIN user_requests ON equipment_requests.request_id = user_requests.id
+JOIN postalstaff ON user_requests.staff_id = postalstaff.staff_id";
+    $item_serials = mysqli_query($connect, $sql);
+    include 'connections/closeConnect.php';
+    return $item_serials;
 }
 
 //Kiểm tra hành động hiện tại
@@ -835,8 +897,7 @@ switch ($action) {
         acceptMaintenance();
         break;
     case 'manage_equipments':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+        $Offices = fetchOffices();
         break;
     case 'displayEquipments':
         $centralOffices = fetchCentralOffices();
@@ -845,19 +906,31 @@ switch ($action) {
         $equipmentSerials = fetchEquipmentsFromOfficeSerial();
         break;
     case 'manage_staffs':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+       $Offices = fetchOffices();
+    
         break;
     case 'displayStaffs':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+        $Offices = fetchOffices();
         $staffs = fetchStaffsByOffice();
         $roles = fetchRoles();
+        break;
+    case 'displayEquipmentsDirector':
+        $Offices = fetchOffices();
+        $equipments = fetchEquipmentsFromOffice();
+        $equipmentSerials = fetchEquipmentsFromOfficeSerial();
+        break;
+    case 'displayRequests':
+        $Offices = fetchOffices();
+        $requests = fetchUser_requestsDirector();
+        $requestDetails = fetchUser_requestsDirectorDetail();
+        $item_serials = fetchSerial();
         break;
     case 'alterStaffs':
         alterStaff();
         break;
-    
+    case 'data_report':
+        $Offices = fetchOffices();
+        break;
         // case 'removeCart':
         //     removeCart();
         //     break;

@@ -30,24 +30,45 @@
         </div> -->
         <!-- <div class="progress-status"></div> -->
         <div class="user-options">
+        <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <div class="shopping-container">
                 <div class="left_section_step3">
                     <div class="categoriesTab">
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
                             <label><i>Chi nhánh</i></label>
-                            <form action="index.php?role=manager&action=displayStaffs" method="post">
-                                <select name="office" onchange="this.form.submit()">
-                                    <option value="">Chọn chi nhánh</option>
-                                    <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
-                                    <?php foreach ($centralOffices as $centralOffice) { ?>
-                                        <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
-                                    <?php } ?>
-                                    <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
-                                    <?php foreach ($ruralOffices as $ruralOffice) { ?>
-                                        <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
-                                    <?php } ?>
-                                </select>
+                            <form action="index.php?role=<?= $_GET['role'] ?>&action=displayStaffs" method="post">
+                                <?php if ($_GET['role'] != 'director') { ?>
+                                    <select name="office" onchange="this.form.submit()">
+                                        <option value="">Chọn chi nhánh</option>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
+                                        <?php foreach ($centralOffices as $centralOffice) { ?>
+                                            <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
+                                        <?php } ?>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
+                                        <?php foreach ($ruralOffices as $ruralOffice) { ?>
+                                            <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                <?php } else { ?>
+                                    <select name="office" onchange="this.form.submit()">
+                                        <option value="">Chọn chi nhánh</option>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
+                                        <?php foreach ($Offices as $centralOffice) {
+                                            if ($centralOffice['isCentralOffice'] == 1) { ?>
+                                                <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
+                                        <?php }
+                                        } ?>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
+                                        <?php foreach ($Offices as $ruralOffice) {
+                                            if ($ruralOffice['isCentralOffice'] == 0) { ?>
+                                                <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
+                                        <?php }
+                                        } ?>
+                                    </select>
+                                <?php } ?>
                             </form>
 
                         </div>

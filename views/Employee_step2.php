@@ -114,7 +114,7 @@ if (isset($_GET['category'])) {
                         <?php foreach ($products as $product) {
                         ?>
                             <div class="product">
-                                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&deviceDetail=<?= $product['equipment_id'] ?>">
+                                <a style="text-decoration: none; color: black;" href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&deviceDetail=<?= $product['equipment_id'] ?>">
                                     <div class="product-container">
                                         <div class="product-items">
                                             <img src="<?= $product['image_path'] ?>" alt="Ảnh sản phẩm" class="product-image">

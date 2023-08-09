@@ -107,6 +107,14 @@
                 <?php break;
                 case 'director':
                 ?>
+                <a href="index.php?role=director&action=data_report">
+                        <button>
+                            <div class="option-box">
+                            <i class='bx bxs-bar-chart-alt-2'></i>
+                                <h3>Theo dõi thống kê</h3>
+                            </div>
+                        </button>
+                    </a>
                     <a href="index.php?role=director&action=manage_equipments">
                         <button>
                             <div class="option-box">

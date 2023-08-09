@@ -19,7 +19,7 @@ switch ($action) {
         if (isset($deviceDetail)) {
             include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2_detail.php';
-        }else if (isset($deviceType)) {
+        } else if (isset($deviceType)) {
             include_once 'models/maintenanceModel.php';
             include_once 'views/Employee_step2.php';
         } else {
@@ -43,9 +43,9 @@ switch ($action) {
     case 'insertCart':
         include_once 'models/staffModel.php';
         include_once 'views/Employee_step2_detail.php';
-        break;  
+        break;
     case 'cancle_maintenance':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_requests.php';
         break;
     case 'accept_maintenance':
@@ -53,27 +53,37 @@ switch ($action) {
         include_once 'views/manager/Manager_manage_requests.php';
         break;
     case 'manage_equipments':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_equipments.php';
         break;
-    
+
     case 'displayEquipments':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_equipments.php';
         break;
 
     case 'manage_staffs':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_staffs.php';
         break;
     case 'displayStaffs':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_staffs.php';
+        break;
+    case 'displayRequests':
+        include_once 'models/directorModel.php';
+        include_once 'views/manager/Manager_data_report.php';
+        break;
+    case 'displayEquipmentsDirector':
+        include_once 'models/directorModel.php';
+        include_once 'views/manager/Manager_manage_equipments.php';
         break;
     case 'alterStaffs':
-        include_once 'models/managerModel.php';
+        include_once 'models/directorModel.php';
         include_once 'views/manager/Manager_manage_staffs.php';
         break;
-    
-    }
-?>
+    case 'data_report':
+        include_once 'models/directorModel.php';
+        include_once 'views/manager/Manager_data_report.php';
+        break;
+}
