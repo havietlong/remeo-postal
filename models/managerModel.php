@@ -889,6 +889,19 @@ function addEquipmentInfo(){
     include './connections/closeConnect.php';
     header("Location: " . $_SERVER['HTTP_REFERER']);
 }
+
+function addSerialEquipmentInfo(){
+    include './connections/openConnect.php';
+    $equipment_id = $_POST['equipment_id'];
+    $serial_number = $_POST['serial'];
+    $type_id = $_POST['type_id'];
+    $sql = "INSERT INTO item (equipment_id, serial_number, office_id , type_id, status)
+    VALUES ( $equipment_id,'$serial_number',NULL,$type_id,1)";
+    mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+}
+
 //Kiểm tra hành động hiện tại
 switch ($action) {
     case 'loginValidate':
@@ -958,7 +971,9 @@ switch ($action) {
     case 'add_equipments_info':
         addEquipmentInfo();
         break;
-        
+    case 'add_serial_equipments_info':
+        addSerialEquipmentInfo();
+        break;
         // case 'data_report':
         //     $centralOffices = fetchCentralOffices();
         //     $ruralOffices = fetchRuralOffices();

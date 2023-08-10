@@ -114,8 +114,12 @@
                                                     </form>
 
                                                     <h3>Serial</h3>
-                                                    <form action="">
-                                                    <input name="serial">
+                                                    <form action="index.php?role=manager&action=add_serial_equipments_info" method="post">
+                                                    <input name="serial" required>
+                                                    <input name='equipment_id' value="<?=$equipment['equipment_id'] ?>" hidden>
+                                                    <input name='type_id' value="<?=$equipment['type_id'] ?>" hidden>
+                                                    <input name="limit" value="1" hidden>
+                                                    <button type="submit">Thêm</button>
                                                     </form>
                                                     
                                                 </div>

@@ -88,5 +88,8 @@ switch ($action) {
     case 'add_equipments_info':
         include_once 'models/managerModel.php';
         break;
+    case 'add_serial_equipments_info':
+        include_once 'models/managerModel.php';
+        break;
     }
 ?>
