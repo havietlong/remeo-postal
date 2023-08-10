@@ -79,6 +79,7 @@
                     </a>
                 <?php break;
                 case 'manager':
+                    if($_SESSION['branch']==='4'||$_SESSION['branch']==4){
                 ?>
                     <a href="index.php?role=manager&action=manage_equipments">
                         <button>
@@ -104,6 +105,40 @@
                             </div>
                         </button>
                     </a>
+                    <a href="index.php?role=manager&action=manage_equipments_info">
+                        <button>
+                            <div class="option-box">
+                            <i class='bx bx-edit-alt'></i>
+                                <h3>Quản lý thông tin thiết bị</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <?php }else{ ?>
+                         <a href="index.php?role=manager&action=manage_equipments">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-devices'></i>
+                                <h3>Quản lý thiết bị</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=manager&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý yêu cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=manager&action=manage_staffs">
+                        <button>
+                            <div class="option-box">
+                                <i class='bx bx-user'></i>
+                                <h3>Quản lý nhân viên</h3>
+                            </div>
+                        </button>
+                    </a>
+                  <?php  } ?>
                 <?php break;
                 case 'director':
                 ?>

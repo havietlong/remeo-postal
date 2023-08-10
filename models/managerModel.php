@@ -794,23 +794,101 @@ function sendRequestToStaff()
 
 function fetchOffices()
 {
-    if(!isset($office_id)){
-   
-    include './connections/openConnect.php';
-    $sql = "SELECT * FROM postaloffice ";
-    $result = mysqli_query($connect, $sql);
-    include './connections/closeConnect.php';
-    return $result;
-    }else{
+    if (!isset($office_id)) {
+
+        include './connections/openConnect.php';
+        $sql = "SELECT * FROM postaloffice ";
+        $result = mysqli_query($connect, $sql);
+        include './connections/closeConnect.php';
+        return $result;
+    } else {
         $office_id = $_POST['office'];
-    include './connections/openConnect.php';
-    $sql = "SELECT * FROM postaloffice WHERE office_id = $office_id";
-    $result = mysqli_query($connect, $sql);
-    include './connections/closeConnect.php';
-    return $result;
-}
+        include './connections/openConnect.php';
+        $sql = "SELECT * FROM postaloffice WHERE office_id = $office_id";
+        $result = mysqli_query($connect, $sql);
+        include './connections/closeConnect.php';
+        return $result;
+    }
 }
 
+function fetchEquipments(){
+    include './connections/openConnect.php';
+        $sql = "SELECT * FROM equipment ORDER BY equipment_id DESC";
+        $result = mysqli_query($connect, $sql);
+        include './connections/closeConnect.php';
+        return $result;
+}
+
+function fetchEquipmentNums(){
+    include './connections/openConnect.php';
+    $sql = "SELECT
+    equipment_id,
+    COUNT(*) AS equipment_count
+FROM
+    item
+WHERE
+    office_id IS NULL
+GROUP BY
+    equipment_id";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+
+function fetchManufacturer(){
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM manufacturer";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+
+function fetchType(){
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM equipmenttype";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+
+function fetchCategoryTotal(){
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM category";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+
+function alterEquipmentInfo(){
+    $name = $_POST['name'];
+    $equipment_id = $_POST['equipment_id'];
+    $equipment_description = $_POST['equipment_description'];
+    $image_path = $_POST['image_path'];
+    $type_id = $_POST['type_id'];
+    $manufacturer_id = $_POST['manufacturer_id'];
+    $category_id = $_POST['category_id'];
+
+    include './connections/openConnect.php';
+    $sql = "UPDATE equipment
+    SET type_id = $type_id, name = '$name', image_path = '$image_path', manufacturer_id = $manufacturer_id, category_id = $category_id, equipment_description = '$equipment_description'
+    WHERE equipment_id = $equipment_id;
+    ";
+
+    mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+      header("Location: " . $_SERVER['HTTP_REFERER']);
+}
+
+function addEquipmentInfo(){
+    include './connections/openConnect.php';
+    $sql = "INSERT INTO equipment (type_id, name, image_path, manufacturer_id, category_id, equipment_description)
+    VALUES (NULL,NULL,NULL,NULL,NULL,NULL);
+    ";
+
+    mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+}
 //Kiểm tra hành động hiện tại
 switch ($action) {
     case 'loginValidate':
@@ -867,6 +945,20 @@ switch ($action) {
     case 'send_request':
         sendRequestToStaff();
         break;
+    case 'manage_equipments_info':
+        $Equipments = fetchEquipments();
+        $EquipmentNums = fetchEquipmentNums();
+        $Manufacturers = fetchManufacturer();
+        $Categories = fetchCategoryTotal();
+        $Types = fetchType();
+        break;
+    case 'alter_equipments_info':
+        alterEquipmentInfo();
+        break;
+    case 'add_equipments_info':
+        addEquipmentInfo();
+        break;
+        
         // case 'data_report':
         //     $centralOffices = fetchCentralOffices();
         //     $ruralOffices = fetchRuralOffices();

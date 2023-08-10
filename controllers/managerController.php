@@ -78,6 +78,15 @@ switch ($action) {
         include_once 'models/managerModel.php';
         include_once 'views/manager/Manager_manage_requests.php';
         break;
-    
+    case 'manage_equipments_info':
+        include_once 'models/managerModel.php';
+        include_once 'views/manager/Manager_manage_equipments_info.php';
+        break;
+    case 'alter_equipments_info':
+        include_once 'models/managerModel.php';
+        break;
+    case 'add_equipments_info':
+        include_once 'models/managerModel.php';
+        break;
     }
 ?>
