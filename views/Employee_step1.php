@@ -84,6 +84,13 @@ $role = $_GET['role'];
       <?php
       switch ($role) {
         case 'staff': ?>
+        <a href="index.php?role=staff&action=index">
+            <button>
+              <div class="option-box square">
+                <h3>Trở lại</h3>
+              </div>
+            </button>
+          </a>
           <a href="index.php?role=staff&action=install&deviceType=computerParts">
             <button>
               <div class="option-box rectangle">
@@ -119,6 +126,13 @@ $role = $_GET['role'];
         <?php
           break;
         case 'maintenance': ?>
+        <a href="index.php?role=maintenance&action=index">
+            <button>
+              <div class="option-box square">
+                <h3>Trở lại</h3>
+              </div>
+            </button>
+          </a>
           <a href="index.php?role=maintenance&action=install&deviceType=conveyor">
             <button>
               <div class="option-box rectangle">

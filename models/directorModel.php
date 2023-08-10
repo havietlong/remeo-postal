@@ -413,9 +413,10 @@ function fetchMaintenance_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT maintenance_requests.*, equipment.*
+    $sql = "SELECT maintenance_requests.*, item.*,equipment.*
     FROM `maintenance_requests`
-    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+    INNER JOIN `item` ON `maintenance_requests`.`serial_number` = `item`.`serial_number`
+    INNER JOIN `equipment` ON `item`.`equipment_id` = `equipment`.`equipment_id`";
 
     // Execute the query
     $maintenance_requests = mysqli_query($connect, $sql);
@@ -629,12 +630,23 @@ function cancleMaintenance()
 
 function acceptMaintenance()
 {
+    $office_id = $_GET['office_id'];
+    $limit = $_GET['limit'];
+    $equipment_id = $_GET['equipment_id'];
     if (!isset($_POST['submit'])) {
         header('Location: index.php?role=director&action=manage_requests');
     }
     (int)$idGet = $_POST['id'];
     $id = (int)$idGet;
     $conn = mysqli_connect('localhost', 'root', '', 'remeo_postal');
+
+    $sql = "UPDATE item
+    SET office_id = $office_id 
+    WHERE equipment_id = $equipment_id 
+    LIMIT $limit;
+    ";
+    mysqli_query($conn, $sql);
+
     $sql = " UPDATE user_requests
     SET status_id = 3
     WHERE id = $id";
@@ -811,7 +823,7 @@ function fetchOffices()
     if(!isset($office_id)){
    
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM postaloffice WHERE office_id ";
+    $sql = "SELECT * FROM postaloffice ";
     $result = mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
     return $result;
@@ -830,7 +842,6 @@ function fetchUser_requestsDirector()
 {
     include './connections/openConnect.php';
     $sql = "SELECT DATE(request_date) AS request_date, COUNT(*) AS request_count FROM user_requests GROUP BY DATE(request_date) ORDER BY request_date";
-    var_dump($sql);
     $result = mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
     return $result;
@@ -839,10 +850,19 @@ function fetchUser_requestsDirector()
 
 function fetchUser_requestsDirectorDetail(){
     include './connections/openConnect.php';
-    $sql = "SELECT postalstaff.*,user_requests.*,request_status.name_status
-    FROM user_requests
-    JOIN postalstaff ON postalstaff.staff_id = user_requests.staff_id
-     JOIN request_status ON user_requests.status_id = request_status.status_id";
+    $sql = "SELECT 
+    postalstaff1.*, 
+    postalstaff2.name as installer_name, 
+    user_requests.*, 
+    request_status.name_status
+FROM 
+    user_requests
+JOIN 
+    postalstaff AS postalstaff1 ON postalstaff1.staff_id = user_requests.staff_id
+JOIN 
+    postalstaff AS postalstaff2 ON postalstaff2.staff_id = user_requests.installer_id 
+JOIN 
+    request_status ON user_requests.status_id = request_status.status_id";
     $result = mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
     return $result;

@@ -1,6 +1,4 @@
-<?php var_dump($requests); 
-var_dump($_SESSION['branch']);
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 

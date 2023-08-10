@@ -30,27 +30,34 @@
         </div> -->
         <!-- <div class="progress-status"></div> -->
         <div class="user-options">
-
+        <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <div class="shopping-container">
                 <div class="left_section_step3">
                     <div class="categoriesTab">
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
                             <label><i>Chi nhánh</i></label>
-                            <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipmentsDirector" method="post">
-                                <?php if ($_GET['role'] != 'director') { ?>
+                            <?php 
+                            if ($_GET['role'] === 'director') { ?>
+                                <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipmentsDirector" method="post">
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
-                                        <?php foreach ($centralOffices as $centralOffice) { ?>
+                                        <?php foreach ($Offices as $centralOffice) { 
+                                            if($centralOffice['isCentralOffice']==1){?>
                                             <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
-                                        <?php } ?>
+                                        <?php }} ?>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
-                                        <?php foreach ($ruralOffices as $ruralOffice) { ?>
+                                        <?php foreach ($Offices as $ruralOffice) { 
+                                            if($ruralOffice['isCentralOffice']==0){?>
                                             <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
-                                        <?php } ?>
+                                        <?php }} ?>
                                     </select>
-                                <?php }else{?>
+                                </form>
+                            <?php } else { ?>
+                                <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipments" method="post">
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
@@ -66,12 +73,10 @@
                                         <?php }
                                         } ?>
                                     </select>
-                                <?php } ?>
-                            </form>
-
+                                </form>
+                            <?php } ?>
                         </div>
                     </div>
-
                 </div>
                 <div class="right_section_step3">
                     <h3>Văn phòng</h3>

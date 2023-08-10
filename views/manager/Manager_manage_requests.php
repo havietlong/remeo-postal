@@ -1,3 +1,6 @@
+<?php
+$request = mysqli_fetch_assoc($request_details);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,8 +35,11 @@
         </div> -->
         <!-- <div class="progress-status_id"></div> -->
         <div class="user-options">
+        <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <div class="shopping-container">
-            
+
                 <div class="right_section_step3">
                     <?php if ($_SESSION['branch'] == 4) { ?>
                         <h3>Nội bộ</h3>
@@ -51,7 +57,7 @@
                                     <?php
                                     $i = 0;
                                     foreach ($requests as $request) {
-                                        if ($request['branch_id'] == $_SESSION['branch'] && $request['status_id'] == 1 ){
+                                        if ($request['branch_id'] == $_SESSION['branch'] && $request['status_id'] == 1) {
                                             $i++ ?>
                                             <tr>
                                                 <td><?= $request['id'] ?></td>
@@ -133,7 +139,7 @@
                             </table>
                         </div>
                         <h3>Đang xử lý</h3>
-                        <div  class="productsTab">
+                        <div class="productsTab">
                             <table>
                                 <thead>
                                     <tr>
@@ -152,7 +158,7 @@
                                         if ($request['status_id'] == 2) {
                                     ?>
                                             <tr>
-                                            <td><?= $request['id'] ?></td>
+                                                <td><?= $request['id'] ?></td>
                                                 <td><?php if ($request['request_type'] == 1) {
                                                         echo "Lắp đặt";
                                                     } else {
@@ -241,7 +247,7 @@
                                     <?php
                                     $i = 0;
                                     foreach ($requests as $request) {
-                                        if ($request['status_id'] == 3  ) {
+                                        if ($request['status_id'] == 3) {
                                     ?>
                                             <tr>
                                                 <td><?= $request['id'] ?></td>
@@ -333,10 +339,10 @@
                                                             <div class="div">
                                                                 <input name="id" value="<?= $request['id'] ?>" hidden>
                                                                 <select name="staff_id">
-                                                                    <?php foreach ($staffs as $staff) {?>
-                                                                       
-                                                                            <option value="<?= $staff['staff_id'] ?>"><?= $staff['name'] ?> </option>
-                                                                  
+                                                                    <?php foreach ($staffs as $staff) { ?>
+
+                                                                        <option value="<?= $staff['staff_id'] ?>"><?= $staff['name'] ?> </option>
+
                                                                     <?php } ?>
 
                                                                 </select>
@@ -355,7 +361,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
 
 
 
@@ -368,7 +374,7 @@
                                         <th>ID</th>
                                         <th>Loại yêu cầu</th>
                                         <th>Người yêu cầu</th>
-                                        <th>Lệnh</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -386,16 +392,7 @@
                                                     } ?></td>
                                                 <td><?= $request['name'] ?></td>
 
-                                                <td>
-                                                    <form action="index.php?role=director&action=cancle_maintenance" method="POST" enctype="multipart/form-data">
-                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
-                                                        <button name="submit" type="submit">Hủy</button>
-                                                    </form>
-                                                    <form action="index.php?role=director&action=accept_maintenance" method="POST" enctype="multipart/form-data">
-                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
-                                                        <button name="submit" type="submit">Chấp Thuận</button>
-                                                    </form>
-                                                </td>
+
                                             </tr>
                                             <tr>
                                                 <td colspan="7">
@@ -408,30 +405,52 @@
                                                                 <th>Hình ảnh thiết bị</th>
                                                                 <th>Tên thiết bị</th>
                                                                 <th>Số lượng</th>
+                                                                <th>Lệnh</th>
                                                             </tr>
                                                             <tbody>
                                                                 <?php
-                                                                if ($request['request_type'] == 2) {
-
+                                                                if ($request['request_type'] == 2) {                            
                                                                     foreach ($maintenance_details as $maintenance_detail) {
-
+                                                                        $limit = 1;
+                                                                        $equipment_id=$maintenance_detail['equipment_id'];
                                                                         if ($maintenance_detail['user_request_id'] == $request['id']) { ?>
                                                                             <tr>
                                                                                 <td><img style="width: 140px;height:auto;" src="<?= $maintenance_detail['image_path'] ?>"></td>
                                                                                 <td><?= $maintenance_detail['name'] ?></td>
                                                                                 <td><?= $maintenance_detail['serial_number'] ?></td>
+                                                                                <td>
+                                                                                    <form action="index.php?role=director&action=cancle_maintenance" method="POST" enctype="multipart/form-data">
+                                                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
+                                                                                        <button name="submit" type="submit">Hủy</button>
+                                                                                    </form>
+                                                                                    <form action="index.php?role=director&action=accept_maintenance&office_id=<?= $request['office_id'] ?>&limit=<?= $limit ?>&equipment_id=<?= $equipment_id ?>" method="POST" enctype="multipart/form-data">
+                                                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
+                                                                                        <button name="submit" type="submit">Chấp Thuận</button>
+                                                                                    </form>
+                                                                                </td>
                                                                             </tr>
                                                                         <?php
                                                                         }
                                                                     }
                                                                 } else {
                                                                     foreach ($request_details as $request_detail) {
-
+                                                                        $limit = $request_detail['quantity'];
+                                                                        $equipment_id = $request_detail['equipment_id'];
                                                                         if ($request_detail['request_id'] == $request['id']) { ?>
                                                                             <tr>
                                                                                 <td><img style="width: 140px;height:auto;" src="<?= $request_detail['image_path'] ?>"></td>
                                                                                 <td><?= $request_detail['name'] ?></td>
                                                                                 <td><?= $request_detail['quantity'] ?></td>
+                                                                                <td>
+                                                                                    <form action="index.php?role=director&action=cancle_maintenance" method="POST" enctype="multipart/form-data">
+                                                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
+                                                                                        <button name="submit" type="submit">Hủy</button>
+                                                                                    </form>
+                                                                                    <form action="index.php?role=director&action=accept_maintenance&office_id=<?= $request['office_id'] ?>&limit=<?= $limit ?>&equipment_id=<?= $equipment_id ?>" method="POST" enctype="multipart/form-data">
+                                                                                        <input type="hidden" class="form-control" name="id" value="<?= $request['id']; ?>" />
+                                                                                        <button name="submit" type="submit">Chấp Thuận</button>
+                                                                                    </form>
+                                                                                </td>
                                                                             </tr>
                                                                 <?php
                                                                         }
@@ -440,10 +459,10 @@
 
                                                                 ?>
                                                                 <tr>
-                                                                    <td colspan="3"><b>Nguyên nhân yêu cầu</b></td>
+                                                                    <td colspan="4"><b>Nguyên nhân yêu cầu</b></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="3"><?= $request['request_text'] ?></td>
+                                                                    <td colspan="4"><?= $request['request_text'] ?></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -473,7 +492,7 @@
                                     <?php
                                     $i = 0;
                                     foreach ($requests as $request) {
-                                      
+
                                         if ($request['status_id'] == 3) {
                                     ?>
                                             <tr>
@@ -604,7 +623,7 @@
                                                                 if ($request['request_type'] == 2) {
 
                                                                     foreach ($maintenance_details as $maintenance_detail) {
-
+                                                                        
                                                                         if ($maintenance_detail['user_request_id'] == $request['id']) { ?>
                                                                             <tr>
                                                                                 <td><img style="width: 140px;height:auto;" src="<?= $maintenance_detail['image_path'] ?>"></td>
@@ -737,7 +756,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     <?php } ?>
                 </div>
             </div>
@@ -827,32 +846,27 @@
         $role = $_GET['role'];
         switch ($role) {
             case 'staff':
-        ?>
-        border: 6px solid red;
+        ?>border: 6px solid red;
         background-color: red;
         <?php
                 break;
             case 'maintenance':
-        ?>
-        border: 6px solid blue;
+        ?>border: 6px solid blue;
         background-color: blue;
         <?php
                 break;
             case 'manager':
-        ?>
-        border: 6px solid #DBAB06;
+        ?>border: 6px solid #DBAB06;
         background-color: #DBAB06;
         <?php
                 break;
             case 'director':
-        ?>
-        border: 6px solid #0AC10A;
+        ?>border: 6px solid #0AC10A;
         background-color: #0AC10A;
         <?php
                 break;
         }
-        ?>
-        border-top-left-radius: 5px;
+        ?>border-top-left-radius: 5px;
         border-top-right-radius: 5px;
     }
 
@@ -999,39 +1013,34 @@
         <?php
                 break;
             case 'manager':
-        ?>
-        border-top: 10px solid #DBAB06;
+        ?>border-top: 10px solid #DBAB06;
         <?php
                 break;
             case 'director':
-        ?>
-        border-top: 10px solid #0AC10A;
+        ?>border-top: 10px solid #0AC10A;
         <?php
                 break;
         }
-        ?>
+        ?><?php
+            $role = $_GET['role'];
+            switch ($role) {
+                case 'staff':
+            ?>border-bottom: 10px solid red;
         <?php
-        $role = $_GET['role'];
-        switch ($role) {
-            case 'staff':
-        ?>border-bottom: 10px solid red;
-        <?php
-                break;
-            case 'maintenance':
+                    break;
+                case 'maintenance':
         ?>border-bottom: 10px solid blue;
         <?php
-                break;
-            case 'manager':
-        ?>
-        border-bottom: 10px solid #DBAB06;
+                    break;
+                case 'manager':
+        ?>border-bottom: 10px solid #DBAB06;
         <?php
-                break;
-            case 'director':
-        ?>
-        border-bottom: 10px solid #0AC10A;
+                    break;
+                case 'director':
+        ?>border-bottom: 10px solid #0AC10A;
         <?php
-                break;
-        }
+                    break;
+            }
         ?>
         /* overflow: auto; */
         /* Enable scrolling when content exceeds the container's height */

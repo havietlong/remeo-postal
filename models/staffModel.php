@@ -338,30 +338,7 @@ function fetchUser_requests()
     include "connections/openConnect.php";
     if ($staff_role == 1 || $staff_role == 2) {
         // Build the SQL query string
-        if (isset($_GET['requestType'])) {
-            $requestType = $_GET['requestType'];
-            switch ($requestType) {
-                case 'install':
-                    $sql = "SELECT user_requests.*, postalstaff.*
-                FROM `user_requests`
-                INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-                WHERE `user_requests`.`staff_id` = $staff_id AND `user_requests`.`request_type`= 1";
-                    $request = mysqli_query($connect, $sql);
-                    include "connections/closeConnect.php";
-                    return $request;
-                    break;
-                case 'maintenance':
-                    $sql = "SELECT user_requests.*, postalstaff.*
-                FROM `user_requests`
-                INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
-                WHERE `user_requests`.`staff_id` = $staff_id AND `user_requests`.`request_type`= 2";
-                    $request = mysqli_query($connect, $sql);
-                    include "connections/closeConnect.php";
-                    return $request;
-                    break;
-            }
-        } else {
-            if (isset($_SESSION['branch']) === '4') {
+            if (($_SESSION['branch']) === '4') {
                 
                 $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*
             FROM `user_requests`
@@ -392,7 +369,7 @@ function fetchUser_requests()
                 return $request;
             }
         }
-    }
+
 }
 
 function fetchEquipment_requests()
@@ -631,11 +608,12 @@ function validateRole()
         } elseif ($staff_role == 4) {
             return 4;
         }
-    }
+    }else{
 
     // If email and password do not match any records, return false
     $_SESSION['invalid'] = 'invalid password or username';
     return 0;
+    }
 }
 
 function search()
@@ -682,9 +660,10 @@ function fetchMaintenance_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT maintenance_requests.*, equipment.*
+    $sql = "SELECT maintenance_requests.*, item.*,equipment.*
     FROM `maintenance_requests`
-    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+    JOIN `item` ON `maintenance_requests`.`serial_number` = `item`.`serial_number`
+	JOIN `equipment` ON `item`.`equipment_id` = `equipment`.`equipment_id`";
 
     // Execute the query
     $maintenance_requests = mysqli_query($connect, $sql);
@@ -743,12 +722,24 @@ if (isset($_GET['action'])) {
 function fetchSerial()
 {
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
+    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NOT NULL";
     $item_serials = mysqli_query($connect, $sql);
     include 'connections/closeConnect.php';
     return $item_serials;
 }
 
+function finishRequest(){
+    $id = $_GET['request_id'];
+   
+    include './connections/openConnect.php';
+    $sql = "UPDATE user_requests
+    SET status_id = 5
+    WHERE id = $id";
+    mysqli_query($connect, $sql);
+    
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    include 'connections/closeConnect.php';
+}
 
 //Kiểm tra hành động hiện tại
 switch ($action) {
@@ -784,7 +775,9 @@ switch ($action) {
         $maintenance_details = fetchMaintenance_requests();
         $item_serials = fetchSerial();
         break;
-
+    case 'finish_requests':
+        finishRequest();
+        break;
         // case 'removeCart':
         //     removeCart();
         //     break;

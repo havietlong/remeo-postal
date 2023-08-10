@@ -1,6 +1,7 @@
 <?php if (!isset($requests)) {
     $request = '';
-} ?>
+} 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,25 +38,13 @@
                 <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
             </div>
             <div class="shopping-container">
-                <div class="left_section_step3">
+                <!-- <div class="left_section_step3">
                     <div class="categoriesTab">
+                        <?php if($_GET['role']!=='director'){ ?>
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
-                            <label><i>Chi nhánh</i></label>
-                            <form action="index.php?role=<?= $_GET['role'] ?>&action=displayRequests" method="post">
-                                <?php if ($_GET['role'] != 'director') { ?>
-                                    <select name="office" onchange="this.form.submit()">
-                                        <option value="">Chọn chi nhánh</option>
-                                        <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
-                                        <?php foreach ($centralOffices as $centralOffice) { ?>
-                                            <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
-                                        <?php } ?>
-                                        <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
-                                        <?php foreach ($ruralOffices as $ruralOffice) { ?>
-                                            <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
-                                        <?php } ?>
-                                    </select>
-                                <?php } else { ?>
+                            <label><i>Chi nhánh</i></label>                                                 
+                                <form action="index.php?role=<?= $_GET['role'] ?>&action=displayRequests" method="post">
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
@@ -71,13 +60,12 @@
                                         <?php }
                                         } ?>
                                     </select>
-                                <?php } ?>
-                            </form>
-
+                                </form>                          
                         </div>
+                        <?php } ?>
                     </div>
 
-                </div>
+                </div> -->
                 <div class="right_section_step3">
             
                     <div id="maintenance" class="productsTab">
@@ -103,6 +91,7 @@
                                                     <tr>
                                                         <th>Người yêu cầu</th>
                                                         <th>Người triển khai</th>
+                                                        <th>Loại yêu cầu</th>
                                                         <th>Thời gian yêu cầu</th>
                                                         <th>Thời gian triển khai</th>
                                                         <th>Trạng thái</th>
@@ -118,7 +107,8 @@
                                                     ?>
                                                             <tr>
                                                                 <td><?= $requestDetail['name'] ?></td>
-                                                                <td><?php if($requestDetail['installer_name']) ?></td>
+                                                                <td><?= $requestDetail['installer_name'] ?></td>
+                                                                <td><?php echo $requestDetail['request_type'] == 1 ? "Lắp đặt" : "Bảo trì"; ?></td>
                                                                 <td><?= $new_time ?></td> 
                                                                 <td><?= $new_time ?></td>                                                      
                                                                 <td><?= $requestDetail['name_status'] ?></td>

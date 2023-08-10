@@ -368,9 +368,10 @@ function fetchMaintenance_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT maintenance_requests.*, equipment.*
+    $sql = "SELECT maintenance_requests.*, item.*,equipment.*
     FROM `maintenance_requests`
-    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+    INNER JOIN `item` ON `maintenance_requests`.`serial_number` = `item`.`serial_number`
+    INNER JOIN `equipment` ON `item`.`equipment_id` = `equipment`.`equipment_id`";
 
     // Execute the query
     $maintenance_requests = mysqli_query($connect, $sql);
@@ -791,6 +792,25 @@ function sendRequestToStaff()
     header("location:index.php?role=manager&action=manage_requests");
 }
 
+function fetchOffices()
+{
+    if(!isset($office_id)){
+   
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postaloffice ";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+    }else{
+        $office_id = $_POST['office'];
+    include './connections/openConnect.php';
+    $sql = "SELECT * FROM postaloffice WHERE office_id = $office_id";
+    $result = mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    return $result;
+}
+}
+
 //Kiểm tra hành động hiện tại
 switch ($action) {
     case 'loginValidate':
@@ -824,12 +844,10 @@ switch ($action) {
         acceptMaintenance();
         break;
     case 'manage_equipments':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+        $Offices = fetchOffices();
         break;
     case 'displayEquipments':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+        $Offices = fetchOffices();
         $equipments = fetchEquipmentsFromOffice();
         $equipmentSerials = fetchEquipmentsFromOfficeSerial();
         break;

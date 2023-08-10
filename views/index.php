@@ -107,7 +107,7 @@
                 <?php break;
                 case 'director':
                 ?>
-                <a href="index.php?role=director&action=data_report">
+                <a href="index.php?role=director&action=displayRequests">
                         <button>
                             <div class="option-box">
                             <i class='bx bxs-bar-chart-alt-2'></i>

@@ -34,6 +34,8 @@ switch ($action) {
             } else if ($test == 4) {
             
                 header('Location:index.php?role=director&action=index');
+            }else{
+                header('Location:index.php?role=staff&action=login');
             }
         }
         break;
@@ -66,6 +68,9 @@ switch ($action) {
     case 'verified':
         include_once 'models/staffModel.php';
         include_once 'views/Employee_step4.php';
+        break;
+    case 'finish_requests':
+        include_once 'models/staffModel.php';
         break;
         // case 'productPage':
         //     include_once 'model/customerModel.php';

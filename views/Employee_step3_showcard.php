@@ -28,7 +28,7 @@ $staff_id = $_SESSION['user_id'];
                 <div class="inner-circle active"></div>
             </div>
             <div class="outter-circle">
-                <div class="inner-circle non-active"></div>
+                <div class="inner-circle active"></div>
             </div>
             <div class="outter-circle">
                 <div class="inner-circle non-active"></div>
@@ -36,8 +36,9 @@ $staff_id = $_SESSION['user_id'];
         </div>
         <div class="progress-status"></div>
         <div class="user-options">
-           
-
+        <div class="cookieCrumb">
+                <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
+            </div>
             <div class="container">
                 <div class="left-column" style="margin-bottom: 20px;">
                     <table>
@@ -118,7 +119,7 @@ $staff_id = $_SESSION['user_id'];
         left: 0;
         position: absolute;
         height: 10px;
-        width: 37%;
+        width: 63%;
         <?php
         $role = $_GET['role'];
         switch ($role) {

@@ -665,7 +665,7 @@ function fetchMaintenance_requests()
 
 function fetchSerial(){
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NULL";
+    $sql = "SELECT * FROM item inner join equipment_requests on item.equipment_id = equipment_requests.equipment_id WHERE office_id IS NOT NULL";
     $item_serials = mysqli_query($connect, $sql);
     include 'connections/closeConnect.php';
     return $item_serials;

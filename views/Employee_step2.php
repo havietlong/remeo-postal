@@ -56,7 +56,7 @@ if (isset($_GET['category'])) {
             <button class="sidebar-toggle-btn">
                 <i class="bx bx-menu"></i>
             </button>
-            <div class="sidebar">
+            <div class="sidebar" style="background-color: white;">
                 <button class="sidebar-close-btn">
                     <i class="bx bx-x"></i>
                 </button>
@@ -253,6 +253,8 @@ if (isset($_GET['category'])) {
         }
         ?>
 }
+
+
 .user-options {
 
 display: flex;
