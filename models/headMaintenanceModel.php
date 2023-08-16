@@ -76,7 +76,7 @@ function fetchProduct()
             case 'Zebra':
                 $manufacturer_id = 21;
                 break;
-            case 'Aplus':
+            case 'A+':
                 $manufacturer_id = 22;
                 break;
             case 'Idea':
@@ -403,7 +403,7 @@ function fetchUser_requests()
             include "connections/closeConnect.php";
             return $request;
         }
-    } else if ($staff_role == 3) {
+    } else if ($staff_role == 3 || $staff_role == 5) {
         if (!isset($_GET['requestType'])) {
             $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
@@ -824,9 +824,7 @@ function fetchEquipmentsFromOfficeSerial()
 {
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
-    $sql = "SELECT *, COUNT(*) OVER() AS total_items
-    FROM item
-    WHERE office_id = $office_id";
+    $sql = "SELECT * FROM item WHERE office_id = $office_id  ";
     $result = mysqli_query($connect, $sql);
     return $result;
     include './connections/closeConnect.php';
@@ -880,11 +878,28 @@ function alterStaff()
     var_dump($sql);
     $result = mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
-    header("location:index.php?role=manager&action=manage_staffs");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     return $result;
 }
 
 function sendRequestToStaff()
+{
+    $id_staff = $_POST['staff_id'];
+    $id = $_POST['id'];
+    $request_estimate_time = new DateTime();
+    $request_estimate_time->modify('+2 hours');
+    $request_estimate_time = $request_estimate_time->format('Y-m-d H:i:s');
+    include './connections/openConnect.php';
+    $sql = "UPDATE user_requests
+    SET installer_id = $id_staff, status_id = 6, request_estimate_time = '$request_estimate_time'
+    WHERE id = $id";
+    var_dump($sql);
+    mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+}
+
+function sendRequestToStaffToInstall()
 {
     $id_staff = $_POST['staff_id'];
     $id = $_POST['id'];
@@ -898,7 +913,7 @@ function sendRequestToStaff()
     var_dump($sql);
     mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
-    header("location:index.php?role=manager&action=manage_requests");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
 function fetchOffices()
@@ -1046,42 +1061,21 @@ function changeEquipmentStatus(){
 
 function verifyInstallation(){
     include './connections/openConnect.php';
-    $id = $_POST['request_id'];    
-    $sql = " UPDATE user_requests
-    SET status_id = 8
-    WHERE id = $id";
-    mysqli_query($connect, $sql);
-    include './connections/closeConnect.php';
-    header("Location: " . $_SERVER['HTTP_REFERER']);
-}
-
-function accept_request(){
-    include './connections/openConnect.php';
     $id = $_POST['id'];    
     $sql = " UPDATE user_requests
-    SET status_id = 4
+    SET status_id = 3
     WHERE id = $id";
     mysqli_query($connect, $sql);
     include './connections/closeConnect.php';
     header("Location: " . $_SERVER['HTTP_REFERER']);
 }
 
-function change_serial(){
+function fetchStaff(){
     include './connections/openConnect.php';
-    //remove busted serial
-    $serial_number = $_GET['serial_number'];
-    $sql = " UPDATE item
-    SET office_id = NULL, status = 0
-    WHERE serial_number = '$serial_number'";
-    mysqli_query($connect, $sql);
-    //change serial
-    $office_id = $_GET['office_id'];
-    $equipment_id = $_GET['equipment_id'];
-    $sql = " UPDATE item
-    SET office_id = $office_id
-    WHERE office_id IS NULL AND status = 1 AND equipment_id = $equipment_id LIMIT 1";
-    mysqli_query($connect, $sql);
-
+    $office_id = $_SESSION['office_id'];
+    $sql = " SELECT * FROM postalstaff WHERE office_id = $office_id";
+    $rs = mysqli_query($connect, $sql);
+    return $rs;
     include './connections/closeConnect.php';
 }
 //Kiểm tra hành động hiện tại
@@ -1125,8 +1119,7 @@ switch ($action) {
         $equipmentSerials = fetchEquipmentsFromOfficeSerial();
         break;
     case 'manage_staffs':
-        $centralOffices = fetchCentralOffices();
-        $ruralOffices = fetchRuralOffices();
+        $staffs = fetchStaff();
         break;
     case 'displayStaffs':
         $centralOffices = fetchCentralOffices();
@@ -1164,12 +1157,8 @@ switch ($action) {
     case 'verifyInstallation':
         verifyInstallation();
         break;
-    case 'accept_requests':
-        change_serial();
-        accept_request();
-        break;
-    case 'accept_requests_to_replace':
-        accept_request();
+    case 'send_request_to_install':
+        sendRequestToStaffToInstall();
         break;
         // case 'data_report':
         //     $centralOffices = fetchCentralOffices();

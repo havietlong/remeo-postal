@@ -84,9 +84,9 @@ $product_name = $product['name'];
             </div>
             <br>
             <div class="cookieCrumb">
-                <a href="index.php?role=<?= $role ?>&action=install"><i class='bx bx-home'></i></a>
+                <a href="index.php?role=<?= $role ?>&action=indexInstall&deviceType=<?= $deviceType ?>&office_id=<?= $_GET['office_id'] ?>"><i class='bx bx-home'></i></a>
                 <div class="arrow">/</div>
-                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>">Danh mục</a>
+                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&office_id=<?= $_GET['office_id'] ?>">Danh mục</a>
                 <div class="arrow">/</div>
                 <div class="product"><?php if (isset($_GET['category'])) {
                                             echo $_GET['category'];

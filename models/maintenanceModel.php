@@ -268,7 +268,7 @@ function fetchUser_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    if ($_SESSION['branch'] != 4) {
+    if ($_SESSION['branch'] != 6) {
         $sql = "SELECT user_requests.*, postalstaff.*,postaloffice.*,request_status.*
             FROM `user_requests`
             INNER JOIN `postalstaff` ON `user_requests`.`staff_id` = `postalstaff`.`staff_id`
@@ -572,18 +572,24 @@ function finishRequest()
     $sql = "UPDATE user_requests
     SET status_id = 5
     WHERE id = $id";
+    mysqli_query($connect, $sql);   
+    $serial_number = $_GET['serial_number'];
+    $sql = "UPDATE item SET status = 1 WHERE serial_number = '$serial_number'";
     mysqli_query($connect, $sql);
+    include './connections/closeConnect.php';
+
     header("Location: " . $_SERVER['HTTP_REFERER']);
     include 'connections/closeConnect.php';
 }
 
 function fetchMaintenanceInfo()
 {
+    $office_id = $_SESSION['office_id'];
     include "connections/openConnect.php";
-    $sql = "SELECT * FROM item";
-    $categories = mysqli_query($connect, $sql);
+    $sql = "SELECT * FROM item WHERE office_id = $office_id";
+    $serials = mysqli_query($connect, $sql);
     include 'connections/closeConnect.php';
-    return $categories;
+    return $serials;
 }
 
 function insertMaintenance_requests()
@@ -651,9 +657,10 @@ function fetchMaintenance_requests()
     include "connections/openConnect.php";
 
     // Build the SQL query string
-    $sql = "SELECT maintenance_requests.*, equipment.*
+    $sql = "SELECT maintenance_requests.*, item.*,equipment.*
     FROM `maintenance_requests`
-    INNER JOIN `equipment` ON `maintenance_requests`.`type_id` = `equipment`.`equipment_id`";
+    INNER JOIN `item` ON `maintenance_requests`.`serial_number` = `item`.`serial_number`
+    INNER JOIN `equipment` ON `item`.`equipment_id` = `equipment`.`equipment_id`";
 
     // Execute the query
     $maintenance_requests = mysqli_query($connect, $sql);
@@ -669,6 +676,17 @@ function fetchSerial(){
     $item_serials = mysqli_query($connect, $sql);
     include 'connections/closeConnect.php';
     return $item_serials;
+}
+
+function replaceRequest(){
+    $id = $_GET['request_id'];
+    include './connections/openConnect.php';
+    $sql = "UPDATE user_requests
+    SET status_id = 7
+    WHERE id = $id";
+    mysqli_query($connect, $sql);
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    include 'connections/closeConnect.php';
 }
 
 //Kiểm tra hành động hiện tại
@@ -711,6 +729,9 @@ switch ($action) {
         break;
     case 'finish_requests':
         finishRequest();
+        break;
+    case 'replace_requests':
+        replaceRequest();
         break;
         // case 'removeCart':
         //     removeCart();

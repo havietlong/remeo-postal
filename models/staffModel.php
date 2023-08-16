@@ -586,9 +586,14 @@ function validateRole()
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    include_once 'connections/openConnect.php';
+    include_once './connections/openConnect.php';
     // Check if user is a staff member
-    $sql = "SELECT * FROM postalstaff WHERE email = '$email' AND password = '$password'";
+    $sql = "SELECT postalstaff.*,postaloffice.office_name,roles.role_name,branch.branch_name
+    FROM postalstaff 
+    JOIN postaloffice ON postalstaff.office_id = postaloffice.office_id
+    JOIN roles ON postalstaff.role_id = roles.role_id
+    JOIN branch ON postalstaff.branch_id = branch.branch_id
+    WHERE email = '$email' AND password = '$password'";
     $staffs = mysqli_query($connect, $sql);
     $staff_rows = mysqli_num_rows($staffs);
 
@@ -597,7 +602,11 @@ function validateRole()
         $_SESSION['user_name'] = $staff['name'];
         $_SESSION['user_id'] = $staff['staff_id'];
         $_SESSION['role'] = $staff['role_id'];
+        $_SESSION['role_name'] = $staff['role_name'];
         $_SESSION['branch'] = $staff['branch_id'];
+        $_SESSION['branch_name'] = $staff['branch_name'];
+        $_SESSION['office_id'] = $staff['office_id'];
+        $_SESSION['office_name'] = $staff['office_name'];
         $staff_role = $staff['role_id'];
         if ($staff_role == 1) {
             return 1;
@@ -607,6 +616,8 @@ function validateRole()
             return 3;
         } elseif ($staff_role == 4) {
             return 4;
+        } elseif ($staff_role == 5) {
+            return 5;
         }
     }else{
 
@@ -733,7 +744,7 @@ function finishRequest(){
    
     include './connections/openConnect.php';
     $sql = "UPDATE user_requests
-    SET status_id = 5
+    SET status_id = 4
     WHERE id = $id";
     mysqli_query($connect, $sql);
     

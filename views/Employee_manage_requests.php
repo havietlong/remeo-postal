@@ -37,7 +37,7 @@
             </div>
             <div class="shopping-container">
                 <div class="right_section_step3">
-                    <?php if ($_SESSION['branch'] == 4) { ?>
+                    <?php if ($_SESSION['branch'] == 6) { ?>
                         <div class="productsTab">
                             <table>
                                 <thead>
@@ -127,6 +127,97 @@
                                 </tbody>
                             </table>
                         </div>
+                        <h3>Đang xử lý</h3>
+                        <div class="productsTab">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Loại yêu cầu</th>
+                                        <th>Người yêu cầu</th>
+                                        <th>Bưu cục</th>
+                                        <th>Tình trạng</th>
+                                        <th>Thời gian dự tính</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $i = 0;
+                                    foreach ($requests as $request) {
+                                        if ($request['status_id'] == 5) {
+                                    ?>
+                                            <tr>
+                                                <td><?= $request['id'] ?></td>
+                                                <td><?php if ($request['request_type'] == 1) {
+                                                        echo "Lắp đặt";
+                                                    } else {
+                                                        echo "Bảo trì";
+                                                    } ?></td>
+                                                <td><?= $request['name'] ?></td>
+                                                <td><?= $request['office_name'] ?></td>
+                                                <td>Chờ lắp đặt</td>
+                                                <td><?= $request['request_estimate_time'] ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <div class="panel">
+                                                        <!-- Content of the panel goes here -->
+                                                        <h3>Nội dung yêu cầu</h3>
+                                                        <table>
+                                                            <tr>
+
+                                                                <th>Hình ảnh thiết bị</th>
+                                                                <th>Tên thiết bị</th>
+                                                                <th>Số lượng</th>
+                                                            </tr>
+                                                            <tbody>
+                                                                <?php
+                                                                if ($request['request_type'] == 2) {
+
+                                                                    foreach ($maintenance_details as $maintenance_detail) {
+
+                                                                        if ($maintenance_detail['user_request_id'] == $request['id']) { ?>
+                                                                            <tr>
+                                                                                <td><img style="width: 140px;height:auto;" src="<?= $maintenance_detail['image_path'] ?>"></td>
+                                                                                <td><?= $maintenance_detail['name'] ?></td>
+                                                                                <td><?= $maintenance_detail['serial_number'] ?></td>
+                                                                            </tr>
+                                                                        <?php
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    foreach ($request_details as $request_detail) {
+
+                                                                        if ($request_detail['request_id'] == $request['id']) { ?>
+                                                                            <tr>
+                                                                                <td><img style="width: 140px;height:auto;" src="<?= $request_detail['image_path'] ?>"></td>
+                                                                                <td><?= $request_detail['name'] ?></td>
+                                                                                <td><?= $request_detail['quantity'] ?></td>
+                                                                            </tr>
+                                                                <?php
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                ?>
+                                                                <tr>
+                                                                    <td colspan="3"><b>Nguyên nhân yêu cầu</b></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3"><?= $request['request_text'] ?></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    <?php
+                                        }
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
                         <h3>Yêu cầu</h3>
                         <div class="productsTab">
                             <table>
@@ -144,7 +235,7 @@
                                 <tbody>
                                     <?php
                                     foreach ($requests as $request) {
-                                        if ($request['status_id'] === '4') {
+                                        if ($request['status_id'] === '4' || $request['status_id'] === '6') {
                                             $i++ ?>
                                             <tr>
                                                 <td><?= $request['id'] ?></td>
@@ -171,26 +262,38 @@
                                                                 <th>Tên thiết bị</th>
                                                                 <th>Số lượng</th>
                                                                 <th>Serial</th>
+                                                                <th>Lệnh</th>
                                                             </tr>
                                                             <tbody>
                                                                 <?php
                                                                 if ($request['request_type'] == 2) {
 
                                                                     foreach ($maintenance_details as $maintenance_detail) {
-
+                                                                        
                                                                         if ($maintenance_detail['user_request_id'] == $request['id']) { ?>
                                                                             <tr>
                                                                                 <td><img style="width: 140px;height:auto;" src="<?= $maintenance_detail['image_path'] ?>"></td>
                                                                                 <td><?= $maintenance_detail['name'] ?></td>
                                                                                 <td>1</td>
                                                                                 <td><?= $maintenance_detail['serial_number'] ?></td>
+                                                                                <td>
+                                                                                <a href="index.php?role=<?= $_GET['role'] ?>&action=finish_requests&request_id=<?= $request['id'] ?>&serial_number=<?=  $maintenance_detail['serial_number'] ?>">
+                                                                                <button style="color: green;cursor: pointer;" type="submit">Hoàn thành</button>
+                                                                                </a>
+                                                                                <br>
+                                                                                <?php if($request['status_id'] === '6'){ ?>
+                                                                                <a href="index.php?role=<?= $_GET['role'] ?>&action=replace_requests&request_id=<?= $request['id'] ?>">
+                                                                                    <button style="color: red;cursor: pointer;" type="submit">Cần thay</button>
+                                                                                </a>
+                                                                                <?php }?>
+                                                                                </td>
                                                                             </tr>
                                                                         <?php
                                                                         }
                                                                     }
                                                                 } else {
                                                                     foreach ($request_details as $request_detail) {
-
+                                                                        
                                                                         if ($request_detail['request_id'] == $request['id']) { ?>
                                                                             <tr>
                                                                                 <td><img style="width: 140px;height:auto;" src="<?= $request_detail['image_path'] ?>"></td>
@@ -200,14 +303,27 @@
                                                                                     <div class="menu-container">
                                                                                         <ul class="menu">
                                                                                             <?php foreach ($item_serials as $item_serial) {
+                                                                                               
                                                                                                 if ($item_serial['equipment_id'] == $request_detail['equipment_id']) {
+                                                                                                    $new_serial = $item_serial['serial_number'];
                                                                                             ?>
-
+                            
                                                                                                     <li><a href="#home"><?= $item_serial['serial_number'] ?></a></li>
                                                                                             <?php }
                                                                                             } ?>
                                                                                         </ul>
                                                                                     </div>
+                                                                                </td>
+                                                                                <td>
+                                                                                <a href="index.php?role=<?= $_GET['role'] ?>&action=finish_requests&request_id=<?= $request['id'] ?>&serial_number=<?= $new_serial ?>">
+                                                                                <button style="color: green;cursor: pointer;" type="submit">Hoàn thành</button>
+                                                                            </a>
+                                                                            <br>
+                                                                            <?php if($request['status_id'] === '6'){ ?>
+                                                                            <a href="index.php?role=<?= $_GET['role'] ?>&action=replace_requests&request_id=<?= $request['id'] ?>">
+                                                                                <button style="color: red;cursor: pointer;" type="submit">Cần thay</button>
+                                                                            </a>
+                                                                            <?php } ?>
                                                                                 </td>
                                                                             </tr>
                                                                 <?php
@@ -217,16 +333,16 @@
 
                                                                 ?>
                                                                 <tr>
-                                                                    <td colspan="4"><b>Nguyên nhân yêu cầu</b></td>
+                                                                    <td colspan="5"><b>Nguyên nhân yêu cầu</b></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="4"><?= $request['request_text'] ?></td>
+                                                                    <td colspan="5"><?= $request['request_text'] ?></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="4"><b>Thông tin lắp đặt</b></td>
+                                                                    <td colspan="5"><b>Thông tin lắp đặt</b></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="4">
+                                                                    <td colspan="5">
                                                                         <div>
                                                                             Số điện thoại: <?= $request['phone']  ?>
                                                                             <br>
@@ -237,28 +353,19 @@
                                                                             Địa chỉ: <?= $request['address']  ?>
                                                                         </div>
                                                                     </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="4"><b>Lệnh</b></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="4">
-                                                                        <div>
-                                                                            <a href="index.php?role=<?= $_GET['role'] ?>&action=finish_requests&request_id=<?= $request['id'] ?>">
-                                                                                <button type="submit">Hoàn thành</button>
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
+                                                                </tr>                                                                
                                                             </tbody>
-                                </tbody>
-                            </table>
+                                                    </tbody>
+                                                </table>
 
                         </div>
+                        
                         </td>
                         </tr>
+
+                        
                 <?php }
-                                    } ?>
+                } ?>
                 </tbody>
                 </table>
                 </div>
@@ -279,7 +386,7 @@
                             <?php
 
                             foreach ($requests as $request) {
-
+                                
                             ?>
                                 <tr>
                                     <td><?= $request['id'] ?></td>

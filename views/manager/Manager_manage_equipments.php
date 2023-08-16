@@ -1,3 +1,18 @@
+<?php 
+$office_id = "";
+if(isset($equipments)){
+    foreach($equipments as $equipment){
+    $office_id = $equipment['office_id'];
+    }
+}
+$equipment_quantity="";
+if(isset($equipmentSerials)){
+    foreach($equipmentSerials as $equipmentSerial){
+    $equipment_quantity = $equipmentSerial['total_items'];
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Document</title>
 </head>
 
@@ -30,7 +46,7 @@
         </div> -->
         <!-- <div class="progress-status"></div> -->
         <div class="user-options">
-        <div class="cookieCrumb">
+            <div class="cookieCrumb">
                 <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
             </div>
             <div class="shopping-container">
@@ -39,25 +55,9 @@
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
                             <label><i>Chi nhánh</i></label>
-                            <?php 
+                            <?php
                             if ($_GET['role'] === 'director') { ?>
                                 <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipmentsDirector" method="post">
-                                    <select name="office" onchange="this.form.submit()">
-                                        <option value="">Chọn chi nhánh</option>
-                                        <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
-                                        <?php foreach ($Offices as $centralOffice) { 
-                                            if($centralOffice['isCentralOffice']==1){?>
-                                            <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
-                                        <?php }} ?>
-                                        <option disabled>CHI NHÁNH KHÁCH HÀNH NHỎ</option>
-                                        <?php foreach ($Offices as $ruralOffice) { 
-                                            if($ruralOffice['isCentralOffice']==0){?>
-                                            <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
-                                        <?php }} ?>
-                                    </select>
-                                </form>
-                            <?php } else { ?>
-                                <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipments" method="post">
                                     <select name="office" onchange="this.form.submit()">
                                         <option value="">Chọn chi nhánh</option>
                                         <option disabled>CHI NHÁNH KHÁCH HÀNH LỚN</option>
@@ -72,14 +72,44 @@
                                                 <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
                                         <?php }
                                         } ?>
+                                        <option disabled>CÁC CHI NHÁNH KHÁC</option>
+                                        <?php foreach ($Offices as $ruralOffice) {
+                                            if ($ruralOffice['isCentralOffice'] == 0 && $ruralOffice['branch_id'] != $_SESSION['branch']) { ?>
+                                                <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
+                                        <?php }
+                                        } ?>
+                                    </select>
+                                </form>
+                            <?php } else { ?>
+                                <form action="index.php?role=<?= $_GET['role'] ?>&action=displayEquipments" method="post">
+                                    <select name="office" onchange="this.form.submit()">
+                                        <option value="">Chọn chi nhánh</option>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNG LỚN</option>
+                                        <?php foreach ($Offices as $centralOffice) {
+                                            if ($centralOffice['isCentralOffice'] == 1) { ?>
+                                                <option value="<?= $centralOffice['office_id'] ?>"><?= $centralOffice['office_name'] ?></option>
+                                        <?php }
+                                        } ?>
+                                        <option disabled>CHI NHÁNH KHÁCH HÀNG NHỎ</option>
+                                        <?php foreach ($Offices as $ruralOffice) {
+                                            if ($ruralOffice['isCentralOffice'] == 0 && $ruralOffice['branch_id']==$_SESSION['branch']) { ?>
+                                                <option value="<?= $ruralOffice['office_id'] ?>"><?= $ruralOffice['office_name'] ?></option>
+                                        <?php }
+                                        } ?>                                        
                                     </select>
                                 </form>
                             <?php } ?>
+                            <br>
+                            <?php if($office_id===""){ ?>
+                            <a href="index.php?role=manager&action=indexInstall&office_id=<?= $office_id ?>"><button disabled><i class='bx bx-plus-circle'></i>Lắp đặt thiết bị</button></a>    
+                            <?php }else{ ?>
+                            <a href="index.php?role=manager&action=indexInstall&office_id=<?= $office_id ?>"><button style="cursor: pointer; color:dodgerblue"><i class='bx bx-plus-circle'></i>Lắp đặt thiết bị</button></a>       
+                                <?php } ?>                   
                         </div>
                     </div>
                 </div>
                 <div class="right_section_step3">
-                    <h3>Văn phòng</h3>
+                    <h3>Số thiết bị: <?= $equipment_quantity ?>  </h3> 
                     <div id="maintenance" class="productsTab">
                         <table>
                             <thead>
@@ -95,7 +125,7 @@
                                 $i = 0;
                                 if (isset($equipments))
                                     foreach ($equipments as $equipment) {
-                                        if ($equipment['category_id'] == 7 || $equipment['category_id'] == 8 || $equipment['category_id'] == 9) {
+                                        
                                 ?>
                                         <tr>
                                             <td><?= $equipment['equipment_id'] ?></td>
@@ -121,8 +151,41 @@
                                                                 if ($equipmentSerial['equipment_id'] == $equipment['equipment_id']) { ?>
                                                                     <tr>
                                                                         <td><?= $equipmentSerial['serial_number'] ?></td>
-                                                                        <td><?= $equipmentSerial['status'] ?></td>
-                                                                        <td>null</td>
+                                                                        <td><?php echo ($equipmentSerial['status'] == 1) ? "Đang hoạt động" : "BẢO TRÌ"; ?></td>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter_<?= $equipment['equipment_id'] ?>">
+                                                                                Bảo trì
+                                                                            </button>
+                                                                            
+                                                                                <div class="modal fade" id="exampleModalCenter_<?= $equipment['equipment_id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title" id="exampleModalLongTitle">Phiếu bảo trì</h5>
+                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <form id="maintenance-form" action="index.php?role=<?= $_GET['role'] ?>&action=maintenance_request" method="post">
+                                                                                            <div class="modal-body">
+                                                                                                <div>                                                                                             
+                                                                                                    <input name="type_id" value="<?= $equipment['type_id'] ?>" hidden>
+                                                                                                    <input name="staff_id" value="<?= $_SESSION['user_id'] ?>" hidden>
+                                                                                                    <input name="request_type" value="2" hidden>
+                                                                                                    <input name="serial_number" value="<?= $equipmentSerial['serial_number'] ?>" hidden>
+                                                                                                    <label for="issue-description">Miêu tả vấn đề</label><br>
+                                                                                                    <textarea cols="56" rows="10" name="reason" id="issue-description"></textarea>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                                                                            </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            
+                                                                        </td>
                                                                     </tr>
                                                             <?php
                                                                 }
@@ -135,68 +198,7 @@
                                             </td>
                                         </tr>
                                 <?php
-                                        }
-                                    } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h3>Bảo trì</h3>
-                    <div id="maintenance" class="productsTab">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Thiết bị</th>
-                                    <th>Tên</th>
-                                    <th>Số lượng</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $i = 0;
-                                if (isset($equipments))
-                                    foreach ($equipments as $equipment) {
-                                        if ($equipment['category_id'] == 10 || $equipment['category_id'] == 11 || $equipment['category_id'] == 12 || $equipment['category_id'] == 13) {
-                                ?>
-                                        <tr>
-                                            <td><?= $equipment['equipment_id'] ?></td>
-                                            <td><img style="width: 120px;height:auto;" src="<?= $equipment['image_path'] ?>"></td>
-                                            <td><?= $equipment['name'] ?></td>
-                                            <td><?= $equipment['quantity'] ?></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7">
-                                                <div class="panel">
-                                                    <!-- Content of the panel goes here -->
-                                                    <h3>Serial</h3>
-                                                    <table>
-                                                        <tr>
-                                                            <th>Serial</th>
-                                                            <th>Tình trạng</th>
-                                                            <th>Lệnh</th>
-                                                        </tr>
-                                                        <tbody>
-                                                            <?php
-                                                            foreach ($equipmentSerials as $equipmentSerial) {
-                                                                if ($equipmentSerial['equipment_id'] == $equipment['equipment_id']) { ?>
-                                                                    <tr>
-                                                                        <td><?= $equipmentSerial['serial_number'] ?></td>
-                                                                        <td><?= $equipmentSerial['status'] ?></td>
-                                                                        <td>null</td>
-                                                                    </tr>
-                                                            <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                <?php
-                                        }
+                                        
                                     } ?>
                             </tbody>
                         </table>
@@ -218,6 +220,8 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 <style>
     .left_section_step3 {
@@ -437,7 +441,7 @@
         align-items: center;
         background-color: white;
         height: 100%;
-        min-height: 63.8vh;
+        min-height: 66.4vh;
         /* Set height to 100% to fill the available space */
         position: relative;
         width: 100%;

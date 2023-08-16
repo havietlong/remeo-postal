@@ -1,5 +1,8 @@
 <?php
 $role = $_GET['role'];
+if(isset($_GET['action'])){
+  $action = $_GET['action'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,7 +87,7 @@ $role = $_GET['role'];
       <?php
       switch ($role) {
         case 'staff': ?>
-        <a href="index.php?role=staff&action=index">
+          <a href="index.php?role=staff&action=index">
             <button>
               <div class="option-box square">
                 <h3>Trở lại</h3>
@@ -126,7 +129,7 @@ $role = $_GET['role'];
         <?php
           break;
         case 'maintenance': ?>
-        <a href="index.php?role=maintenance&action=index">
+          <a href="index.php?role=maintenance&action=index">
             <button>
               <div class="option-box square">
                 <h3>Trở lại</h3>
@@ -172,9 +175,97 @@ $role = $_GET['role'];
               </div>
             </button>
           </a>
-      <?php
-      } ?>
-
+          <?php
+          break;
+        case $action==='installEquipmentIT': ?>
+        <a href="index.php?role=<?= $role ?>&action=indexInstall&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <h3>Trở lại</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=computerParts&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box rectangle">
+                <i class="bx bx-laptop"></i>
+                <h3>Máy tính</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=printer&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <i class="bx bx-printer"></i>
+                <h3>Máy in</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=wifi&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <i class="bx bx-wifi"></i>
+                <h3>Thiết bị mạng</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=verifyRequest">
+            <button>
+              <div class="option-box square">
+                <h3>Tiếp</h3>
+              </div>
+            </button>
+          </a>
+          <?php
+          break;
+        case $action==='installEquipmentMaintenance': ?>
+          <a href="index.php?role=<?= $role ?>&action=indexInstall&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <h3>Trở lại</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=conveyor&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box rectangle">
+                <i class='bx bx-broadcast'></i>
+                <h3>Băng chuyền</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=scale&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <i class='bx bx-hourglass'></i>
+                <h3>Cân</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=charger&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <i class='bx bx-plug'></i>
+                <h3>Sạc</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=install&deviceType=generator&office_id=<?= $_GET['office_id']?>">
+            <button>
+              <div class="option-box square">
+                <i class='bx bxs-bolt'></i>
+                <h3>Máy phát điện</h3>
+              </div>
+            </button>
+          </a>
+          <a href="index.php?role=<?= $role ?>&action=verifyRequest">
+            <button>
+              <div class="option-box square">
+                <h3>Tiếp</h3>
+              </div>
+            </button>
+          </a>
+        <?php } ?>
     </div>
     <div class="footer">
       <b>Footer</b>

@@ -1,14 +1,7 @@
 <?php
-if (isset($_SESSION['role'])) {
-    $role = $_SESSION['role'];
-    switch ($role) {
-        case 1:
-            $role = 'staff';
-            break;
-        case 2:
-            $role = 'maintenance';
-            break;
-    }
+if (isset($_GET['role'])) {
+    $role = $_GET['role'];
+    
 }
 if (isset($_GET['deviceType'])) {
     $deviceType = $_GET['deviceType'];
@@ -64,9 +57,9 @@ if (isset($_GET['category'])) {
             </div>
             <br>
             <div class="cookieCrumb">
-                <a href="index.php?role=<?= $role ?>&action=install"><i class='bx bx-home'></i></a>
+                <a href="index.php?role=<?= $role ?>&action=indexInstall&office_id=<?=$_GET['office_id']?>"><i class='bx bx-home'></i></a>
                 <div class="arrow">/</div>
-                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>">Danh mục</a>
+                <a href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&office_id=<?= $_GET['office_id']?>">Danh mục</a>
                 <div class="arrow">/</div>
                 <div class="product"><?php if (isset($_GET['category'])) {
                                             echo $_GET['category'];
@@ -86,7 +79,7 @@ if (isset($_GET['category'])) {
                         ?>
                             <div class="type-label">
                                 <div class="type" style="padding-left:10px;padding-top: 5px;">
-                                    <a style="text-decoration: none; color:black;" href="index.php?role=staff&action=install&deviceType=<?= $deviceType ?>&category=<?= $category['name'] ?>">
+                                    <a style="text-decoration: none; color:black;" href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&category=<?= $category['name'] ?>&office_id=<?= $_GET['office_id'] ?>">
                                         <b><?= $category['name'] ?></b>
                                     </a>
                                 </div>
@@ -101,9 +94,9 @@ if (isset($_GET['category'])) {
                             <?php foreach ($brands as $brand) { ?>
                                 <div class="optionContainer">
                                     <input type="checkbox" class="brandCheckbox" data-url="<?php if (isset($_GET['category'])) {
-                                                                                                echo  "index.php?role=" . $role . "&action=install&deviceType=" . $deviceType . "&category=" . $categoryy . "&brand=" . $brand['name'] . "";
+                                                                                                echo  "index.php?role=" . $role . "&action=install&deviceType=" . $deviceType . "&category=" . $categoryy . "&brand=" . $brand['name'] . "&office_id=" . $_GET['office_id'];
                                                                                             } else {
-                                                                                                echo  "index.php?role=" . $role . "&action=install&deviceType=" . $deviceType . "&brand=" . $brand['name'] . "";
+                                                                                                echo  "index.php?role=" . $role . "&action=install&deviceType=" . $deviceType . "&brand=" . $brand['name'] . "&office_id=" . $_GET['office_id'];
                                                                                             } ?>" style="margin-right: 5px; cursor: pointer;">
                                     <?= $brand['name'] ?>
                                 </div>
@@ -114,7 +107,7 @@ if (isset($_GET['category'])) {
                         <?php foreach ($products as $product) {
                         ?>
                             <div class="product">
-                                <a style="text-decoration: none; color: black;" href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&deviceDetail=<?= $product['equipment_id'] ?>">
+                                <a style="text-decoration: none; color: black;" href="index.php?role=<?= $role ?>&action=install&deviceType=<?= $deviceType ?>&deviceDetail=<?= $product['equipment_id'] ?>&office_id=<?= $_GET['office_id'] ?>">
                                     <div class="product-container">
                                         <div class="product-items">
                                             <img src="<?= $product['image_path'] ?>" alt="Ảnh sản phẩm" class="product-image">

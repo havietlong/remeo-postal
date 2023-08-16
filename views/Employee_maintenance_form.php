@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +40,8 @@
                         <!-- <input type="text" name="device-serial" class="device-name" required disabled> -->
                         <select name="device-serial" class="device-type" required disabled>
                             <option value="">Chọn serial thiết bị</option>
-                            <?php foreach ($serials as $serial) { 
+                            <?php foreach ($serials as $serial) {  
+                                                      
                                 ?>
                                 <option value="<?= $serial['serial_number'] ?>"><?= $serial['serial_number'] ?></option>
                             <?php } ?>

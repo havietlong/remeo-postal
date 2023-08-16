@@ -57,6 +57,9 @@ switch ($action) {
     case 'finish_requests':
         include_once 'models/maintenanceModel.php';
         break;
+    case 'replace_requests':
+        include_once 'models/maintenanceModel.php';
+        break;
         // case 'removeCart':
         //     include_once 'model/customerModel.php';
         //     break;  

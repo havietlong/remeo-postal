@@ -38,7 +38,7 @@
                 <div class="right_section_step3">
                     <h3>Quản lý thiết bị kho</h3>
                     <br>
-                    <a href="index.php?role=manager&action=add_equipments">Thêm thiết bị</a>
+                    <a href="index.php?role=manager&action=add_equipments_info">Thêm thiết bị</a>
                     <div id="maintenance" class="productsTab">
                         <table>
                             <thead>

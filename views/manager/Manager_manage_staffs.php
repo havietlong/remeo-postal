@@ -30,11 +30,12 @@
         </div> -->
         <!-- <div class="progress-status"></div> -->
         <div class="user-options">
-        <div class="cookieCrumb">
+            <div class="cookieCrumb">
                 <a href="index.php?role=<?= $role ?>&action=index"><i class='bx bx-home'></i></a>
             </div>
             <div class="shopping-container">
                 <div class="left_section_step3">
+                    <?php if($_GET['role'] !== 'headMaintenance'){ ?>
                     <div class="categoriesTab">
                         <div class="label"><b>DANH MỤC</b></div>
                         <div class="label-content">
@@ -73,7 +74,7 @@
 
                         </div>
                     </div>
-
+                    <?php } ?>
                 </div>
                 <div class="right_section_step3">
                     <h3>Văn phòng</h3>
@@ -120,11 +121,11 @@
                                                     <h4>Vai trò</h4>
                                                     <select value="<?= $staff['role'] ?>" name="role_staff_<?= $staff['staff_id'] ?>">
                                                         <?php foreach ($roles as $role) { ?>
-                                                            <option><?= $role['name'] ?></option>
+                                                            <option><?= $role['role_name'] ?></option>
                                                         <?php } ?>
                                                     </select>
                                                     <h4>Mật khẩu</h4>
-                                                        <input value="<?= $staff['password'] ?>" name="phone_staff_<?= $staff['staff_id'] ?>">
+                                                    <input value="<?= $staff['password'] ?>" name="phone_staff_<?= $staff['staff_id'] ?>">
                                                     <div class="div">
                                                         <button type="submit">Lưu</button>
                                                     </div>
@@ -184,17 +185,18 @@
                                                         <h4>Vai trò</h4>
                                                         <select name="role_staff">
                                                             <?php foreach ($roles as $role) {
-                                                                if($role['role_id'] != $staff['role_id']){ ?>
-                                                                <option value="<?= $staff['role_id'] ?>"><?= $role['name'] ?></option>
-                                                                <?php }if ($role['role_id'] == $staff['role_id']) { ?>
-                                                                    <option value="<?= $staff['role_id'] ?>" selected><?= $role['name'] ?></option>
+                                                                if ($role['role_id'] != $staff['role_id']) { ?>
+                                                                    <option value="<?= $staff['role_id'] ?>"><?= $role['role_name'] ?></option>
+                                                                <?php }
+                                                                if ($role['role_id'] == $staff['role_id']) { ?>
+                                                                    <option value="<?= $staff['role_id'] ?>" selected><?= $role['role_name'] ?></option>
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         </select>
                                                         <h4>Mật khẩu</h4>
                                                         <input value="<?= $staff['password'] ?>" name="password_staff">
                                                         <div class="div">
-                                                        <button type="submit">Lưu</button>
+                                                            <button type="submit">Lưu</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -206,6 +208,81 @@
                             </tbody>
                         </table>
                     </div>
+                    <?php if ($_GET['role']==='4') { ?>
+                        <h3>Quản lý</h3>
+                        <div id="maintenance" class="productsTab">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên</th>
+                                        <th>Vai trò</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    if (isset($staffs))
+                                        foreach ($staffs as $staff) {
+                                            if ($staff['role_id'] == 3) {
+                                    ?>
+                                            <tr>
+                                                <td><?= $staff['staff_id'] ?></td>
+                                                <td><?= $staff['name'] ?></td>
+                                                <td><?php switch ($staff['role_id']) {
+                                                        case '1':
+                                                            echo "Văn phòng";
+                                                            break;
+                                                        case '2':
+                                                            echo "Bảo trì";
+                                                            break;
+                                                        case '3':
+                                                            echo "Quản lý";
+                                                            break;
+                                                    } ?></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7">
+                                                    <div class="panel">
+                                                        <form action="index.php?role=manager&action=alterStaffs" method="post">
+                                                            <!-- Content of the panel goes here -->
+                                                            <h3>Chỉnh sửa thông tin nhân viên</h3>
+                                                            <!-- Content of the panel goes here -->
+                                                            <input value="<?= $staff['staff_id'] ?>" name="id_staff" hidden>
+                                                            <h4>Tên</h4>
+                                                            <input value="<?= $staff['name'] ?>" name="name_staff">
+                                                            <h4>Email</h4>
+                                                            <input value="<?= $staff['email'] ?>" name="email_staff">
+                                                            <h4>Số điện thoại</h4>
+                                                            <input value="<?= $staff['phone'] ?>" name="phone_staff">
+                                                            <h4>Vai trò</h4>
+                                                            <select name="role_staff">
+                                                                <?php foreach ($roles as $role) {
+                                                                    if ($role['role_id'] != $staff['role_id']) { ?>
+                                                                        <option value="<?= $staff['role_id'] ?>"><?= $role['role_name'] ?></option>
+                                                                    <?php }
+                                                                    if ($role['role_id'] == $staff['role_id']) { ?>
+                                                                        <option value="<?= $staff['role_id'] ?>" selected><?= $role['role_name'] ?></option>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            </select>
+                                                            <h4>Mật khẩu</h4>
+                                                            <input value="<?= $staff['password'] ?>" name="password_staff">
+                                                            <div class="div">
+                                                                <button type="submit">Lưu</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                    <?php
+                                            }
+                                        } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -291,32 +368,30 @@
         $role = $_GET['role'];
         switch ($role) {
             case 'staff':
-        ?>
-        border: 6px solid red;
+        ?>border: 6px solid red;
         background-color: red;
         <?php
                 break;
             case 'maintenance':
-        ?>
-        border: 6px solid blue;
+        ?>border: 6px solid blue;
         background-color: blue;
         <?php
                 break;
             case 'manager':
-        ?>
-        border: 6px solid #DBAB06;
+        ?>border: 6px solid #DBAB06;
         background-color: #DBAB06;
         <?php
                 break;
             case 'director':
-        ?>
-        border: 6px solid #0AC10A;
+        ?>border: 6px solid #0AC10A;
         background-color: #0AC10A;
+        <?php break;
+            case 'headMaintenance':
+        ?>border: 6px solid #9B59B6;
+        background-color: #9B59B6;
         <?php
                 break;
-        }
-        ?>
-        border-top-left-radius: 5px;
+        } ?>border-top-left-radius: 5px;
         border-top-right-radius: 5px;
     }
 
@@ -463,40 +538,43 @@
         <?php
                 break;
             case 'manager':
-        ?>
-        border-top: 10px solid #DBAB06;
+        ?>border-top: 10px solid #DBAB06;
         <?php
                 break;
             case 'director':
-        ?>
-        border-top: 10px solid #0AC10A;
+        ?>border-top: 10px solid #0AC10A;
+        <?php
+                break;
+            case 'headMaintenance':
+        ?>border-top: 10px solid #9B59B6;
         <?php
                 break;
         }
-        ?>
+        ?><?php
+                        $role = $_GET['role'];
+                        switch ($role) {
+                            case 'staff':
+                        ?>border-bottom: 10px solid red;
         <?php
-        $role = $_GET['role'];
-        switch ($role) {
-            case 'staff':
-        ?>border-bottom: 10px solid red;
-        <?php
-                break;
-            case 'maintenance':
+                                break;
+                            case 'maintenance':
         ?>border-bottom: 10px solid blue;
         <?php
-                break;
-            case 'manager':
-        ?>
-        border-bottom: 10px solid #DBAB06;
+                                break;
+                            case 'manager':
+        ?>border-bottom: 10px solid #DBAB06;
         <?php
-                break;
-            case 'director':
-        ?>
-        border-bottom: 10px solid #0AC10A;
+                                break;
+                            case 'director':
+        ?>border-bottom: 10px solid #0AC10A;
         <?php
-                break;
-        }
-        ?>
+                                break;
+                                case 'headMaintenance':
+                                    ?>border-bottom: 10px solid #9B59B6;
+                                    <?php
+                                                            break;
+                                                    }
+                                    ?>
         /* overflow: auto; */
         /* Enable scrolling when content exceeds the container's height */
     }

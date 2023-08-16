@@ -23,5 +23,8 @@
         case 'director':
             include_once 'controllers/directorController.php';
             break;
+        case 'headMaintenance':
+            include_once 'controllers/headMaintenanceController.php';
+            break;
     }
     ?>

@@ -642,13 +642,14 @@ function acceptMaintenance()
 
     $sql = "UPDATE item
     SET office_id = $office_id 
-    WHERE equipment_id = $equipment_id 
+    WHERE equipment_id = $equipment_id AND office_id IS NULL
     LIMIT $limit;
     ";
+    var_dump($sql);
     mysqli_query($conn, $sql);
 
     $sql = " UPDATE user_requests
-    SET status_id = 3
+    SET status_id = 2
     WHERE id = $id";
     $rs = mysqli_query($conn, $sql);
     if ($rs == true) {
@@ -759,10 +760,10 @@ function fetchEquipmentsFromOffice()
 {
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
-    $sql = "SELECT equipment.equipment_id, equipment.name, equipment.category_id, equipment.image_path, COUNT(item.equipment_id) AS quantity
+    $sql = "SELECT item.office_id,equipment.equipment_id, equipment.name, equipment.category_id, equipment.image_path,equipment.type_id, COUNT(item.equipment_id) AS quantity
     FROM equipment
     INNER JOIN item ON equipment.equipment_id = item.equipment_id
-    WHERE item.office_id = $office_id 
+    WHERE item.office_id = $office_id
     GROUP BY item.equipment_id";
     $result = mysqli_query($connect, $sql);
     return $result;
@@ -773,7 +774,9 @@ function fetchEquipmentsFromOfficeSerial()
 {
     $office_id = $_POST['office'];
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM item WHERE office_id = $office_id  ";
+    $sql = "SELECT *, COUNT(*) OVER() AS total_items
+    FROM item
+    WHERE office_id = $office_id";
     $result = mysqli_query($connect, $sql);
     return $result;
     include './connections/closeConnect.php';
@@ -793,7 +796,7 @@ function fetchRoles()
 {
 
     include './connections/openConnect.php';
-    $sql = "SELECT * FROM roles WHERE role_id IN (1,2)";
+    $sql = "SELECT * FROM roles WHERE role_id IN (1,2,3,5)";
     $result = mysqli_query($connect, $sql);
     return $result;
     include './connections/closeConnect.php';

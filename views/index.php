@@ -1,4 +1,7 @@
 <?php include "views/components/head.php" ?>
+<?php if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+} ?>
 
 <body>
     <div class="total-container">
@@ -22,12 +25,12 @@
         <div class="progress-status">
         </div>
         <div class="user-options">
-            
+
             <?php
             switch ($role) {
                 case 'staff': ?>
-                
-                <a href='index.php?role=staff&action=install'>
+
+                    <a href='index.php?role=staff&action=install'>
                         <button>
                             <div class="option-box">
                                 <i class='bx bx-wrench'></i>
@@ -77,75 +80,108 @@
                             </div>
                         </button>
                     </a>
-                <?php break;
+                    <?php break;
                 case 'manager':
-                    if($_SESSION['branch']==='4'||$_SESSION['branch']==4){
-                ?>
-                    <a href="index.php?role=manager&action=manage_equipments">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-devices'></i>
-                                <h3>Quản lý thiết bị</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <a href="index.php?role=manager&action=manage_requests">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-list-ul'></i>
-                                <h3>Quản lý yêu cầu</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <a href="index.php?role=manager&action=manage_staffs">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-user'></i>
-                                <h3>Quản lý nhân viên</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <a href="index.php?role=manager&action=manage_equipments_info">
-                        <button>
-                            <div class="option-box">
-                            <i class='bx bx-edit-alt'></i>
-                                <h3>Quản lý thông tin thiết bị</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <?php }else{ ?>
-                         <a href="index.php?role=manager&action=manage_equipments">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-devices'></i>
-                                <h3>Quản lý thiết bị</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <a href="index.php?role=manager&action=manage_requests">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-list-ul'></i>
-                                <h3>Quản lý yêu cầu</h3>
-                            </div>
-                        </button>
-                    </a>
-                    <a href="index.php?role=manager&action=manage_staffs">
-                        <button>
-                            <div class="option-box">
-                                <i class='bx bx-user'></i>
-                                <h3>Quản lý nhân viên</h3>
-                            </div>
-                        </button>
-                    </a>
-                  <?php  } ?>
+                    if ($_SESSION['branch'] === '4' && $action != 'indexInstall') {
+                    ?>
+                        <a href="index.php?role=manager&action=manage_equipments">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-devices'></i>
+                                    <h3>Quản lý thiết bị</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=manage_requests">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-list-ul'></i>
+                                    <h3>Quản lý yêu cầu</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <!-- <a href="index.php?role=manager&action=manage_staffs">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-user'></i>
+                                    <h3>Quản lý nhân viên</h3>
+                                </div>
+                            </button>
+                        </a> -->
+                        <a href="index.php?role=manager&action=manage_equipments_info">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-edit-alt'></i>
+                                    <h3>Quản lý thông tin thiết bị</h3>
+                                </div>
+                            </button>
+                        </a>
+                    <?php } else if ($action === 'indexInstall') { ?>
+                        <a href="index.php?role=manager&action=manage_equipments">
+                            <button>
+                                <div class="option-box">
+
+                                    <h3>Quay lại</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=installEquipmentIT&office_id=<?= $_GET['office_id'] ?>">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-devices'></i>
+                                    <h3>Thiết bị văn phòng</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=installEquipmentMaintenance&office_id=<?= $_GET['office_id'] ?>">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-cog'></i>
+                                    <h3>Thiết bị bảo trì</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=verifyRequest">
+                            <button>
+                                <div class="option-box">
+
+                                    <h3>Tiếp</h3>
+                                </div>
+                            </button>
+                        </a>
+                    <?php } else { ?>
+                        <a href="index.php?role=manager&action=manage_equipments">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-devices'></i>
+                                    <h3>Quản lý thiết bị</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=manage_requests">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-list-ul'></i>
+                                    <h3>Quản lý yêu cầu</h3>
+                                </div>
+                            </button>
+                        </a>
+                        <a href="index.php?role=manager&action=manage_staffs">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-user'></i>
+                                    <h3>Quản lý nhân viên</h3>
+                                </div>
+                            </button>
+                        </a>
+                    <?php  } ?>
                 <?php break;
                 case 'director':
                 ?>
-                <a href="index.php?role=director&action=displayRequests">
+                    <a href="index.php?role=director&action=displayRequests">
                         <button>
                             <div class="option-box">
-                            <i class='bx bxs-bar-chart-alt-2'></i>
+                                <i class='bx bxs-bar-chart-alt-2'></i>
                                 <h3>Theo dõi thống kê</h3>
                             </div>
                         </button>
@@ -174,6 +210,25 @@
                             </div>
                         </button>
                     </a>
+                <?php break;
+                case 'headMaintenance':
+                ?>
+                    <a href="index.php?role=<?= $_GET['role'] ?>&action=manage_requests">
+                        <button>
+                            <div class="option-box">
+                            <i class='bx bx-list-ul'></i>
+                                <h3>Quản lý Yêu Cầu</h3>
+                            </div>
+                        </button>
+                    </a>
+                    <a href="index.php?role=<?= $_GET['role'] ?>&action=manage_staffs">
+                            <button>
+                                <div class="option-box">
+                                    <i class='bx bx-user'></i>
+                                    <h3>Quản lý nhân viên</h3>
+                                </div>
+                            </button>
+                        </a>
             <?php break;
             }
             ?>
@@ -218,8 +273,10 @@
         ?>background-color: #0AC10A;
         <?php
                 break;
-        }
-        ?>
+            case 'headMaintenance':
+        ?>background-color: #9B59B6;
+        <?php break;
+        } ?>?>
     }
 
     .active {
@@ -242,8 +299,10 @@
         ?>background-color: #0AC10A;
         <?php
                 break;
-        }
-        ?>
+            case 'headMaintenance':
+        ?>background-color: #9B59B6;
+        <?php break;
+        } ?>
     }
 
     .non-active {
@@ -312,9 +371,10 @@
             case 'director':
         ?>background-color: #0AC10A;
         <?php
-                break;
-        }
-        ?>
+            case 'headMaintenance':
+        ?>background-color: #9B59B6;
+        <?php break;
+        } ?>
     }
 
     .nav {
@@ -374,8 +434,10 @@
         ?>border-bottom: 10px solid #0AC10A;
         <?php
                 break;
-        }
-        ?>
+            case 'headMaintenance':
+        ?>border-bottom: 10px solid #9B59B6;
+        <?php break;
+        } ?>?>
     }
 
     .user-options i {
@@ -403,8 +465,11 @@
         ?>background-color: #0AC10A;
         <?php
                 break;
-        } ?>
-        margin-right: 10px;
+            case 'headMaintenance':
+        ?>background-color: #9B59B6;
+        <?php
+                break;
+        } ?>margin-right: 10px;
         border-radius: 10px;
         height: 200px;
         width: 200px;

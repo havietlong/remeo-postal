@@ -5,24 +5,24 @@
 </div>
 <div class="popup" id="popup">
     <div class="popup-item">
-    <i class='bx bx-user-circle popup-icon'></i>
-        Người dùng
+        <i class='bx bx-user-circle popup-icon'></i>
+        <?= $_SESSION['user_name'] ?>
     </div>
     <div class="popup-item">
-    <i class='bx bx-git-branch popup-icon' ></i>
-        Chi nhánh
+        <i class='bx bx-git-branch popup-icon'></i>
+        <?= $_SESSION['branch_name'] ?> 
     </div>
     <div class="popup-item">
-    <i class='bx bx-slider-alt popup-icon' ></i>
-        Bộ phận
+        <i class='bx bx-slider-alt popup-icon'></i>
+        <?= $_SESSION['office_name'] ?> 
     </div>
     <div class="popup-item">
-    <i class='bx bx-bell popup-icon' ></i>
-        Vai trò
+        <i class='bx bx-bell popup-icon'></i>
+        <?= $_SESSION['role_name'] ?>
     </div>
     <div class="popup-item">
-    <a href="/remeo-postal/reset.php"><i class='bx bx-door-open popup-icon'></i>
-    Đăng xuất</a>
+        <a href="/remeo-postal/reset.php"><i class='bx bx-door-open popup-icon'></i>
+            Đăng xuất</a>
     </div>
 </div>
 <style>
